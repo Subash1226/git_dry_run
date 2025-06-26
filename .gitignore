@@ -1,1 +1,46 @@
-# Magento Spec
+# Magento Specific Files
+/var/*
+!/var/.htaccess
+!/var/composer_home/
+/vendor/*
+/generated/*
+/pub/media/*
+!/pub/media/.htaccess
+/pub/static/*
+!/pub/static/.htaccess
+/pub/static/.htaccess
+
+# Magento Configuration Files (sensitive)
+/app/etc/env.php
+/app/etc/config.php
+
+# IDE Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS Files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs
+*.log
+/var/log/*
+
+# Cache
+.cache/
+.tmp/
+
+# Node modules (if using frontend build tools)
+node_modules/
+npm-debug.log*
+
+# Composer
+/auth.json
+
+# Environment files
+.env
+.env.local
+.env.production

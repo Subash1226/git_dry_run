@@ -1,1 +1,0 @@
-define(['jquery'],function($){'use strict';return function(config,element){$(element).on('submit',function(){if($(this).valid()){$(this).find('.submit').attr('disabled',true);}});};});

@@ -1,1 +1,0 @@
-define(['Magento_PageBuilder/js/resource/jarallax/jarallax'],function(jarallax){'use strict';window.jarallax=window.jarallax||jarallax;});
