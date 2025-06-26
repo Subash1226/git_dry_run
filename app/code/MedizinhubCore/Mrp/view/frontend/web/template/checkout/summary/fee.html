@@ -1,0 +1,21 @@
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko -->
+
+<tr class="totals ordervalue excl">
+    <th class="mark" scope="row">
+        <span class="label" data-bind="text: title"></span>
+        <span class="value" data-bind="text: getValue()"></span>
+    </th>
+    <td class="amount">
+        <svg class="svg-price-summary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M13.725 21L7 14V12H10.5C11.3833 12 12.146 11.7123 12.788 11.137C13.43 10.5617 13.8173 9.84933 13.95 9H6V7H13.65C13.3667 6.41667 12.9457 5.93733 12.387 5.562C11.8283 5.18667 11.1993 4.99933 10.5 5H6V3H18V5H14.75C14.9833 5.28333 15.1917 5.59167 15.375 5.925C15.5583 6.25833 15.7 6.61667 15.8 7H18V9H15.975C15.8417 10.4167 15.2583 11.6043 14.225 12.563C13.1917 13.5217 11.95 14.0007 10.5 14H9.775L16.5 21H13.725Z" fill="#263238"/>
+        </svg><span class="price" data-bind="text: getValue(), attr: {'data-th': title}"></span>
+    </td>
+</tr>
+
+<!-- /ko -->

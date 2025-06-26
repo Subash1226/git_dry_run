@@ -1,0 +1,62 @@
+* {
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-weight: 400;
+}
+.feesandpayment-title{
+    text-align: center;
+    color: #063851;
+    font-family: "Source Sans Pro";
+    font-size: 30px;
+    font-weight: 600;
+}
+.fees-title {
+    color: #063851;
+    font-family: "Source Sans Pro";
+    font-size: 24px;
+    font-weight: 600;
+}
+.fees-title {
+    margin-bottom: 12px !important;
+}
+.fees-description, 
+.fees-description ol li,
+.fees-description ul li {
+    color: #000;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0.48px;
+}
+.breadcrumbs ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.breadcrumbs ul li {
+    margin-right: 5px;
+}
+
+.breadcrumbs ul li + li:before {
+    content: ">";
+    margin-right: 5px;
+    color: #999; /* Optional: Set the color of the separator */
+}
+.page-title {
+    display: none !important;
+}
+.breadcrumbs {
+    color: #036C58;
+    font-family: 'Ubuntu';
+    font-size: 16px;
+    font-weight: 500;
+}
+.breadcrumb-name { 
+    color: #6E7F87;
+    font-family: 'Ubuntu';
+    font-size: 16px;
+    font-weight: 400;
+}

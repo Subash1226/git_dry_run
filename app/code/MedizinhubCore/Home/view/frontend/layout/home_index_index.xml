@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+ <head>
+        <css src="MedizinhubCore_Home::css/styles.css" />
+    </head>
+    <body>
+        <referenceBlock name="page.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Home</argument>
+            </action>
+        </referenceBlock>
+
+        <referenceContainer name="page.wrapper">
+            <block class="MedizinhubCore\Home\Block\Banner" name="banner.form" template="MedizinhubCore_Home::banner.phtml">
+            </block>
+            <container>
+                <block class="MedizinhubCore\Home\Block\Home" name="home.form" template="MedizinhubCore_Home::home.phtml">
+                </block>
+            </container>
+            <block class="MedizinhubCore\Home\Block\Home" name="footer.form" template="MedizinhubCore_Home::footer.phtml">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

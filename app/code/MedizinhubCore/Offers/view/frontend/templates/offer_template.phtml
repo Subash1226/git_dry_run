@@ -1,0 +1,44 @@
+<?php
+$formattedDate = date('d M Y', strtotime($offer['to_date']));
+$description = truncateDescription($offer['description']);
+$descriptionMargin = getDescriptionMargin($offer['description']);
+?>
+<div class="col-md-6">
+    <div class="offer-card p-4 mb-4">
+        <div class="row">
+            <div class="col-md-4 col-4">
+                <img class="offer-img img-fluid p-1" src="<?php echo $mediaUrl . $offer['coupon_image']; ?>" alt="">
+            </div>
+            <div class="col-md-8 col-8">
+                <div class="offer-name <?php echo $descriptionMargin; ?>" title="<?php echo $offer['description']; ?>"><?php echo $description; ?></div>
+                <div class="offer-double-column">
+                    <div class="row">
+                        <div class="col-md-5 col-5 mb-4">
+                            <span class="offer-expiry">Expiry : </span>
+                            <span class="offer-expdate"><?php echo $formattedDate; ?></span>
+                        </div>
+                        <div class="col-md-1 col-1 mt-2 offer-line">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="2" height="18" viewBox="0 0 2 18" fill="none">
+                                <path d="M1 0.804199L0.999999 16.8042" stroke="#03C777" stroke-width="1.2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <div class="col-md-6 col-6">
+                            <span class="offer-expiry">Coupon Code : </span>
+                            <span class="offer-expdate"><?php echo $offer['code']; ?></span>
+                            <span class="copy-code-btn" title="Copy Code" data-code="<?php echo $offer['code']; ?>" data-rule-id="<?php echo $offer['rule_id']; ?>">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none" style="cursor: pointer;">
+                                    <path d="M9.67016 17.7904C9.48953 17.7904 8.48225 17.7904 7.7358 17.7904C7.27804 17.7904 6.90735 17.4194 6.90735 16.9616V15.7183V8.12061H4.6971C4.55055 8.12061 4.41001 8.17518 4.30638 8.27233C4.20276 8.36948 4.14454 8.50124 4.14454 8.63863L4.14453 18.343C4.14453 19.5637 5.13409 20.5532 6.35478 20.5532H14.0907C14.3838 20.5532 14.6648 20.4441 14.8721 20.2498C15.0793 20.0555 15.1958 19.792 15.1958 19.5172V17.7904H9.67016Z" fill="#03C777" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5141 2.59497H9.35168C8.76481 2.59497 8.28906 3.07072 8.28906 3.65759V15.3464C8.28906 15.9333 8.76481 16.409 9.35168 16.409H17.3213C17.9082 16.409 18.3839 15.9333 18.3839 15.3464V7.46479C18.3839 7.40842 18.3616 7.35437 18.3217 7.31451L13.6644 2.65722C13.6245 2.61736 13.5705 2.59497 13.5141 2.59497ZM17.8527 7.90831H13.6022V3.65784L17.8527 7.90831Z" fill="#03C777" />
+                                </svg>
+                            </span>
+                            <span class="copy-tooltip">Copied!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="offer-btn-container">
+                    <button class="offer-btn view-offer-details" data-rule-id="<?php echo $offer['rule_id']; ?>">View Offer Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

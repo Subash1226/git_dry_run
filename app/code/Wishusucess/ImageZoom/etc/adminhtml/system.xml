@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="wishusucess" translate="label" sortOrder="999">
+            <label>Wishusucess</label>
+        </tab>
+        <section id="wishusucess_imagezoom" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Product Image Zoom</label>
+            <tab>wishusucess</tab>
+            <resource>Wishusucess_ImageZoom::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="mini_hidden" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Disable Zoom at Width</label>
+                    <comment>Minimum window width to disable zoom (default: 575)</comment>
+                    <validate>validate-number</validate>
+                </field>
+                <field id="magnification_degree" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Magnification Degree</label>
+                    <comment>Zoom magnification degree (default: 3)</comment>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="zoom_container" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Zoom Container Settings</label>
+                <field id="width" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Container Width</label>
+                    <comment>Width in px or % (default: 500px)</comment>
+                </field>
+                <field id="height" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Container Height</label>
+                    <comment>Height in px or % (default: 500px)</comment>
+                </field>
+                <field id="position_top" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Position Top</label>
+                    <comment>Top position in px or % (default: 0)</comment>
+                </field>
+                <field id="position_right" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Position Right</label>
+                    <comment>Right position in px or % (default: -300px)</comment>
+                </field>
+            </group>
+            <group id="magnification" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Magnification Lens Settings</label>
+                <field id="width" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Lens Width</label>
+                    <comment>Width in px or % (default: 100px)</comment>
+                </field>
+                <field id="height" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Lens Height</label>
+                    <comment>Height in px or % (default: 100px)</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

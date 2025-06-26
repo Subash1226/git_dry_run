@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<csp_whitelist
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp/etc/csp_whitelist.xsd"
+>
+    <policies>
+        <policy id="img-src">
+            <values>
+                <value id="data" type="host">data:</value>
+                <value id="maps" type="host">maps.googleapis.com</value>
+                <value id="maps-gstatic" type="host">maps.gstatic.com</value>
+                <value id="facebook" type="host">www.facebook.com</value>
+                <value id="gstatic" type="host">www.gstatic.com</value>
+                <value id="cloudfront" type="host">*.cloudfront.net</value>
+                <value id="medizinhub" type="host">*.medizinhub.com</value>
+                <value id="google" type="host">www.google.pl</value>
+                <value id="stamped" type="host">*.stamped.io</value>
+                <value id="paypal" type="host">*.paypal.com</value>
+                <value id="amazonaws" type="host">*.amazonaws.com</value>
+                <value id="userway" type="host">*.userway.org</value>
+                <value id="autorize-verify" type="host">verify.authorize.net</value>
+                <value id="instagram-cdn" type="host">scontent.cdninstagram.com</value>
+                <value id="affirm" type="host">*.affirm.com</value>
+                <value id="routeapp" type="host">*.routeapp.io</value>
+                <value id="pinterest-assets" type="host">assets.pinterest.com</value>
+                <value id="pinterest-log" type="host">log.pinterest.com</value>
+                <value id="pinterest-wildcard" type="host">*.pinterest.com</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="data" type="host">data:</value>
+                <value id="stamped" type="host">*.stamped.io</value>
+                <value id="fonts-gstatic-https" type="host">https://fonts.gstatic.com</value>
+                <value id="fonts-gstatic-http" type="host">http://fonts.gstatic.com</value>
+                <value id="fontawesome" type="host">*.fontawesome.com</value>
+                <value id="stripe" type="host">*.stripe.com</value>
+                <value id="klarna" type="host">klarna.com</value>
+                <value id="klarna-com" type="host">*.klarna.com</value>
+                <value id="klarnacdn" type="host">*.klarnacdn.net</value>
+                <value id="klarnaevt" type="host">*.klarnaevt.com</value>
+                <value id="self" type="host">'self'</value>
+                <value id="unsafe-inline" type="host">'unsafe-inline'</value>
+                <value id="use-fontawesome" type="host">https://use.fontawesome.com</value>
+                <value id="cdn.jsdelivr.net" type="host">https://cdn.jsdelivr.net</value>
+                <value id="cloudfront" type="host">*.cloudfront.net</value>
+                <value id="medizinhub" type="host">*.medizinhub.com</value>
+            </values>
+        </policy>
+        <policy id="script-src">
+            <values>
+                <value id="jquery" type="host">https://code.jquery.com</value>
+                <value id="maps" type="host">maps.googleapis.com</value>
+                <value id="unpkg" type="host">https://unpkg.com</value>
+                <value id="maps-gstatic" type="host">maps.gstatic.com</value>
+                <value id="facebook-connect" type="host">connect.facebook.net</value>
+                <value id="vimeo" type="host">f.vimeocdn.com</value>
+                <value id="google" type="host">www.google.com</value>
+                <value id="google-translate" type="host">http://translate.google.com</value>
+                <value id="googleapis-translate" type="host">translate.googleapis.com</value>
+                <value id="gstatic" type="host">www.gstatic.com</value>
+                <value id="cardinal_commerce_includes" type="host">includes.ccdc02.com</value>
+                <value id="zdassets" type="host">static.zdassets.com</value>
+                <value id="inspectlet" type="host">cdn.inspectlet.com</value>
+                <value id="stamped" type="host">*.stamped.io</value>
+                <value id="livechatinc" type="host">*.livechatinc.com</value>
+                <value id="userway" type="host">*.userway.org</value>
+                <value id="paypal" type="host">*.paypal.com</value>
+                <value id="googlepay" type="host">pay.google.com</value>
+                <value id="cdn.jsdelivr.net" type="host">https://cdn.jsdelivr.net</value>
+                <value id="klarna-payments" type="host">www.klarnapayments.com</value>
+                <value id="affirm" type="host">*.affirm.com</value>
+                <value id="routeapp" type="host">*.routeapp.io</value>
+                <value id="cloudfront" type="host">*.cloudfront.net</value>
+                <value id="medizinhub" type="host">*.medizinhub.com</value>
+                <!-- Added domains for Google APIs and Pinterest -->
+                <value id="google-apis" type="host">apis.google.com</value>
+                <value id="pinterest-wildcard" type="host">*.pinterest.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="nominatim" type="host">nominatim.openstreetmap.org</value>
+                <value id="paypal" type="host">*.paypal.com</value>
+                <value id="authorize-net" type="host">*.authorize.net</value>
+                <value id="zdassets" type="host">ekr.zdassets.com</value>
+                <value id="zendesk" type="host">*.zendesk.com</value>
+                <value id="zopim" type="host">wss://widget-mediator.zopim.com</value>
+                <value id="inspectlet" type="host">hn.inspectlet.com</value>
+                <value id="stamped" type="host">stamped.io</value>
+                <value id="braintree-api" type="host">*.braintree-api.com</value>
+                <value id="braintree-gateway" type="host">*.braintreegateway.com</value>
+                <value id="paypalobjects" type="host">www.paypalobjects.com</value>
+                <value id="livechatinc" type="host">*.livechatinc.com</value>
+                <value id="userway" type="host">*.userway.org</value>
+                <value id="instagram-graph" type="host">graph.instagram.com</value>
+                <value id="affirm" type="host">*.affirm.com</value>
+                <value id="route" type="host">*.route.com</value>
+                <value id="postal-api" type="host">api.postalpincode.in</value>
+                <value id="razorpay" type="host">https://lumberjack-cx.razorpay.com</value>
+                <value id="locationiq" type="host">https://us1.locationiq.com</value>
+                <value id="pinterest-wildcard" type="host">*.pinterest.com</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="cdn.jsdelivr.net" type="host">https://cdn.jsdelivr.net</value>
+                <value id="style-googleapis" type="host">*.googleapis.com</value>
+                <value id="stamped" type="host">*.stamped.io</value>
+                <value id="unpkg" type="host">https://unpkg.com</value>
+                <value id="klarna-payments" type="host">www.klarnapayments.com</value>
+                <value id="cloudfront" type="host">*.cloudfront.net</value>
+                <value id="medizinhub" type="host">*.medizinhub.com</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="youtube" type="host">www.youtube.com</value>
+                <value id="livechatinc" type="host">*.livechatinc.com</value>
+                <value id="paypal" type="host">*.paypal.com</value>
+                <value id="googlepay" type="host">pay.google.com</value>
+                <value id="braintree-gateway" type="host">*.braintreegateway.com</value>
+                <value id="kaptcha" type="host">*.kaptcha.com</value>
+                <value id="paypalobjects" type="host">www.paypalobjects.com</value>
+                <value id="affirm" type="host">*.affirm.com</value>
+                <value id="pinterest-wildcard" type="host">*.pinterest.com</value>
+            </values>
+        </policy>
+        <policy id="media-src">
+            <values>
+                <value id="zdassets" type="host">static.zdassets.com</value>
+                <value id="cloudfront" type="host">*.cloudfront.net</value>
+                <value id="medizinhub" type="host">*.medizinhub.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

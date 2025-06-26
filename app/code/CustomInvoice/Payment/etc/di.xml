@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="custominvoice_payment_listing_data_source" xsi:type="string">CustomInvoicePaymentCollection</item>
+            </argument>
+        </arguments>
+    </type>    
+    <virtualType name="CustomInvoicePaymentCollection" type="CustomInvoice\Payment\Ui\DataProvider\Payment\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">custom_invoice_payment</argument>
+            <argument name="resourceModel" xsi:type="string">CustomInvoice\Payment\Model\ResourceModel\Payment</argument>
+        </arguments>
+    </virtualType>
+</config>

@@ -1,0 +1,448 @@
+<?php
+$blocks = $this->getLayout()->createBlock(\MedizinhubCore\Home\Block\Home::class);
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+$request = $objectManager->get(\Magento\Framework\App\RequestInterface::class);
+$resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
+$connection = $resource->getConnection();
+$baseUrl = $this->getBaseUrl();
+$mediaBaseUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+$todayids = [25];
+$TodayDeals = $blocks->getProductCollectionByCategories($todayids);
+$mediaUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+$id = $request->getParam('id');
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$isLoggedIn = $customerSession->isLoggedIn();
+if ($id) {
+    $tableName = $resource->getTableName('health_package');
+    $query = "SELECT `id`, `includedtest`,`included`, `package_name`, `short_description`, `price`, `special_price`, `description`, `importance`,
+                     `age`, `gender`, `blood_group`, `fasting_required`, `image`
+              FROM `$tableName` WHERE `id` = :id";
+    $result = $connection->fetchRow($query, ['id' => $id]);
+
+    if ($result) {
+        $packageName = $result['package_name'];
+        $price = $result['price'];
+        $specialPrice = $result['special_price'];
+        $description = $result['description'];
+        $shortdescription = $result['short_description'];
+        $importance = $result['importance'];
+        $age = $result['age'];
+        $gender = $result['gender'];
+        $bloodGroup = $result['blood_group'];
+        $includedTest = $result['includedtest'];
+        $included = $result['included'];
+        $fastingRequired = $result['fasting_required'];
+        $image = $result['image'];
+        if ($price > 0 && $specialPrice > 0 && $price > $specialPrice) {
+            $discountPercentage = (($price - $specialPrice) / $price) * 100;
+            $discountPercentage = round($discountPercentage); // Round to the nearest whole number
+        } else {
+            echo "No discount available.";
+        }
+    } else {
+        echo "No package found for ID: " . $id;
+        $result = null;
+    }
+} else {
+    echo "Package ID not found in URL.<br/>";
+    $result = null;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<style>.package-hint,.package-title,.total-package-book{font-family:"Source Sans Pro";line-height:normal}.in-cart,.in-cart:hover,.package-add-to-cart,.package-add-to-cart:hover{background:linear-gradient(92deg,#03c777 11.69%,#01a462 102.33%);color:#fff}.off-book-view,.package-details{border-radius:8px}.package-title{color:#313739;font-size:24px;font-style:normal;margin-top:4px;font-weight:600}.package-hint,.total-package-book{font-weight:400}.package-hint{color:#00739b;margin-top:16px;font-size:16.627px;font-style:normal}.package-details{box-shadow:0 0 10px 0 rgba(0,94,23,.12),0 0 8px 0 rgba(0,87,22,.15);padding:32px 30px 26px}.total-package-book{color:#313739;font-size:18px;display:none;font-style:italic;padding:18px 0 0 6px}.in-cart,.offer-ends,.package-add-to-cart,.package-discount,.package-li p,.package-mrp,.package-price{font-family:"Source Sans Pro";font-style:normal}.offer-ends{color:#00739b;leading-trim:both;margin:0!important;text-edge:cap;font-size:16.627px;font-weight:600;line-height:normal}.package-li p,.package-price{margin-top:10px}.package-mrp{color:#313739;font-size:41.568px;font-weight:700;line-height:normal}.package-price{color:#818d92;font-size:24.941px;text-decoration:line-through;font-weight:600;line-height:normal}.package-discount{color:#049b7e;margin-top:5px;font-size:33.254px;font-weight:600;line-height:normal}.in-cart,.package-add-to-cart{border-radius:8px;width:479px;height:56px;justify-content:center;align-items:center;font-size:20.784px;font-weight:600;line-height:normal}.booklab-package-index .page-title-wrapper{display:none!important}.package-offer-ends{padding:3px 0 17px}.package-li{list-style:none;padding:0;margin:0;display:flex;align-items:center;margin-bottom:0!important}.single-pakage-details{padding:30px 0}.package-view-deals{border-radius:8px!important}.package-single-image{width:74px;height:72px;border:1px solid #03c777;border-radius:8px}.package-product-slide{margin:15px 0}.package-single-image img{height:52px;object-fit:contain;width:100%;margin:9px 0}.add-to-cart-offer-content{padding:0 30px;margin-top:3px}.package-li p{color:#313739;font-size:16px;font-weight:600;line-height:30px}.cusl_btn_cart{margin:5px 0}.package-svg{margin-right:10px}.cusl_add-to-cart-btn{width:100%;padding:8px;background:#00c853;color:#fff;border:none;font-size:16px;border-radius:8px;font-weight:600;height:40px;transition:background-color .3s}.cart-viewall a{width:100%;text-align:center;margin:20px 0 0}.in-cart:active,.in-cart:focus,.in-cart:hover,.package-add-to-cart:active,.package-add-to-cart:focus,.package-add-to-cart:hover{background:linear-gradient(92deg,#03c777 11.69%,#01a462 102.33%)!important;color:#fff!important}.package-all-link{text-decoration:none!important;color:#00739b!important;font-weight:700;font-size:14px}</style>
+<body>
+    <?php
+    $breadcrumbsBlock = $block->getLayout()->getBlock('breadcrumbs');
+    if ($breadcrumbsBlock) {
+        $breadcrumbsBlock->addCrumb('home', [
+            'label' => __('Home'),
+            'title' => __('Go to Home Page'),
+            'link' => $block->getUrl(''),
+        ]);
+        $breadcrumbsBlock->addCrumb('category', [
+            'label' => __('Health Packages'),
+            'title' => __('Category Name'),
+            'link' => $block->getUrl('lab-test'),
+        ]);
+        echo $breadcrumbsBlock->toHtml();
+    }
+    ?>
+    <div class="package-single-view">
+        <div class="contanier">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="package-details">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="package-single-image">
+                                    <img width="100%" src="<?php echo $mediaUrl . $image; ?>" alt="Image description" />
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="package-title test-name-truncate" title="<?php echo htmlspecialchars($packageName); ?>"><?php echo htmlspecialchars($packageName); ?></p>
+                            </div>
+                            <p class="total-package-book"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none" style="margin-right: 11px;margin-top: -6px;">
+                                    <path d="M12.2366 7.7296L11.714 10.7109C11.6921 10.8354 11.7429 10.9615 11.8448 11.0359C11.9471 11.1106 12.0825 11.1215 12.1944 11.0625L14.8785 9.66345L17.5527 11.0817C17.6643 11.1408 17.7997 11.1315 17.9026 11.0578C18.0052 10.9838 18.0567 10.8579 18.0358 10.7335L17.5348 7.74786L19.71 5.64304C19.9075 5.46377 19.7933 5.10688 19.5281 5.076L16.5342 4.63014L15.2042 1.91081C15.1488 1.79726 15.0336 1.72489 14.9071 1.72456C14.7806 1.72423 14.6651 1.7956 14.609 1.90881L13.2598 4.61819L10.2625 5.04247C10.1374 5.0604 10.0331 5.14738 9.99363 5.26756C9.95412 5.38741 9.98633 5.51987 10.0763 5.60818L12.2362 7.72894L12.2366 7.7296ZM0.279258 4.99666L2.26257 5.44518L3.01752 7.33321C3.06466 7.45073 3.17388 7.5314 3.30004 7.54103C3.42487 7.55099 3.54704 7.48825 3.61111 7.37968L4.65024 5.63175L6.67904 5.4973C6.80486 5.489 6.91542 5.40965 6.96389 5.29279C7.01202 5.17593 6.99011 5.04214 6.90678 4.94719L5.56587 3.41871L6.06452 1.44735C6.09573 1.32484 6.05423 1.19537 5.95829 1.11336C5.86201 1.03136 5.72722 1.01111 5.61169 1.06091L3.74391 1.86433L2.0232 0.780709C1.91663 0.713315 1.78085 0.712319 1.67262 0.778386C1.56506 0.844452 1.50397 0.96596 1.51559 1.09178L1.70217 3.11659L0.139822 4.418C-0.0706601 4.58233 0.0169855 4.94653 0.278926 4.99699L0.279258 4.99666Z" fill="#32FAA9"></path>
+                                    <path d="M19.8723 17.6427L18.7044 15.9781L19.4138 14.0724C19.458 13.9543 19.4311 13.8208 19.3444 13.7292C19.2578 13.6369 19.126 13.603 19.0055 13.6392L17.0617 14.2354L15.4688 12.9719C15.265 12.7989 14.9263 12.9596 14.9303 13.2265L14.8964 15.2596L13.2023 16.3844C13.0971 16.4545 13.0406 16.578 13.0569 16.7031C13.0728 16.8286 13.1588 16.9339 13.2783 16.9747L15.2012 17.6354L15.7473 19.5934C15.7815 19.7153 15.8815 19.8072 16.0056 19.8305C16.1281 19.8541 16.2566 19.8053 16.3326 19.704L17.555 18.0789L19.5868 18.1646C19.8521 18.1871 20.033 17.8548 19.8726 17.6423L19.8723 17.6427ZM10.8531 20.3391C10.874 20.4636 10.8223 20.5894 10.72 20.6634C10.6171 20.7375 10.4816 20.7464 10.3701 20.6874L6.62822 18.7024L2.87175 20.6598C2.76053 20.7189 2.62441 20.7079 2.52216 20.6332C2.42024 20.5585 2.36944 20.4327 2.39136 20.3082L3.1224 16.1364L0.0992935 13.1688C0.00932404 13.0801 -0.022879 12.948 0.0166278 12.8281C0.0561347 12.7083 0.16038 12.621 0.28554 12.6031L4.47958 12.0091L6.36794 8.21746C6.42404 8.10458 6.53925 8.0332 6.66507 8.0332C6.79189 8.0332 6.90775 8.10558 6.9632 8.21945L8.824 12.0247L13.0137 12.6489C13.279 12.6797 13.3932 13.0366 13.1957 13.2159L10.152 16.1617L10.8528 20.3394L10.8531 20.3391Z" fill="#32FAA9"></path>
+                                    <path d="M13.5253 5.25132C13.6335 5.23605 13.7271 5.16832 13.7759 5.07039L14.9034 2.80721L16.0145 5.07902C16.0627 5.17729 16.156 5.24535 16.2639 5.26161L18.7651 5.63411L16.9478 7.39266C16.8691 7.46869 16.8332 7.57857 16.8512 7.68614L17.2698 10.1804L15.0358 8.99551C14.9392 8.94438 14.8237 8.94405 14.7268 8.99451L12.4845 10.1635L12.9207 7.67253C12.9397 7.56496 12.9045 7.45474 12.8264 7.37805L11.0217 5.60655L13.5256 5.25199L13.5253 5.25132ZM17.4082 17.4081C17.3003 17.4012 17.1948 17.453 17.129 17.5399L16.2061 18.7667L15.7938 17.2883C15.7646 17.1831 15.6852 17.0991 15.5816 17.0635L14.1295 16.5646L15.4087 15.7153C15.4996 15.6549 15.5551 15.5536 15.5571 15.4444L15.5826 13.9096L16.7854 14.8634C16.8711 14.9318 16.9843 14.9531 17.0892 14.9209L18.5569 14.4707L18.0214 15.9095C17.9833 16.0121 17.9979 16.1263 18.0606 16.216L18.9424 17.4726L17.4082 17.4081ZM2.26118 3.51468C2.34517 3.44463 2.38933 3.33806 2.37904 3.22917L2.23827 1.70068L3.53735 2.51871C3.62964 2.57714 3.74484 2.58577 3.84544 2.54294L5.25573 1.9364L4.87926 3.42471C4.85236 3.53061 4.87926 3.64283 4.9513 3.72483L5.96387 4.87916L4.43206 4.98075C4.32317 4.98805 4.22457 5.04848 4.1688 5.14243L3.3843 6.46209L2.81427 5.03686C2.77344 4.93527 2.68579 4.86057 2.57923 4.83633L1.08162 4.4977L2.26118 3.51501V3.51468ZM6.78455 18.0336C6.68794 17.9825 6.57241 17.9822 6.47547 18.0326L3.16087 19.76L3.80593 16.0785C3.82485 15.971 3.78966 15.8607 3.71165 15.784L1.04443 13.1653L4.74513 12.6411C4.85336 12.6258 4.94698 12.5581 4.99578 12.4602L6.66204 9.11469L8.30407 12.4724C8.35221 12.5707 8.4455 12.6388 8.55339 12.655L12.2504 13.2055L9.56464 15.805C9.48596 15.881 9.4501 15.9909 9.46803 16.0984L10.0865 19.7849L6.78455 18.0336Z" fill="#01A562"></path>
+                                    <path d="M12.5959 7.94273C12.5119 7.94273 12.4279 7.91086 12.3631 7.84778L10.0787 5.60486C9.98874 5.51622 9.95654 5.38408 9.99605 5.26424C10.0356 5.14439 10.1398 5.05707 10.265 5.03915L13.2622 4.61486L14.6114 1.90549C14.6675 1.79261 14.7827 1.72123 14.9085 1.72123H14.9095C15.036 1.72123 15.1512 1.79394 15.2066 1.90748L16.6133 4.78351C16.694 4.94818 16.6256 5.14704 16.4609 5.22772C16.2956 5.30872 16.0974 5.23967 16.0167 5.07533L14.9055 2.80352L13.7781 5.0667C13.7296 5.16464 13.6357 5.23236 13.5274 5.24764L11.0236 5.6022L12.8283 7.3737C12.9591 7.50218 12.9611 7.71267 12.8326 7.84314C12.7675 7.90954 12.6815 7.94273 12.5959 7.94273ZM17.9051 11.0541C18.0076 10.9801 18.0591 10.8543 18.0382 10.7298L17.5372 7.7442L19.7124 5.63938C19.803 5.55141 19.8362 5.41961 19.7977 5.29943C19.7592 5.17925 19.6556 5.09127 19.5305 5.07234L17.6531 4.79248C17.4735 4.76857 17.3028 4.89075 17.2756 5.07201C17.2487 5.25328 17.3735 5.42226 17.5551 5.44949L18.7672 5.63009L16.9499 7.38864C16.8712 7.46467 16.8354 7.57456 16.8533 7.68212L17.2719 10.1764L15.038 8.99149C14.9414 8.9407 14.8258 8.94037 14.7289 8.9905L12.4863 10.1594L12.6682 9.1213C12.6998 8.9407 12.5793 8.76873 12.3987 8.73686C12.2191 8.70764 12.0461 8.82649 12.0146 9.00643L11.7168 10.7072C11.6948 10.8317 11.7456 10.9579 11.8476 11.0322C11.9495 11.1073 12.0853 11.1176 12.1971 11.0588L14.8813 9.65979L17.5555 11.0781C17.6043 11.1039 17.6577 11.1166 17.7112 11.1166C17.7796 11.1166 17.8473 11.0956 17.9051 11.0541ZM16.3351 19.7002L16.9436 18.8908C17.0538 18.7444 17.0243 18.5362 16.8779 18.426C16.7315 18.3154 16.5233 18.3457 16.4131 18.4914L16.2089 18.763L15.7966 17.2843C15.7674 17.179 15.688 17.095 15.5844 17.0592L14.1326 16.5609L15.4115 15.7116C15.5024 15.6512 15.5579 15.55 15.5599 15.4407L15.5854 13.9056L16.7886 14.8594C16.932 14.9743 17.1408 14.9494 17.255 14.8056C17.3689 14.6619 17.345 14.4531 17.2009 14.3395L15.4709 12.9677C15.3716 12.8887 15.2368 12.8735 15.1226 12.9276C15.0084 12.9817 14.9347 13.0959 14.9327 13.2224L14.8989 15.2555L13.2051 16.3803C13.0998 16.4503 13.0434 16.5738 13.0597 16.699C13.0756 16.8245 13.1616 16.9297 13.2811 16.9709L15.204 17.6309L15.7501 19.5893C15.7843 19.7111 15.8842 19.8031 16.0084 19.8263C16.029 19.8303 16.0496 19.8323 16.0701 19.8323C16.1734 19.8323 16.2717 19.7842 16.3351 19.7002ZM19.894 17.9884C19.9548 17.8779 19.9471 17.7421 19.8744 17.6385L18.7068 15.9739L19.4159 14.0683C19.4601 13.9501 19.4332 13.8166 19.3466 13.725C19.2596 13.6327 19.1278 13.5985 19.0076 13.635L18.1706 13.8913C17.9954 13.9451 17.8968 14.1307 17.9505 14.306C18.0043 14.4813 18.1906 14.5802 18.3652 14.5261L18.5587 14.4667L18.0232 15.9055C17.9851 16.0081 17.9997 16.1223 18.0624 16.212L18.9439 17.4685L17.4101 17.4041C17.2324 17.3912 17.0721 17.5386 17.0645 17.7218C17.0568 17.9051 17.1989 18.0598 17.3822 18.0674L19.5882 18.1604C19.5929 18.1604 19.5975 18.1604 19.6022 18.1604C19.723 18.1604 19.8349 18.0947 19.8933 17.9874L19.894 17.9884ZM2.83236 5.22871C2.87286 5.04977 2.76065 4.87215 2.5817 4.83165L1.08443 4.49335L2.26399 3.51066C2.34798 3.44061 2.39214 3.33404 2.38185 3.22515L2.24108 1.69667L2.48808 1.85237C2.64279 1.94898 2.84796 1.90316 2.9459 1.74846C3.0435 1.59308 2.99702 1.38825 2.84198 1.29031L2.02595 0.776388C1.91938 0.709658 1.7836 0.70833 1.67537 0.774396C1.5678 0.840462 1.50672 0.961971 1.51834 1.0878L1.70492 3.11261L0.14257 4.41401C0.0456285 4.49501 0.00280172 4.62416 0.0323489 4.74699C0.061896 4.86983 0.158505 4.96511 0.282006 4.993L2.43563 5.4797C2.4602 5.48534 2.48476 5.48766 2.509 5.48766C2.66072 5.48766 2.79783 5.38309 2.83269 5.22904L2.83236 5.22871ZM3.61353 7.37503L4.65299 5.62743L6.68179 5.49298C6.80761 5.48468 6.91816 5.40533 6.9663 5.28847C7.01477 5.17161 6.99253 5.03782 6.9092 4.94287L5.56829 3.41438L6.06694 1.44303C6.09815 1.32052 6.05665 1.19104 5.9607 1.10904C5.86476 1.02704 5.72997 1.00646 5.6141 1.05659L3.58597 1.92873C3.41766 2.00143 3.33964 2.19664 3.41234 2.36463C3.48439 2.53328 3.6796 2.60997 3.84825 2.53859L5.25854 1.93205L4.88207 3.42036C4.85517 3.52627 4.88207 3.63848 4.95411 3.72048L5.96668 4.87481L4.43487 4.9764C4.32598 4.9837 4.22738 5.04413 4.17161 5.13808L3.04317 7.03574C2.94955 7.19343 3.00134 7.39694 3.1587 7.49056C3.21182 7.52243 3.27025 7.53737 3.32802 7.53737C3.44123 7.53737 3.55145 7.47928 3.61353 7.37503ZM3.45982 18.0658L3.80874 16.0745C3.82766 15.9669 3.79247 15.8567 3.71446 15.78L1.04724 13.1616L4.74794 12.6374C4.85617 12.6221 4.94979 12.5544 4.99859 12.4568L5.45741 11.5355C5.53907 11.3712 5.47234 11.172 5.30834 11.09C5.14334 11.0077 4.94481 11.0754 4.86314 11.2391L4.48202 12.0046L0.287982 12.5986C0.162821 12.6165 0.0585761 12.7035 0.0190693 12.8237C-0.0204376 12.9435 0.0117654 13.076 0.101735 13.1643L3.12418 16.1316L2.80547 17.9506C2.77393 18.1312 2.89444 18.3032 3.07504 18.335C3.0943 18.3384 3.11355 18.34 3.13248 18.34C3.29084 18.34 3.43094 18.2265 3.45915 18.0655L3.45982 18.0658ZM2.87419 20.656L6.78537 18.6176C6.94804 18.5329 7.01112 18.3324 6.92613 18.1697C6.84147 18.0067 6.64095 17.9439 6.47828 18.0286L2.5671 20.067C2.40442 20.1517 2.34134 20.3522 2.42633 20.5149C2.48543 20.6288 2.60129 20.6935 2.72114 20.6935C2.77293 20.6935 2.82505 20.6815 2.87419 20.656ZM10.7224 20.6593C10.825 20.5853 10.8765 20.4594 10.8556 20.3349L10.1544 16.1572L13.1981 13.2114C13.2887 13.1234 13.3219 12.9916 13.2834 12.8715C13.2449 12.7513 13.1413 12.6633 13.0162 12.6444L8.82644 12.0202L6.96564 8.21497C6.9102 8.10143 6.795 8.02905 6.66851 8.02872H6.66751C6.54169 8.02872 6.42649 8.1001 6.37038 8.21264L5.52447 9.91111C5.4428 10.0754 5.50953 10.2746 5.67353 10.3566C5.83753 10.4383 6.03706 10.3709 6.11873 10.2076L6.66486 9.11101L8.30688 12.4688C8.35502 12.567 8.44831 12.6351 8.5562 12.6514L12.2533 13.2018L9.56745 15.8013C9.48877 15.8773 9.45291 15.9872 9.47084 16.0948L10.0893 19.7812L8.10702 18.7298C7.94468 18.6435 7.74382 18.7062 7.65817 18.8675C7.57218 19.0296 7.63393 19.2307 7.79595 19.3167L10.3729 20.6832C10.4217 20.7091 10.4751 20.7217 10.5286 20.7217C10.5969 20.7217 10.6647 20.7008 10.7224 20.6593Z" fill="#202D3F"></path>
+                                </svg>8150 people booked this test last week</p>
+                            <p class="package-hint" data-maxlength="60"><?php echo htmlspecialchars($shortdescription); ?></p>
+
+                            <div style="margin-top: 1px;" class="row">
+                                <div class="col-md-3">
+                                    <p class="package-mrp">₹<?php echo number_format($specialPrice, 0); ?></p>
+                                </div>
+                                <div class="col-md-2">
+                                    <p class="package-price">₹<?php echo number_format($price, 0); ?></p>
+                                </div>
+                                <div class="col-md-5">
+                                    <p class="package-discount" style="display: flex; align-items: center;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none" style="margin-right: 8px;margin-top:5px;">
+                                            <path d="M29.2061 15.2269L30.7358 12.5832C30.9196 12.2651 30.9696 11.8871 30.8748 11.5321C30.78 11.1772 30.548 10.8745 30.2301 10.6905L27.5836 9.1608V6.11251C27.5836 5.74503 27.4376 5.3926 27.1777 5.13275C26.9179 4.8729 26.5655 4.72692 26.198 4.72692H23.1511L21.6228 2.08184C21.4382 1.76442 21.1361 1.53246 20.7817 1.43615C20.606 1.38851 20.4225 1.37623 20.242 1.40001C20.0615 1.4238 19.8875 1.48318 19.7301 1.57471L17.0836 3.1044L14.4371 1.57333C14.1189 1.38959 13.7407 1.3398 13.3857 1.43491C13.0308 1.53001 12.7282 1.76222 12.5444 2.08045L11.0147 4.72692H7.96782C7.60034 4.72692 7.24791 4.8729 6.98807 5.13275C6.72822 5.3926 6.58224 5.74503 6.58224 6.11251V9.15941L3.93577 10.6891C3.77785 10.7799 3.63945 10.9011 3.52849 11.0456C3.41754 11.19 3.33623 11.355 3.28924 11.531C3.24224 11.707 3.23049 11.8906 3.25465 12.0712C3.27881 12.2517 3.33841 12.4257 3.43003 12.5832L4.95971 15.2269L3.43003 17.8706C3.24711 18.189 3.19749 18.5667 3.29196 18.9216C3.38644 19.2764 3.61736 19.5794 3.93438 19.7647L6.58085 21.2944V24.3413C6.58085 24.7088 6.72683 25.0612 6.98668 25.321C7.24653 25.5809 7.59896 25.7269 7.96644 25.7269H11.0147L12.5444 28.3733C12.6671 28.583 12.8422 28.7572 13.0526 28.8787C13.263 29.0001 13.5014 29.0647 13.7443 29.0661C13.9854 29.0661 14.2251 29.0024 14.4385 28.8791L17.0822 27.3494L19.7287 28.8791C20.0468 29.0626 20.4248 29.1123 20.7796 29.0175C21.1344 28.9227 21.4372 28.6911 21.6214 28.3733L23.1497 25.7269H26.1966C26.5641 25.7269 26.9165 25.5809 27.1764 25.321C27.4362 25.0612 27.5822 24.7088 27.5822 24.3413V21.2944L30.2287 19.7647C30.3863 19.6736 30.5244 19.5523 30.6352 19.4078C30.7459 19.2633 30.8271 19.0984 30.8741 18.9225C30.921 18.7465 30.9329 18.5631 30.9089 18.3826C30.885 18.2021 30.8257 18.0281 30.7344 17.8706L29.2061 15.2269ZM13.6182 8.28511C14.1697 8.28529 14.6984 8.50451 15.0882 8.89454C15.4779 9.28458 15.6968 9.81347 15.6966 10.3649C15.6964 10.9163 15.4772 11.445 15.0872 11.8348C14.6972 12.2246 14.1683 12.4434 13.6169 12.4433C13.0655 12.4431 12.5367 12.2238 12.1469 11.8338C11.7572 11.4438 11.5383 10.9149 11.5385 10.3635C11.5387 9.81208 11.7579 9.28334 12.1479 8.89356C12.5379 8.50379 13.0668 8.28492 13.6182 8.28511ZM14.0339 21.5867L11.817 19.9254L20.1305 8.84073L22.3474 10.502L14.0339 21.5867ZM20.5462 22.141C20.2732 22.1409 20.0028 22.087 19.7506 21.9824C19.4984 21.8779 19.2693 21.7247 19.0763 21.5315C18.8833 21.3384 18.7302 21.1092 18.6258 20.8569C18.5214 20.6046 18.4677 20.3342 18.4678 20.0612C18.4679 19.7882 18.5218 19.5178 18.6263 19.2656C18.7309 19.0134 18.8841 18.7843 19.0772 18.5913C19.2704 18.3983 19.4996 18.2452 19.7519 18.1408C20.0042 18.0364 20.2745 17.9827 20.5476 17.9828C21.099 17.983 21.6277 18.2022 22.0175 18.5923C22.4073 18.9823 22.6261 19.5112 22.6259 20.0626C22.6258 20.614 22.4065 21.1427 22.0165 21.5325C21.6265 21.9223 21.0976 22.1412 20.5462 22.141Z" fill="#049B7E"></path>
+                                        </svg>
+                                        <?php echo htmlspecialchars($discountPercentage) . '% OFF'; ?>
+                                    </p>
+
+                                </div>
+                            </div>
+                            <p class="offer-ends package-offer-ends" id="off-ends" style="display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none" style="margin-top: 2px;">
+                                    <path d="M10.8811 5.72432H9.90478C9.81548 5.72432 9.74241 5.79739 9.74241 5.8867V11.4744C9.74241 11.5271 9.76676 11.5759 9.80939 11.6063L13.1644 14.0561C13.2375 14.1089 13.339 14.0947 13.3918 14.0216L13.9722 13.23C14.027 13.1549 14.0108 13.0535 13.9377 13.0027L11.0434 10.9101V5.8867C11.0434 5.79739 10.9704 5.72432 10.8811 5.72432ZM15.3423 7.25064L18.5248 8.028C18.6263 8.05235 18.7257 7.97523 18.7257 7.87171L18.742 4.5938C18.742 4.45781 18.5857 4.38068 18.4801 4.46593L15.2814 6.96445C15.2572 6.98315 15.2388 7.0083 15.2283 7.037C15.2178 7.06569 15.2155 7.09678 15.2219 7.12667C15.2283 7.15657 15.2429 7.18406 15.2642 7.20599C15.2855 7.22792 15.3126 7.2434 15.3423 7.25064ZM18.746 13.362L17.5952 12.9662C17.5551 12.9524 17.5112 12.9549 17.4728 12.9731C17.4345 12.9913 17.4049 13.0238 17.3902 13.0636C17.3516 13.1671 17.311 13.2686 17.2684 13.3701C16.9071 14.2246 16.3896 14.9938 15.7279 15.6535C15.0736 16.3098 14.2981 16.833 13.4445 17.194C12.5603 17.5678 11.6097 17.7597 10.6497 17.7582C9.67949 17.7582 8.73975 17.5695 7.85482 17.194C7.00122 16.833 6.22576 16.3098 5.57144 15.6535C4.9118 14.9938 4.39423 14.2246 4.03092 13.3701C3.65912 12.4853 3.46863 11.5349 3.47073 10.5752C3.47073 9.60505 3.65949 8.66328 4.03498 7.77835C4.39626 6.92386 4.91383 6.15461 5.5755 5.49497C6.22982 4.83862 7.00528 4.31544 7.85888 3.95445C8.73975 3.57897 9.68152 3.39021 10.6517 3.39021C11.6219 3.39021 12.5616 3.57897 13.4466 3.95445C14.3002 4.31544 15.0756 4.83862 15.7299 5.49497C15.937 5.70403 16.1318 5.9212 16.3104 6.15055L17.5242 5.20067C15.9268 3.15882 13.4405 1.84563 10.6476 1.84766C5.78455 1.84969 1.87947 5.79942 1.92819 10.6645C1.9769 15.4444 5.86371 19.3028 10.6517 19.3028C14.4167 19.3028 17.6236 16.9159 18.8455 13.5731C18.8759 13.4878 18.8313 13.3924 18.746 13.362Z" fill="#049B7E"></path>
+                                </svg>
+                                <span style="margin-left: 5px;">Offers ends in 2 Hours<span id="timer_offer_ends"></span></span>
+                            </p>
+                            <button data-labtest-name="<?php echo $packageName; ?>" class="package-add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="single-pakage-details">
+                        <?php
+                        if ($description !== null && $description !== '') {
+                            $description_length = str_word_count($description);
+                            if ($description_length > 150) {
+                                $short_description = implode(' ', array_slice(str_word_count($description, 1), 0, 50));
+                                echo "<p class='product-description'>Description</p>";
+                                echo "<p class='product-description-content'>" . $short_description . "<span id='dots'>...</span><span id='more' style='display: none;'>" . substr($description, strlen($short_description)) . "</span><span style='font-size:16px;padding: 0 4px;font-weight:600; cursor: pointer;' onclick='readMore()' id='read-more-btn'>Read more</span></p>";
+                                echo "<script>
+                                    function readMore() {
+                                        var dots = document.getElementById('dots');
+                                        var moreText = document.getElementById('more');
+                                        var btnText = document.getElementById('read-more-btn');
+
+                                        if (dots.style.display === 'none') {
+                                            dots.style.display = 'inline';
+                                            btnText.innerHTML = 'Read more';
+                                            moreText.style.display = 'none';
+                                        } else {
+                                            dots.style.display = 'none';
+                                            btnText.innerHTML = 'Read less';
+                                            moreText.style.display = 'inline';
+                                        }
+                                    }
+                                    </script>";
+                            } else {
+                                echo "<p class='product-description'>Description</p>";
+                                echo "<p class='product-description-content'>" . htmlspecialchars($description, ENT_QUOTES, 'UTF-8') . "</p>";
+                            }
+                        }
+                        ?>
+                        <ul class="package-ul">
+                            <li class="package-li">
+                                <svg class="package-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M15.2491 3.75C14.0631 3.75469 12.8022 4.32656 11.8506 5.67187L6.00065 13.9641C4.43034 16.1859 5.11471 18.5109 6.66159 19.6078C8.21315 20.7094 10.6272 20.5828 12.1975 18.3609L18.0428 10.0734C19.6131 7.84688 18.9288 5.52656 17.3819 4.425C16.8006 4.0125 16.1022 3.77344 15.3663 3.75H15.2491ZM15.1647 4.56094C15.2256 4.56094 15.2866 4.56094 15.3428 4.56562C15.91 4.58906 16.4444 4.79062 16.8944 5.11406C18.0991 5.96719 18.7038 7.66875 17.3491 9.58594L14.3256 13.875C12.6475 13.425 10.4913 11.8922 9.51159 10.4531L12.5444 6.15937C13.3366 5.03906 14.2788 4.57969 15.1647 4.56094Z" fill="#01B169" />
+                                </svg>
+                                <p>Sample Type - <?php echo $bloodGroup; ?></p>
+                            </li>
+                            <li class="package-li">
+                                <svg class="package-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M15.2491 3.75C14.0631 3.75469 12.8022 4.32656 11.8506 5.67187L6.00065 13.9641C4.43034 16.1859 5.11471 18.5109 6.66159 19.6078C8.21315 20.7094 10.6272 20.5828 12.1975 18.3609L18.0428 10.0734C19.6131 7.84688 18.9288 5.52656 17.3819 4.425C16.8006 4.0125 16.1022 3.77344 15.3663 3.75H15.2491ZM15.1647 4.56094C15.2256 4.56094 15.2866 4.56094 15.3428 4.56562C15.91 4.58906 16.4444 4.79062 16.8944 5.11406C18.0991 5.96719 18.7038 7.66875 17.3491 9.58594L14.3256 13.875C12.6475 13.425 10.4913 11.8922 9.51159 10.4531L12.5444 6.15937C13.3366 5.03906 14.2788 4.57969 15.1647 4.56094Z" fill="#01B169" />
+                                </svg>
+                                <p>Fasting Requires - <?php if ($fastingRequired === '0') {
+                                                            echo 'No';
+                                                        } else {
+                                                            echo 'Yes';
+                                                        }
+                                                        ?></p>
+                            </li>
+                            <li class="package-li">
+                                <svg class="package-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M15.2491 3.75C14.0631 3.75469 12.8022 4.32656 11.8506 5.67187L6.00065 13.9641C4.43034 16.1859 5.11471 18.5109 6.66159 19.6078C8.21315 20.7094 10.6272 20.5828 12.1975 18.3609L18.0428 10.0734C19.6131 7.84688 18.9288 5.52656 17.3819 4.425C16.8006 4.0125 16.1022 3.77344 15.3663 3.75H15.2491ZM15.1647 4.56094C15.2256 4.56094 15.2866 4.56094 15.3428 4.56562C15.91 4.58906 16.4444 4.79062 16.8944 5.11406C18.0991 5.96719 18.7038 7.66875 17.3491 9.58594L14.3256 13.875C12.6475 13.425 10.4913 11.8922 9.51159 10.4531L12.5444 6.15937C13.3366 5.03906 14.2788 4.57969 15.1647 4.56094Z" fill="#01B169" />
+                                </svg>
+                                <p>Gender - <?php echo $gender; ?> </p>
+                            </li>
+                            <li class="package-li">
+                                <svg class="package-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M15.2491 3.75C14.0631 3.75469 12.8022 4.32656 11.8506 5.67187L6.00065 13.9641C4.43034 16.1859 5.11471 18.5109 6.66159 19.6078C8.21315 20.7094 10.6272 20.5828 12.1975 18.3609L18.0428 10.0734C19.6131 7.84688 18.9288 5.52656 17.3819 4.425C16.8006 4.0125 16.1022 3.77344 15.3663 3.75H15.2491ZM15.1647 4.56094C15.2256 4.56094 15.2866 4.56094 15.3428 4.56562C15.91 4.58906 16.4444 4.79062 16.8944 5.11406C18.0991 5.96719 18.7038 7.66875 17.3491 9.58594L14.3256 13.875C12.6475 13.425 10.4913 11.8922 9.51159 10.4531L12.5444 6.15937C13.3366 5.03906 14.2788 4.57969 15.1647 4.56094Z" fill="#01B169" />
+                                </svg>
+                                <p>Age Group - <?php echo $age; ?> years & Above</p>
+                            </li>
+                        </ul>
+                        <?php
+                        if ($importance !== null && $importance !== '') {
+                            echo "<p id='package-importance' class='product-description'>Importance of Undergoing a $packageName</p>";
+                            echo "<p class='product-description-content'>" . $importance . "</p>";
+                        }
+                        ?>
+                       <?php
+                        if ($includedTest !== null && $includedTest !== '') {
+                            echo "<p id='package-includedtest' class='product-description'>$packageName ($included Tests Included)</p>";
+                            $testArray = explode(", ", $includedTest);
+                            echo "<p class='product-description-content'>" . $shortdescription . "</p>";
+                            echo "<ul class='product-description-content'>";
+                            foreach ($testArray as $test) {
+                            echo "<li>" . htmlspecialchars($test) . "</li>";
+                        }
+                            echo "</ul>";
+                        }
+                        ?>
+                        <p class='product-description disclaimer lato-regular addition-description'>Disclaimer</p>
+                        <p class='product-description-content lato-regular addition-description'>The contents of this website are for informational purposes only and not intended to be a substitute for professional medical advice, diagnosis, or treatment. Please seek the advice of a physician or other qualified health provider with any questions you may have regarding a medical condition. Do not disregard professional medical advice or delay in seeking it because of something you have read on this website.
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="add-to-cart-offer-content">
+                        <img src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/we_offer.png'); ?>" alt="">
+                        <div style="width:100%;margin-top:40px;width:100%;text-align:center;background:#D9F0FC;" class="container package-view-deals today-deals">
+                            <div style="padding:47px; margin-bottom: 30px;" class="row">
+                                <p style="color: #063851;font-family: Source Sans Pro,Sans-serif;font-size: 24px;font-weight: 600;">Deals Product</p> <br>
+                                <p style="color: #859ca8;font-family: Ubuntu,Sans-serif;font-size: 18px;font-weight: 400;">Get flat 50% discount on top deals</p>
+
+                                <?php if ($TodayDeals && is_iterable($TodayDeals)) : ?>
+                                    <?php $count = 0; ?>
+                                    <?php foreach ($TodayDeals as $product) : ?>
+                                        <?php if ($count >= 6) break; ?>
+                                        <?php
+                                        $productName = $product->getName();
+                                        if ($productName !== null) {
+                                            $productName = strlen($productName) > 40 ? substr($productName, 0, 20) . '...' : $productName;
+                                        }
+                                        $productUrl = $product->getProductUrl();
+                                        $productImage = $product->getImage();
+                                        $Marketer = $product->getData('manufacturer');
+                                        if ($Marketer !== null) {
+                                            $Marketer = strlen($Marketer) > 20 ? substr($Marketer, 0, 20) . '...' : $Marketer;
+                                        }
+                                        $productImageUrl = $mediaBaseUrl . 'catalog/product' . $productImage;
+                                        $regularPrice = (int) $product->getPrice();
+                                        $finalPrice = $product->getPriceInfo()->getPrice('final_price')->getAmount()->getValue();
+                                        $categoryIds = $product->getCategoryIds();
+                                        $categoryId = reset($categoryIds);
+                                        $category = $objectManager->create('Magento\Catalog\Model\Category')->load($categoryId);
+                                        $categoryName = $category->getName();
+                                        $discountPercentage = 0;
+                                        if ($regularPrice > 0) {
+                                            $discountPercentage = (($regularPrice - $finalPrice) / $regularPrice) * 100;
+                                        }
+                                        $discountPercentage = (int) round($discountPercentage, 2);
+                                        ?>
+                                        <div class="col-md-6">
+                                            <div class="product-slide package-product-slide" style="border-radius: 9.404px;border: 1px solid #03C777;box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;background: #f1f9fe; height: 306px !important; border-radius: 8px; padding:10px;">
+                                                <div class="discount-percentage" style="position: relative; display: inline-block;margin-left:-11px;">
+                                                </div>
+                                                <div style="width:100%;text-align:center;height:133px;margin:-10px 0px 0px 0px;" class="product-image-container">
+                                                    <a href="<?= $productUrl ?>"><img style="object-fit:contain;height:133px;" class="grow" src="<?= $productImageUrl ?>" alt="<?= $productName ?>"></a>
+                                                </div>
+                                                <div style="margin-top:15px;padding:0 10px;" class="product-details">
+                                                    <p style="height:41px;margin-bottom: 15px;"><a style="text-decoration:none;color:#000;" href="<?= $productUrl ?>"><span style="font-size: 16px !important; font-weight: 500 !important; font-family: Source Sans Pro !important; text-decoration:none;" class="product-name">
+                                                                <?= $productName ?></span></a></p>
+                                                    <p style="margin-bottom: -6px;"><a style="text-decoration:none;color:#797979;font-family: Source Sans Pro; font-size: 16px;" href="<?= $productUrl ?>">MRP &nbsp;<span style="color:#797979;font-family: Source Sans Pro; font-size: 16px; font-style: normal; font-weight: 400; line-height: normal; text-decoration:line-through;" class="product-price">₹<?= $regularPrice ?></span></a></p>
+                                                    <a style="text-decoration:none;color:#000;font-family: Source Sans Pro; font-size: 16px;font-weight:600;" href="">*Offer Price &nbsp;<span style="font-family: Source Sans Pro;color:#313739; font-size: 24px; font-style: normal; font-weight: 600; line-height: normal; text-decoration:none;" class="product-price">₹<?= $finalPrice ?></span></a>
+                                                    <button class="cusl_add-to-cart cusl_btn_cart grow" id="add-to-cart-btn" data-product-id="<?= $product->getId() ?>">Add to Cart</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php $count++; ?>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <p>No deals available today.</p>
+                                <?php endif; ?>
+                                <div style="width:100%;text-align:center;" class="cart-viewall">
+                                    <a style="text-decoration:none;float:right;font-weight: 600;color:#00739B !important;font-size: 14px;font-family: Source Sans Pro;" href="/product_list/index/index/id/25/">VIEW ALL</a>
+                                </div>
+                            </div>
+                        </div>
+                        <img class="off-book-view" src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/off_book.png'); ?>" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+
+    </script>
+    <script>
+        var isCustomerLoggedIn = <?php echo $isLoggedIn ? 'true' : 'false'; ?>;
+        jQuery(document).ready(function($) {
+            function fetchLabCartTests() {
+                $.ajax({
+                    url: '/lab-test/labcart/gettests',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            const testNames = new Set(response.test_names);
+                            $('.package-add-to-cart').each(function() {
+                                const $button = $(this);
+                                const labTestName = $button.data('labtest-name');
+                                if (testNames.has(labTestName)) {
+                                    $button.text('Go to Cart')
+                                        .addClass('in-cart')
+                                        .removeClass('package-add-to-cart')
+                                        .off('click')
+                                        .on('click', function() {
+                                            window.location.href = '/lab-test/cart';
+                                        });
+                                } else {
+                                    $button.text('Add to Cart')
+                                        .removeClass('in-cart')
+                                        .off('click')
+                                        .on('click', function() {
+                                            addToCart(labTestName, $button);
+                                        });
+                                }
+                            });
+                        } else {
+                            console.error('Error:', response.message);
+                            console.log('Failed to fetch cart data. Please try again.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        alert('An error occurred while fetching cart data. Please check your connection.');
+                    }
+                });
+            }
+            fetchLabCartTests();
+            $(document).on('click', '.cusl_add-to-cart', function(e) {
+                e.preventDefault();
+
+                const $addToCartBtn = $(this);
+                const productId = $addToCartBtn.data('product-id');
+                const qty = 1;
+                const formKey = $('input[name="form_key"]').val();
+
+                $.ajax({
+                    url: '/home/index/AddToCart',
+                    method: 'POST',
+                    showLoader: true,
+                    dataType: 'json',
+                    data: {
+                        product_id: productId,
+                        form_key: formKey,
+                        qty: qty
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            setTimeout(() => {
+                                $('.showcart').click();
+                            }, 7000);
+                            $addToCartBtn.text('Go to Cart')
+                                .removeClass('cusl_add-to-cart')
+                                .removeClass('package-add-to-cart')
+                                .addClass('cusl_add-to-cart-btn')
+                                .off('click')
+                                .on('click', function() {
+                                    window.location.href = '/checkout/cart';
+                                });
+                            let cartItems = sessionStorage.getItem('CartItems') ? JSON.parse(sessionStorage.getItem('CartItems')) : [];
+                            if (!cartItems.includes(productId)) {
+                                cartItems.push(productId);
+                                sessionStorage.setItem('CartItems', JSON.stringify(cartItems));
+                            }
+                        } else {
+                            console.log(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error:", error);
+                    }
+                });
+            });
+            $(document).on('click', '.package-add-to-cart', function() {
+                const $button = $(this);
+                const labTestName = $button.data('labtest-name');
+
+                if (isCustomerLoggedIn) {
+                    $.ajax({
+                        url: '/lab-test/LabCart/AddtoCart',
+                        type: 'POST',
+                        showLoader: true,
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            labtest_name: labTestName
+                        }),
+                        success: function(data) {
+                            if (data.success) {
+                                $(this)
+                                    .text('Go to Cart')
+                                    .off('click')
+                                    .removeClass('package-add-to-cart')
+                                    .addClass('in-cart')
+                                    .on('click', function() {
+                                        window.location.href = '/lab-test/cart';
+                                    })
+                                    .removeClass('lab-booknow-btn')
+                                    .addClass('in-cart-btn');
+                            } else {
+                                alert('Error: ' + data.message);
+                            }
+                        }.bind(this),
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                            alert('An error occurred while adding the lab test to the cart.');
+                        }
+                    });
+                } else {
+                    $(this)
+                    .addClass('customer-register-link')
+                    BooklabPageRedirect();
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const testNameElements = document.querySelectorAll('.test-name-truncate');
+            testNameElements.forEach(function(element) {
+                const fullText = element.textContent.trim();
+                if (fullText.length > 50) {
+                    element.textContent = fullText.substring(0, 50) + '...';
+                    element.setAttribute('title', fullText);
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const hints = document.querySelectorAll('.package-hint');
+            hints.forEach(hint => {
+                const maxLength = parseInt(hint.getAttribute('data-maxlength')) || 100; // Default to 100 if no data attribute
+                const fullText = hint.textContent.trim();
+
+                if (fullText.length > maxLength) {
+                    const truncatedText = fullText.slice(0, maxLength) + '... ';
+                    const viewAllLink = document.createElement('a');
+                    viewAllLink.href = '#package-importance'; // Link to the importance section
+                    viewAllLink.textContent = 'View All';
+                    viewAllLink.classList.add('package-all-link');
+
+                    hint.textContent = truncatedText; // Set truncated text
+                    hint.appendChild(viewAllLink); // Append the "View All" link
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

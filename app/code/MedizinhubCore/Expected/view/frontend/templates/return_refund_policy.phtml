@@ -1,0 +1,56 @@
+<p class="delivery-date-info" id="delivery-date">Loading delivery date...</p>
+
+<script>
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var pincode = sessionStorage.getItem('pincode_api');
+    function formatDate(day) {
+        return day < 10 ? '0' + day : day;
+    }
+    
+    // Helper function to create properly structured HTML with alignment fix
+    function createDeliveryMessage(content) {
+        return `
+        <span class="delivery-date-container">
+            <svg class="delivery-date-svg" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                <path d="M7.5 20C6.66667 20 5.95833 19.7083 5.375 19.125C4.79167 18.5417 4.5 17.8333 4.5 17H2L2.45 15H5.275C5.55833 14.6833 5.89167 14.4377 6.275 14.263C6.65833 14.0883 7.06667 14.0007 7.5 14C7.93333 13.9993 8.34167 14.087 8.725 14.263C9.10833 14.439 9.44167 14.6847 9.725 15H13.9L16 6H5.05L5.15 5.575C5.25 5.10833 5.479 4.72933 5.837 4.438C6.195 4.14667 6.616 4.00067 7.1 4H18.5L17.575 8H20.5L23.5 12L22.5 17H20.5C20.5 17.8333 20.2083 18.5417 19.625 19.125C19.0417 19.7083 18.3333 20 17.5 20C16.6667 20 15.9583 19.7083 15.375 19.125C14.7917 18.5417 14.5 17.8333 14.5 17H10.5C10.5 17.8333 10.2083 18.5417 9.625 19.125C9.04167 19.7083 8.33333 20 7.5 20ZM16.425 13H21.25L21.35 12.475L19.5 10H17.125L16.425 13ZM15.95 6.175L16 6L13.9 15L13.95 14.825L14.8 11.175L15.95 6.175ZM1 13.325L1.5 11.325H7L6.5 13.325H1ZM3 9.675L3.5 7.675H10L9.5 9.675H3ZM7.5 18C7.78333 18 8.021 17.904 8.213 17.712C8.405 17.52 8.50067 17.2827 8.5 17C8.49933 16.7173 8.40333 16.48 8.212 16.288C8.02067 16.096 7.78333 16 7.5 16C7.21667 16 6.97933 16.096 6.788 16.288C6.59667 16.48 6.50067 16.7173 6.5 17C6.49933 17.2827 6.59533 17.5203 6.788 17.713C6.98067 17.9057 7.218 18.0013 7.5 18ZM17.5 18C17.7833 18 18.021 17.904 18.213 17.712C18.405 17.52 18.5007 17.2827 18.5 17C18.4993 16.7173 18.4033 16.48 18.212 16.288C18.0207 16.096 17.7833 16 17.5 16C17.2167 16 16.9793 16.096 16.788 16.288C16.5967 16.48 16.5007 16.7173 16.5 17C16.4993 17.2827 16.5953 17.5203 16.788 17.713C16.9807 17.9057 17.218 18.0013 17.5 18Z" fill="#049B7E"/>
+            </svg>
+            <span class="delivery-text">${content}</span>
+        </span>`;
+    }
+    
+    if (pincode === '600044' || pincode === '600117') {
+        var currentDate = new Date();
+        var hours = currentDate.getHours();
+        var currentDay = currentDate.getDate();
+        var currentMonth = monthNames[currentDate.getMonth()];
+        var year = currentDate.getFullYear();
+        
+        if (hours < 12) {
+            // Same day delivery message
+            var content = 'Your Trusted Health Partner – Quick and Reliable Same-Day Medicine Delivery When You Need It Most.';
+            document.getElementById('delivery-date').innerHTML = createDeliveryMessage(content);
+        } else {
+            // Next day delivery message
+            var nextDay = new Date(currentDate);
+            nextDay.setDate(currentDay + 1);
+            var dayOfWeek = nextDay.toLocaleString('en-EN', { weekday: 'short' });
+            var dayOfMonth = nextDay.getDate();
+            var monthName = monthNames[nextDay.getMonth()];
+            
+            var content = `Your order will be delivered on <span class="delivery-date-hlts">${monthName} ${dayOfWeek} ${dayOfMonth}</span>. Stay healthy, with us.`;
+            document.getElementById('delivery-date').innerHTML = createDeliveryMessage(content);
+        }
+    } else {
+        // 2-3 day delivery message
+        var twoDaysLater = new Date();
+        twoDaysLater.setDate(twoDaysLater.getDate() + 2);
+        var twoDaysLaterDate = formatDate(twoDaysLater.getDate());
+        
+        var threeDaysLater = new Date();
+        threeDaysLater.setDate(threeDaysLater.getDate() + 3);
+        var threeDaysLaterDate = formatDate(threeDaysLater.getDate());
+        
+        var content = `Your order will be delivered between <span class="delivery-date-hlts">${monthNames[new Date().getMonth()]} ${twoDaysLaterDate} - ${threeDaysLaterDate}</span>. Stay healthy, with us.`;
+        document.getElementById('delivery-date').innerHTML = createDeliveryMessage(content);
+    }
+</script>

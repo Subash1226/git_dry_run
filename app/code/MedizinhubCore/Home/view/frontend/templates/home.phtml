@@ -1,0 +1,436 @@
+<?php
+
+/** @var \MedizinhubCore\Home\Block\Home $block */
+$block = $this->getLayout()->createBlock(\MedizinhubCore\Home\Block\Home::class);
+$todayids = [34];
+$accids = [24];
+$baseUrl = $block->getBaseUrl();
+$mediaBaseUrl = $block->getMediaBaseUrl();
+$TodayDeals = $block->getCachedProductCollection($todayids);
+$MedicalAcc = $block->getCachedProductCollection($accids);
+?>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"></noscript>
+<link rel="stylesheet" href="<?= $block->getViewFileUrl('MedizinhubCore_Home::css/style.css'); ?>" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="<?= $block->getViewFileUrl('MedizinhubCore_Home::css/style.css'); ?>"></noscript>
+
+<div class="order-home">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="order-prescription">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img width="128" height="128" data-src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/prescription_image.png'); ?>" alt="Prescription Image">
+                        </div>
+                        <div class="col-md-9">
+                            <p class="order-prescription-content">Quick order with Prescription</p>
+                            <p class="order-offer-prescription">Quick Orders! Quick Relief!  just a Click Away
+                            </p>
+                            <a href="/prescription" data-toggle="tooltip" data-placement="top" title="Upload Prescription!"><button id="upload-press" type="button" class="book-my-btn customer-register-link grow" onclick="RedirectPrescription()" >Upload Prescription</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="order-doctor">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img width="128" height="128"  data-src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/prescription_image_2.png'); ?>" alt="Book Doctor">
+                        </div>
+                        <div class="col-md-9">
+                            <p class="order-prescription-content">Don’t have prescription? Book Doctor
+                            </p>
+                            <p class="order-offer-prescription">No Prescription? No Problem! Consult a Doctor Instantly!</p>
+                            <a href="/doctors" data-toggle="tooltip" data-placement="top" title="Book My Doctor!" ><button class="book-my-btn grow" type="button">Book My Doctor</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div style="margin-top:40px;" class="container today-deals">
+    <div class="row">
+        <div class="home-today-deals">Today’s Deals</div>
+        <div class="cusl_today_deals">
+            <div  class="cms-deals-sub">
+                <span>Big Savings, Limited Time</span>
+                <span>
+                    <img class="subheading_logo" data-src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/stars.png'); ?>" alt="Stars" />
+                </span>
+            </div>
+            <div>
+                <a class="today-deals-view" href="/home-of-deals">VIEW ALL<span><img class="view_all_img" data-src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/view_all.png'); ?>" /></span></a>
+            </div>
+        </div>
+        <div class="container-fluid pt-3">
+            <div class="cusl_slider-container">
+                <span class="cusl_slider-btn cusl_prev-btn">❮</span>
+                <span class="cusl_slider-btn cusl_next-btn">❯</span>
+                <div class="cusl_slider-track">
+                    <?php
+                        function formatProductName($name) {
+                            if ($name === null) {
+                                return null;
+                            }
+                            $name = strtolower($name);
+                            $name = ucwords($name);
+                            return $name;
+                        }
+                    ?>
+                    <?php if ($TodayDeals && is_iterable($TodayDeals)) : ?>
+                        <?php foreach ($TodayDeals as $product) :
+                            $productData = $block->getProductDisplayData($product);
+                            $productName = $productData['name'];
+                            if ($productName !== null) {
+                                $productName = formatProductName($productName);
+                                $productName = strlen($productName) > 40 ? substr($productName, 0, 40) . '...' : $productName;
+                            }
+                        ?>
+                        <div class="cusl_product-card">
+                            <div class="cusl_discount-badge">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="55" height="27" viewBox="0 0 55 27" fill="none">
+                                    <path d="M0 0H54.1993L45.9681 13.4631L54.1993 26.9261H0V0Z" fill="url(#paint0_linear_5394_11052)" />
+                                    <defs>
+                                        <linearGradient id="paint0_linear_5394_11052" x1="1.75418e-06" y1="2.3414" x2="92.1607" y2="35.3466" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#24FEA5" />
+                                            <stop offset="1" stop-color="#01DA82" />
+                                        </linearGradient>
+                                    </defs>
+                                    <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#000" font-family="Source Sans Pro" font-size="12px" font-weight="600" stroke-width="0.5" stroke="#000000" dy=".3em" style="color: #00151C;font-family:Source Sans Pro;font-size: 16px;font-style: normal;font-weight: 600;">
+                                        <?php echo $productData['discountPercentage']; ?>%
+                                    </text>
+                                </svg>
+                            </div>
+                            <a href="<?= $productData['url'] ?>" style="text-decoration:none; color: inherit;">
+                                <img data-src="<?= $productData['imageUrl'] ?>" alt="<?= $productName ?>" class="cusl_product-image image-fluid">
+                            </a>
+                            <a href="<?= $productData['url'] ?>" style="text-decoration:none; color: inherit;">
+                                <h5 class="cusl_product-title"><?= $productData['name'] ?></h5>
+                            </a>
+                            <div class="cusl_price-container">
+                                <div class="cusl_mrp">MRP <span class="cusl_mrp_price"><?= $productData['regularPrice'] ?></div>
+                                    <div class="cusl_offer-price">*Offer Price &nbsp;<span class="cusl_special-price"><?= $productData['specialPrice'] ?></span></div>
+                                    <button class="cusl_add-to-cart" id="cusl_add-to-cart-btn" data-product-id="<?= $productData['id'] ?>" data-product-sku="<?= $productData['sku'] ?>" data-toggle="tooltip" data-placement="top" title="Add to Cart!">Add to Cart</button>
+                                    <div class="quantity-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" class="decrement-btn" viewBox="0 0 27 27" fill="none">
+                                            <circle cx="13.082" cy="13.3408" r="13.082" fill="#03C777" />
+                                            <path d="M9.18457 13.2588H16.8158" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                        </svg>
+                                        <div class="quantity-value">1</div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="27" class="increment-btn" height="27" viewBox="0 0 27 27" fill="none">
+                                            <circle cx="13.082" cy="13.3408" r="13.082" fill="#03C777" />
+                                            <path d="M9.2666 13.3408H16.8978" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                            <path d="M13.082 17.1562V9.52506" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <p>No deals available today.</p>
+                    <?php endif; ?>
+                </div>
+                <div class="cusl_dots-container">
+                    <!-- Dots will be dynamically added by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top:40px;" class="shop-category">
+    <div class="container">
+        <div class="row">
+            <p class="home-today-deals">Shop Based on Category</p>
+            <div class="row">
+                <?php
+                $categories = [
+                    ['name' => 'Cold & Cough', 'url' => '/cold-and-cough', 'image' => 'cough.png'],
+                    ['name' => 'Baby\'s Care', 'url' => '/baby-care', 'image' => 'baby_care.png'],
+                    ['name' => 'Women\'s Care', 'url' => '/women-care', 'image' => 'womencare.png'],
+                    ['name' => 'Men\'s Care', 'url' => '/men-care', 'image' => 'menscare.png'],
+                    ['name' => 'Elder Care', 'url' => '/elder-care', 'image' => 'e_dery_care.png'],
+                    ['name' => 'Pain Relief', 'url' => '/pain-relief', 'image' => 'joint_pain.png']
+                ];
+
+                foreach ($categories as $category) :
+                ?>
+                <div class="col-md-2 col-lg-2 col-md-4 col-sm-4 col-6">
+                    <div class="scroll-inner">
+                        <a class="product-li-link" href="<?= $category['url'] ?>">
+                            <img class="grow category_img" style="padding: 13px;" data-src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/'  . $category['image']); ?>" data-toggle="tooltip" data-placement="top" title="<?= $category['name'] ?>" alt="<?= $category['name'] ?>">
+                            <?= $category['name'] ?>
+                        </a>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="row">
+                <?php
+                $categoriesRow2 = [
+                    ['name' => 'Diabetic Care', 'url' => '/diabetic-care', 'image' => 'diabetics.png'],
+                    ['name' => 'Surgical Care', 'url' => '/surgical-care', 'image' => 'surgical.png'],
+                    ['name' => 'Skin Care', 'url' => '/skin-care', 'image' => 'skin.png'],
+                    ['name' => 'Hair Care', 'url' => '/hair-care', 'image' => 'haircare.png'],
+                    ['name' => 'Oral Care', 'url' => '/oral-care', 'image' => 'oralcare.png'],
+                    ['name' => 'Sexual Wellness', 'url' => '/sexual-wellness', 'image' => 'sexual.png']
+                ];
+
+                foreach ($categoriesRow2 as $category) :
+                ?>
+                <div class="col-md-2 col-lg-2 col-md-4 col-sm-4 col-6">
+                    <div class="scroll-inner">
+                        <a class="product-li-link" href="<?= $category['url'] ?>">
+                            <img class="grow category_img" style="padding: 13px;" data-src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/'  . $category['image']); ?>" data-toggle="tooltip" data-placement="top" title="<?= $category['name'] ?>" alt="<?= $category['name'] ?>">
+                            <?= $category['name'] ?>
+                        </a>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top:40px;" class="Health-category">
+    <div class="container">
+        <div class="row">
+            <p class="home-today-deals">Shop on Health Product</p>
+            <div class="row">
+                <?php
+                // Define health categories
+                $healthCategories = [
+                    ['name' => 'Health Drinks', 'url' => '/health-drinks', 'image' => 'health_food.png'],
+                    ['name' => 'Vitamins & Minerals', 'url' => '/vitamins-and-minerals', 'image' => 'vitsmin.png'],
+                    ['name' => 'Ayurvedic Drinks', 'url' => '/ayurvedic-drinks', 'image' => 'ayurvedic.png'],
+                    ['name' => 'Respiratory( Asthma )', 'url' => '/respiratory-asthma', 'image' => 'asthma.png'],
+                    ['name' => 'Sports Nutrition', 'url' => '/sports-nutrition', 'image' => 'sports.png'],
+                    ['name' => 'Weight Management', 'url' => '/weight-management', 'image' => 'weight.png']
+                ];
+
+                foreach ($healthCategories as $category) :
+                ?>
+                <div class="col-md-2 col-lg-2 col-md-4 col-sm-4 col-6">
+                    <div class="scroll-inner">
+                        <a class="product-li-link" href="<?= $category['url'] ?>">
+                            <img class="grow category_img" style="padding: 13px;" data-src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/'  . $category['image']); ?>" data-toggle="tooltip" data-placement="top" title="<?= $category['name'] ?>" alt="<?= $category['name'] ?>">
+                            <?= $category['name'] ?>
+                        </a>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="medical-accessories" style="margin-top:40px;" class="container today-deals">
+    <div class="row">
+        <div class="home-today-deals">Medical Accessories</div>
+        <div class="cusl_today_deals">
+            <div  class="cms-deals-sub">
+                <!-- <span>Get 5 -20% Offer on Medical Accessories</span>
+                <span>
+                    <img class="subheading_logo" data-src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/stars.png'); ?>" />
+                </span> -->
+            </div>
+            <div>
+                <a class="today-deals-view" href="/medical-accessories">VIEW ALL<span><img class="view_all_img" data-src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/view_all.png'); ?>" /></span></a>
+            </div>
+        </div>
+        <div class="container-fluid pt-3">
+            <div class="cusl_slider-container">
+                <span class="cusl_slider-btn cusl_prev-btn">❮</span>
+                <span class="cusl_slider-btn cusl_next-btn">❯</span>
+                <div class="cusl_slider-track">
+                    <?php if ($MedicalAcc && is_iterable($MedicalAcc)) : ?>
+                        <?php foreach ($MedicalAcc as $product) :
+                            $productData = $block->getProductDisplayData($product);
+                            $productName = $productData['name'];
+                            if ($productName !== null) {
+                                $productName = formatProductName($productName);
+                                $productName = strlen($productName) > 40 ? substr($productName, 0, 40) . '...' : $productName;
+                            }
+                        ?>
+                        <div class="cusl_product-card">
+                            <div class="cusl_discount-badge">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="55" height="27" viewBox="0 0 55 27" fill="none">
+                                    <path d="M0 0H54.1993L45.9681 13.4631L54.1993 26.9261H0V0Z" fill="url(#paint0_linear_5394_11052)" />
+                                    <defs>
+                                        <linearGradient id="paint0_linear_5394_11052" x1="1.75418e-06" y1="2.3414" x2="92.1607" y2="35.3466" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#24FEA5" />
+                                            <stop offset="1" stop-color="#01DA82" />
+                                        </linearGradient>
+                                    </defs>
+                                    <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#000" font-family="Source Sans Pro" font-size="12px" font-weight="600" stroke-width="0.5" stroke="#000000" dy=".3em" style="color: #00151C;font-family:Source Sans Pro;font-size: 16px;font-style: normal;font-weight: 600;">
+                                        <?php echo $productData['discountPercentage']; ?>%
+                                    </text>
+                                </svg>
+                            </div>
+                            <a href="<?= $productData['url'] ?>" style="text-decoration:none; color: inherit;">
+                                <img data-src="<?= $productData['imageUrl'] ?>" alt="<?= $productName ?>" class="cusl_product-image image-fluid">
+                            </a>
+                            <a href="<?= $productData['url'] ?>" style="text-decoration:none; color: inherit;">
+                                <h5 class="cusl_product-title"><?= $productData['name'] ?></h5>
+                            </a>
+                            <div class="cusl_price-container">
+                                <div class="cusl_mrp">MRP <span class="cusl_mrp_price"><?= $productData['regularPrice'] ?></div>
+                                    <div class="cusl_offer-price">*Offer Price &nbsp;<span class="cusl_special-price"><?= $productData['specialPrice'] ?></span></div>
+                                    <button class="cusl_add-to-cart" id="cusl_add-to-cart-btn" data-product-id="<?= $productData['id'] ?>" data-product-sku="<?= $productData['sku'] ?>" data-toggle="tooltip" data-placement="top" title="Add to Cart!">Add to Cart</button>
+                                    <div class="quantity-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" class="decrement-btn" viewBox="0 0 27 27" fill="none">
+                                            <circle cx="13.082" cy="13.3408" r="13.082" fill="#03C777" />
+                                            <path d="M9.18457 13.2588H16.8158" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                        </svg>
+                                        <div class="quantity-value">1</div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="27" class="increment-btn" height="27" viewBox="0 0 27 27" fill="none">
+                                            <circle cx="13.082" cy="13.3408" r="13.082" fill="#03C777" />
+                                            <path d="M9.2666 13.3408H16.8978" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                            <path d="M13.082 17.1562V9.52506" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <p>No deals available today.</p>
+                    <?php endif; ?>
+                </div>
+                <div class="cusl_dots-container">
+                    <!-- Dots will be dynamically added by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="combo-category">
+    <div class="container">
+        <div class="row">
+            <p class="home-today-deals">Lab Test Combo Pack (Package Tests)</p>
+            <p class="cms-deals-sub">Complete Checkups, One Convenient Pack
+                <span>
+                    <img class="subheading_logo" width="24" height="24" loading="lazy" src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/stars.png'); ?>" alt="Stars">
+                </span>
+            </p>
+            <div class="row combo-lab-row">
+                <?php
+                // Define lab test packages
+                $labPackages = [
+                    [
+                        'class' => 'fullbody lab-mt',
+                        'title' => 'Full Body<br><span>Tests</span><br>',
+                        'url' => $block->getUrl('lab-test/list/view/', ['category' => 'fullbody']),
+                        'category' => 'fullbody',
+                        'labelClass' => 'test-package-off-full',
+                        'btnClass' => 'fullbody-btn grow'
+                    ],
+                    [
+                        'class' => 'diabetics-pack lab-mt',
+                        'title' => 'Diabetes<br><span>Tests</span><br>',
+                        'url' => $block->getUrl('lab-test/list/view/', ['category' => 'diabetes']),
+                        'category' => 'diabetes',
+                        'labelClass' => 'test-package-off-diabetics',
+                        'btnClass' => 'diabetics-btn grow'
+                    ],
+                    [
+                        'class' => 'thyroid-pack lab-mt lab-mt-md',
+                        'title' => 'Thyroid<br><span>Tests</span><br>',
+                        'url' => $block->getUrl('lab-test/list/view/', ['category' => 'thyroid']),
+                        'category' => 'thyroid',
+                        'labelClass' => 'test-package-off-thyroid',
+                        'btnClass' => 'thyroid-btn grow'
+                    ],
+                    [
+                        'class' => 'routine-pack lab-mt lab-mt-md',
+                        'title' => 'Routine<br><span>Tests</span><br>',
+                        'url' => $block->getUrl('lab-test/list/view/', ['category' => 'routine']),
+                        'category' => 'routine',
+                        'labelClass' => 'test-package-off-routine',
+                        'btnClass' => 'routine-btn grow'
+                    ]
+                ];
+
+                foreach ($labPackages as $package) :
+                ?>
+                <div class="col-md-6 col-sm-6 col-lg-3">
+                    <a href="<?= $package['url'] ?>" class="deco-lab">
+                        <div class="<?= $package['class'] ?>">
+                            <p class="<?= $package['labelClass'] ?> test-package-base">
+                                <?= $package['title'] ?>
+                            </p>
+                            <span class="<?= $package['labelClass'] ?> test-package-base"><?= $block->renderMaxDiscountLabel($package['category']);?></span><br>
+                            <button class="<?= $package['btnClass'] ?> book-lab-btn-base" type="button" data-toggle="tooltip" data-placement="top" title="Book Now!">Book Now</button>
+                        </div>
+                    </a>
+                </div>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="row combo-lab-row-2">
+                <?php
+                // Define second row of lab packages
+                $labPackagesRow2 = [
+                    [
+                        'class' => 'womens-pack lab-mt',
+                        'title' => 'Women\'s Health<br><span>Tests</span><br>',
+                        'url' => $block->getUrl('lab-test/list/view/', ['category' => 'womens']),
+                        'category' => 'womens',
+                        'labelClass' => 'test-package-off-women',
+                        'btnClass' => 'women-book-btn grow'
+                    ],
+                    [
+                        'class' => 'mens-pack lab-mt',
+                        'title' => 'Men\'s Health<br><span>Tests</span><br>',
+                        'url' => $block->getUrl('lab-test/list/view/', ['category' => 'mens']),
+                        'category' => 'mens',
+                        'labelClass' => 'test-package-off-men',
+                        'btnClass' => 'men-book-btn grow'
+                    ],
+                    [
+                        'class' => 'Senior-pack lab-mt lab-mt-md',
+                        'title' => 'Senior Citizen<br><span>Tests</span><br>',
+                        'url' => $block->getUrl('lab-test/list/view/', ['category' => 'senior']),
+                        'category' => 'senior',
+                        'labelClass' => 'test-package-off-senior',
+                        'btnClass' => 'senior-book-btn grow'
+                    ],
+                    [
+                        'class' => 'fever-pack lab-mt lab-mt-md',
+                        'title' => 'Fever<br><span>Tests</span><br>',
+                        'url' => $block->getUrl('lab-test/list/view/', ['category' => 'fever']),
+                        'category' => 'fever',
+                        'labelClass' => 'test-package-off-fever',
+                        'btnClass' => 'fever-book-btn grow'
+                    ]
+                ];
+
+                foreach ($labPackagesRow2 as $package) :
+                ?>
+                <div class="col-md-6 col-sm-6 col-lg-3">
+                    <a href="<?= $package['url'] ?>" class="deco-lab">
+                        <div class="<?= $package['class'] ?>">
+                            <p class="<?= $package['labelClass'] ?> test-package-base">
+                                <?= $package['title'] ?>
+                            </p>
+                            <span class="<?= $package['labelClass'] ?> test-package-base"><?= $block->renderMaxDiscountLabel($package['category']);?></span><br>
+                            <button class="<?= $package['btnClass'] ?> book-lab-btn-base" type="button" data-toggle="tooltip" data-placement="top" title="Book Now!">Book Now</button>
+                        </div>
+                    </a>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.fullbody{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_pics1.png'); ?>)}.womens-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_5.png'); ?>)}.mens-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_6.png'); ?>)}.Senior-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_3.png'); ?>)}.fever-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_10.png'); ?>)}.diabetics-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_2.png'); ?>)}.thyroid-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_8.png'); ?>)}.routine-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_4.png'); ?>)}.diabetics-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic.png'); ?>)}.preganacy-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic1.png'); ?>)}.breathing-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic3.png'); ?>)}.fever-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic4.png'); ?>)}.body-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic5.png'); ?>)}.bp-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic6.png'); ?>)}
+</style>
+
+<script defer src="<?= $block->getViewFileUrl('MedizinhubCore_Home::js/add-to-cart.js'); ?>"></script>

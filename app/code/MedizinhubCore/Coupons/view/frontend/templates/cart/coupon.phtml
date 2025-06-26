@@ -1,0 +1,1298 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Framework\View\Element\Template $block */
+
+$hasCouponCode = $block->getCouponCode() !== null && strlen($block->getCouponCode()) > 0;
+?>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+.apcu-modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.apcu-modal-container {
+    background: #ffffff;
+    margin: 6% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 42%;
+    max-width: 1100px;
+    position: relative;
+    opacity: 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    font-family: 'Inter', sans-serif;
+}
+
+.apcu-modal-content {
+    max-height: 67vh;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.apcu-modal-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+.apcu-modal-container.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.apcu-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #D9D9D9;
+    text-align:center;
+}
+
+.apcu-modal-title {
+    color: #049B7E;
+    font-family: "Source Sans Pro";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.2px;
+}
+
+.apcu-modal-close {
+    float: right;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.apcu-modal-close:hover {
+    float: right;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.coupon-input-container {
+    padding: 20px;
+}
+
+.coupon-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.discount_code {
+    width: 100% !important;
+    padding: 10px 100px 10px 15px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    height: 48px !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #747474 !important;
+    font-family: "Source Sans Pro" !important;
+    font-size: 17px !important;
+    font-style: normal;
+    font-weight: 400 !important;
+    line-height: 24px !important;
+    letter-spacing: 0.18px;
+}
+
+.discount_code:hover,
+.discount_code:focus {
+    border-color: #ccc;
+    box-shadow: none;
+}
+
+.apply-coupon-main-btn {
+	position: absolute;
+	right: 2.5px;
+	top: 5%;
+	text-align: center;
+	width: 25%;
+	height: 43px;
+	border-radius: 4px;
+	background: #03c777;
+	color: #FFF !important;
+	font-family: "Source Sans Pro" !important;
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 24px;
+	letter-spacing: 0.18px;
+}
+
+.apply-coupon-main-btn:hover {
+    background: #888;
+    color: white;
+}
+
+
+.available-coupons-wrapper {
+    padding: 20px;
+}
+
+.available-coupons-wrapper h3 {
+	margin-bottom: 20px;
+	text-align: center;
+	margin-top: -10px;
+    color: #049B7E;
+    font-family: "Source Sans Pro";
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.2px;
+}
+
+.coupon-item-apcu {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background: white;
+    padding: 20px 10px;
+    margin-bottom: 0;
+}
+
+.apcu-box-line {
+	border-bottom: 1px solid #D9D9D9;
+	width: 108%;
+	margin-left: -5%;
+}
+
+.coupon-badge-flat {
+	width: 80px;
+	height: 80px;
+	margin-right: 12px;
+	margin-left: -8px;
+}
+
+.coupon-code-apcu {
+    color: #01A462;
+    font-family: "Source Sans Pro";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.17px;
+    margin-bottom :5px;
+}
+
+.coupon-description-apcu {
+    color: #000;
+    font-family: "Source Sans Pro";
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.16px;
+    margin-bottom :5px;
+}
+
+.terms-link {
+    color: #555;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.13px;
+}
+
+.terms-link:hover, .terms-link:visited, .terms-link:active, .terms-link:focus {
+    color: #555;
+    text-decoration-line: underline;
+}
+
+.apply-coupon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    color: #01A462;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.16px;
+    margin-top: 18px;
+}
+
+.apply-coupon-btn:hover, .apply-coupon-btn:active, .apply-coupon-btn:focus {
+    background: none;
+    color: #01A462;
+    border : none;
+}
+
+#discount-error {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    background: #ffe5e5;
+    color: #e00;
+    font-size: 14px;
+    display: none;
+}
+
+.coupon-title {
+    cursor: pointer;
+    padding: 11px 15px 11px 15px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    border: 0.5px solid #01B46B;
+    background: #FFF;
+    height: 48px;
+}
+
+.coupon-title:hover {
+	box-shadow: #9affd6 0px 0px 6px;
+}
+
+.coupon-title:hover #apply-coupon-button{
+    color: #03c777;
+}
+
+.coupon-title:hover #apply-coupon-button svg path{
+    stroke: #03c777;
+}
+
+#apply-coupon-button {
+    color: #888;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.16px;
+}
+
+#coupon-display {
+    display: none;
+}
+
+.savings-summary-inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.coupon-nametitle {
+    color: #01B46B;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.14px;
+}
+
+.savings-label {
+    color: #049B7E;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.14px;
+    margin-right: 4px;
+}
+
+.apcu-remove-svg {
+    cursor: pointer;
+}
+
+.read-more {
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.apcu-svg-coupon { 
+    width: 23px;
+    height: 23px;
+    margin-top: -4px;
+    margin-right: 6px;
+}
+
+.apcu-svg-coupon-apply { 
+    width: 23px;
+    height: 23px;
+    margin-top: -7px;
+    margin-right: 6px;
+}
+
+.apcu-svg-percentage { 
+    width: 18px;
+    height: 18px;
+    margin-top: -4px;
+}
+
+.apcu-svg-remove { 
+    width: 21px;
+    height: 21px;
+    margin-top: -4px;
+}
+
+.apcu-svg-sidearrow { 
+    width: 23px;
+    height: 23px;
+    float: right;
+}
+
+.apcu-svg-close { 
+    width: 23px;
+    height: 23px;
+}
+
+#apply-discount-button.disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+    opacity: 0.7;
+    color: #747474 !important;
+}
+
+#apply-discount-button.enabled {
+    background-color: #03c777;
+    cursor: pointer;
+}
+
+#terms-modal .terms-content {
+    padding: 10px 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#terms-modal .terms-content h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-family: "Source Sans Pro";
+    font-weight: 700;
+}
+
+#terms-modal .terms-content ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    font-family: "Source Sans Pro";
+}
+
+#terms-modal .terms-content li {
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.apcu-modal-back {
+    background: none;
+    border: none;
+    cursor: pointer;
+    float: left;
+}
+
+.apcu-modal-back:hover, .apcu-modal-back:active, .apcu-modal-back:visited{
+    background: none;
+    border: none;
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    .coupon-title {
+        width: 86%;
+        margin-left: 22px;
+    }
+}
+
+@media (max-width: 479.98px) {
+    .coupon-title {
+        width: 86%;
+        margin-left: 22px;
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767.98px) {
+    .apcu-modal-container {
+        width: 95%;
+        margin: 7% auto;
+    }
+
+    .apply-coupon-main-btn {
+        width: 30%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .apcu-modal-container {
+        width: 95%;
+        margin: 13% auto;
+    }
+
+    .apply-coupon-main-btn {
+        width: 30%;
+    }
+
+    .coupon-badge-flat {
+        width: 100px;
+        height: 75px;
+        margin-right: 20px;
+        margin-left: 0px;
+    }
+
+    .apcu-badge-img{
+        margin-left: -20px;
+    }
+
+    .coupon-left{
+        margin-left: 10px;
+        width: 100%;
+    }
+
+    .coupon-code-apcu {
+        font-size: 15px;
+        line-height: 20px;
+        margin-bottom: 0px;
+    }
+
+    .coupon-description-apcu {
+        font-size: 12px;
+        line-height: 18px;
+        letter-spacing: 0.1px;
+        margin-bottom: 0px;
+    }
+
+    .terms-link {
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    .apply-coupon-btn {
+        margin-top: 12px;
+        margin-right: -30px;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1140px) {
+    .apcu-svg-coupon-apply {
+        width: 21px;
+        height: 21px;
+        margin-top: -6px;
+        margin-right: 0px;
+    }
+
+    .coupon-nametitle {
+        font-size: 13px;
+    }
+
+    .savings-label {
+        font-size: 13px;
+        margin-right: 0px;
+    }
+}
+
+@media only screen and (min-width: 882px) and (max-width: 991.98px) {
+    .savings-summary-inline {
+        width: 114%;
+        margin-left: -10px;
+    }
+
+    .apcu-svg-coupon-apply {
+        width: 19px;
+        height: 19px;
+        margin-right: 0px;
+    }
+
+    .coupon-nametitle {
+        font-size: 13px;
+    }
+
+    .savings-label {
+        font-size: 13px;
+        margin-right: -2px;
+    }
+
+    .apcu-svg-percentage {
+        width: 15px;
+        height: 15px;
+    }
+
+    .apcu-svg-remove {
+        width: 18px;
+        height: 18px;
+        margin-right: 6px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 881.98px) {
+    .savings-summary-inline {
+        width: 114%;
+        margin-left: -11px;
+    }
+
+    .apcu-svg-coupon-apply {
+        width: 16px;
+        height: 16px;
+        margin-right: -2px;
+        margin-top: -3px;
+    }
+
+    .coupon-nametitle {
+        font-size: 11px;
+    }
+
+    .savings-label {
+        font-size: 11px;
+        margin-right: -1px;
+    }
+
+    .apcu-svg-percentage {
+        width: 14px;
+        height: 14px;
+        margin-right: -2px;
+    }
+
+    .apcu-svg-remove {
+        width: 15px;
+        height: 15px;
+        margin-right: 0px;
+    }
+}
+
+@media (max-width: 460px) {
+    .savings-summary-inline {
+        width: 104%;
+        margin-left: -4px;
+    }
+
+    .apcu-svg-coupon-apply {
+	    width: 18px;
+        height: 18px;
+        margin-right: 0px;
+        margin-top: -4px;
+    }
+
+    .coupon-nametitle {
+        font-size: 12px;
+    }
+
+    .savings-label {
+        font-size: 12px;
+        margin-right: -1px;
+    }
+
+    .apcu-svg-percentage {
+        width: 15px;
+        height: 15px;
+        margin-right: -2px;
+    }
+
+    .apcu-svg-remove {
+        width: 16px;
+        height: 16px;
+        margin-right: 0px;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1240px) {
+    .apcu-modal-container {
+        width: 55%;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991.98px) {
+    .apcu-modal-container {
+        width: 65%;
+    }
+
+    .coupon-code-apcu {
+        font-size: 17px;
+    }
+    
+    .coupon-description-apcu {
+        font-size: 15px;
+    }
+}
+</style>
+
+<div class="payment-option _collapsible opc-payment-additional discount-code" id="discount-container">
+    <div class="payment-option-title field choice coupon-popup coupon-title" data-role="title">
+        <div id="coupon-display" style="display: none;">
+            <div class="savings-summary-inline">
+                <div class="saving-content">
+                    <span>
+                        <svg class="apcu-svg-coupon-apply" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20" fill="none">
+                            <path d="M6.94769 13.0757L13.1015 6.92189M2 14.9219C2 15.2479 2.12933 15.5606 2.35961 15.7913C2.5899 16.0221 2.90231 16.152 3.22831 16.1527H16.7717C17.0977 16.152 17.4101 16.0221 17.6404 15.7913C17.8707 15.5606 18 15.2479 18 14.9219V12.4185C17.4686 12.2744 16.9994 11.9594 16.6649 11.522C16.3303 11.0847 16.1491 10.5494 16.1491 9.99882C16.1491 9.44821 16.3303 8.91292 16.6649 8.47559C16.9994 8.03826 17.4686 7.72323 18 7.57912V5.07574C18 4.74975 17.8707 4.43707 17.6404 4.20632C17.4101 3.97558 17.0977 3.84562 16.7717 3.84497H3.22831C2.90231 3.84562 2.5899 3.97558 2.35961 4.20632C2.12933 4.43707 2 4.74975 2 5.07574V7.5742C2.53565 7.71509 3.00958 8.02939 3.34776 8.46803C3.68595 8.90666 3.86937 9.44495 3.86937 9.99882C3.86937 10.5527 3.68595 11.091 3.34776 11.5296C3.00958 11.9682 2.53565 12.2825 2 12.4234V14.9219Z" stroke="#01B46B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M7.5607 8.15191C7.72391 8.15191 7.88043 8.08708 7.99584 7.97167C8.11125 7.85626 8.17608 7.69974 8.17608 7.53653C8.17608 7.37332 8.11125 7.21679 7.99584 7.10138C7.88043 6.98598 7.72391 6.92114 7.5607 6.92114C7.39749 6.92114 7.24096 6.98598 7.12555 7.10138C7.01015 7.21679 6.94531 7.37332 6.94531 7.53653C6.94531 7.69974 7.01015 7.85626 7.12555 7.97167C7.24096 8.08708 7.39749 8.15191 7.5607 8.15191ZM12.4838 13.075C12.647 13.075 12.8035 13.0102 12.9189 12.8947C13.0343 12.7793 13.0992 12.6228 13.0992 12.4596C13.0992 12.2964 13.0343 12.1399 12.9189 12.0245C12.8035 11.9091 12.647 11.8442 12.4838 11.8442C12.3206 11.8442 12.164 11.9091 12.0486 12.0245C11.9332 12.1399 11.8684 12.2964 11.8684 12.4596C11.8684 12.6228 11.9332 12.7793 12.0486 12.8947C12.164 13.0102 12.3206 13.075 12.4838 13.075Z" stroke="#01B46B" stroke-width="1.23077" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span class="coupon-nametitle" id="applied-coupon-name"></span>
+                </div>
+                <div class="saving-content">
+                    <span class="savings-label">
+                        <span>
+                            <svg class="apcu-svg-percentage" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="none">
+                                <g clip-path="url(#clip0_347_499)">
+                                    <path d="M15.906 8.6747L15.072 7.87811C14.7789 7.5982 14.732 7.15217 14.9605 6.81748L15.6107 5.86495C15.6641 5.7867 15.6779 5.69014 15.6486 5.59998C15.6193 5.50992 15.5513 5.43995 15.4621 5.40798L14.3763 5.0196C13.9947 4.88304 13.7704 4.4946 13.8431 4.09595L14.0497 2.96135C14.0666 2.8681 14.04 2.77426 13.9766 2.70388C13.9132 2.63344 13.8226 2.59757 13.7282 2.60429L12.5781 2.69113C12.1739 2.72179 11.8112 2.458 11.7154 2.06432L11.4426 0.943721C11.4201 0.851627 11.3576 0.776783 11.271 0.738189C11.1846 0.699783 11.0871 0.703408 11.0036 0.748283L9.98836 1.29535C9.63161 1.48753 9.19292 1.39435 8.94523 1.07369L8.24023 0.160969C8.18235 0.0860001 8.09473 0.0429688 7.99998 0.0429688C7.90529 0.0429688 7.81767 0.0859688 7.75979 0.160969L7.05479 1.07363C6.8071 1.39435 6.36832 1.48763 6.0116 1.29535L4.99629 0.748283C4.91285 0.703408 4.81538 0.699658 4.72888 0.73822C4.64232 0.776752 4.57985 0.851658 4.55741 0.943689L4.28463 2.06429C4.18878 2.458 3.82622 2.72204 3.42185 2.6911L2.27184 2.60426C2.17706 2.59747 2.08678 2.63347 2.02344 2.70385C1.95997 2.77429 1.93337 2.86813 1.95034 2.96138L2.15697 4.09598C2.22953 4.49463 2.00528 4.88307 1.62375 5.01957L0.537777 5.40801C0.448558 5.43992 0.38062 5.50989 0.35137 5.60001C0.322058 5.69007 0.335901 5.7867 0.389308 5.86492L1.03947 6.81751C1.26793 7.15214 1.22103 7.59817 0.927965 7.87808L0.093901 8.6747C0.0254009 8.74014 -0.00822419 8.83171 0.00171333 8.92589C0.0115571 9.02017 0.0635572 9.10274 0.144151 9.15255L1.12565 9.7583C1.47053 9.97111 1.60912 10.3977 1.45519 10.7726L1.01722 11.8395C0.981309 11.9272 0.987809 12.0245 1.03522 12.1066C1.08259 12.1886 1.16359 12.2429 1.2575 12.2556L2.40041 12.4097C2.80203 12.4639 3.10209 12.7972 3.114 13.2023L3.14784 14.3551C3.15059 14.4497 3.19622 14.5361 3.27285 14.5918C3.34953 14.6474 3.44572 14.6642 3.53647 14.6375L4.64347 14.3134C4.7211 14.2907 4.79963 14.2798 4.87694 14.2798C5.18669 14.2798 5.4771 14.455 5.61766 14.7472L6.11741 15.7866C6.15848 15.872 6.23523 15.9323 6.32794 15.952C6.42044 15.9717 6.51526 15.9478 6.58741 15.8865L7.46676 15.1403C7.77576 14.8782 8.22426 14.8782 8.5332 15.1403L9.41261 15.8865C9.48483 15.9478 9.57939 15.9716 9.67205 15.952C9.7647 15.9323 9.84145 15.872 9.88251 15.7866L10.3824 14.7472C10.558 14.382 10.9677 14.1996 11.3566 14.3134L12.4635 14.6375C12.5545 14.6642 12.6505 14.6474 12.7272 14.5917C12.8039 14.5361 12.8494 14.4497 12.8522 14.355L12.886 13.2023C12.8979 12.7973 13.198 12.464 13.5996 12.4098L14.7425 12.2556C14.8365 12.2429 14.9175 12.1887 14.9648 12.1066C15.0123 12.0246 15.0188 11.9272 14.9828 11.8395L14.5449 10.7726C14.391 10.3977 14.5296 9.97111 14.8744 9.75836L15.8559 9.15261C15.9366 9.10283 15.9885 9.02027 15.9984 8.92602C16.0082 8.83167 15.9745 8.74014 15.906 8.6747ZM4.21113 6.05748C4.21113 5.19254 4.91485 4.48882 5.77976 4.48882C6.6447 4.48882 7.34842 5.19254 7.34842 6.05745C7.34842 6.92236 6.6447 7.62611 5.77976 7.62611C4.91485 7.62614 4.21113 6.92245 4.21113 6.05748ZM5.72251 10.9201C5.62085 11.0218 5.48763 11.0726 5.35441 11.0726C5.22119 11.0726 5.08797 11.0217 4.98632 10.9201C4.78304 10.7169 4.78304 10.3872 4.98632 10.1839L10.2944 4.87576C10.4977 4.67254 10.8272 4.67254 11.0306 4.87576C11.2339 5.07904 11.2339 5.40867 11.0306 5.61201L5.72251 10.9201ZM9.84208 11.6884C8.97714 11.6884 8.27342 10.9847 8.27342 10.1198C8.27342 9.25489 8.97714 8.55117 9.84208 8.55117C10.707 8.55117 11.4107 9.25489 11.4107 10.1198C11.4107 10.9847 10.707 11.6884 9.84208 11.6884Z" fill="#049B7E"/>
+                                    <path d="M5.78141 5.5293C5.49056 5.5293 5.25391 5.76595 5.25391 6.0568C5.25391 6.34764 5.49056 6.5843 5.78141 6.5843C6.07225 6.5843 6.30891 6.34764 6.30891 6.0568C6.30891 5.76595 6.07225 5.5293 5.78141 5.5293Z" fill="#049B7E"/>
+                                    <path d="M9.84391 9.5918C9.55306 9.5918 9.31641 9.82845 9.31641 10.1193C9.31641 10.4101 9.55306 10.6468 9.84391 10.6468C10.1348 10.6468 10.3714 10.4101 10.3714 10.1193C10.3714 9.82845 10.1348 9.5918 9.84391 9.5918Z" fill="#049B7E"/>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_347_499">
+                                    <rect width="16" height="16" fill="white"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </span>
+                        <?= $block->escapeHtml(__('You Saved')) ?> 
+                        <span id="discount-amount"></span>
+                    </span>
+                    <span class="apcu-remove-svg" title="<?= $block->escapeHtml(__('Remove')) ?>">
+                        <svg class="apcu-svg-remove" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="none">
+                            <path d="M8.00065 1.33398C11.6827 1.33398 14.6673 4.31865 14.6673 8.00065C14.6673 11.6827 11.6827 14.6673 8.00065 14.6673C4.31865 14.6673 1.33398 11.6827 1.33398 8.00065C1.33398 4.31865 4.31865 1.33398 8.00065 1.33398ZM6.58665 5.64332C6.46696 5.52248 6.3056 5.45196 6.13562 5.4462C5.96563 5.44043 5.79987 5.49985 5.67226 5.61229C5.54465 5.72474 5.46485 5.88171 5.44918 6.05107C5.43351 6.22043 5.48317 6.38937 5.58798 6.52332L5.64398 6.58665L7.05732 7.99998L5.64398 9.41465C5.52315 9.53434 5.45263 9.6957 5.44686 9.86568C5.4411 10.0357 5.50052 10.2014 5.61296 10.329C5.72541 10.4566 5.88237 10.5365 6.05173 10.5521C6.22109 10.5678 6.39004 10.5181 6.52398 10.4133L6.58665 10.358L8.00065 8.94332L9.41465 10.358C9.53434 10.4788 9.6957 10.5493 9.86568 10.5551C10.0357 10.5609 10.2014 10.5015 10.329 10.389C10.4566 10.2766 10.5365 10.1196 10.5521 9.95023C10.5678 9.78088 10.5181 9.61193 10.4133 9.47798L10.358 9.41465L8.94332 8.00065L10.358 6.58665C10.4788 6.46696 10.5493 6.3056 10.5551 6.13562C10.5609 5.96563 10.5015 5.79987 10.389 5.67226C10.2766 5.54465 10.1196 5.46485 9.95023 5.44918C9.78088 5.43351 9.61193 5.48317 9.47798 5.58798L9.41465 5.64332L8.00065 7.05798L6.58665 5.64332Z" fill="#F51526"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="action action-toggle" id="apply-coupon-button" role="heading" aria-level="2">
+            <span>
+                <svg class="apcu-svg-coupon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20" fill="none">
+                    <path d="M6.94769 13.0757L13.1015 6.92189M2 14.9219C2 15.2479 2.12933 15.5606 2.35961 15.7913C2.5899 16.0221 2.90231 16.152 3.22831 16.1527H16.7717C17.0977 16.152 17.4101 16.0221 17.6404 15.7913C17.8707 15.5606 18 15.2479 18 14.9219V12.4185C17.4686 12.2744 16.9994 11.9594 16.6649 11.522C16.3303 11.0847 16.1491 10.5494 16.1491 9.99882C16.1491 9.44821 16.3303 8.91292 16.6649 8.47559C16.9994 8.03826 17.4686 7.72323 18 7.57912V5.07574C18 4.74975 17.8707 4.43707 17.6404 4.20632C17.4101 3.97558 17.0977 3.84562 16.7717 3.84497H3.22831C2.90231 3.84562 2.5899 3.97558 2.35961 4.20632C2.12933 4.43707 2 4.74975 2 5.07574V7.5742C2.53565 7.71509 3.00958 8.02939 3.34776 8.46803C3.68595 8.90666 3.86937 9.44495 3.86937 9.99882C3.86937 10.5527 3.68595 11.091 3.34776 11.5296C3.00958 11.9682 2.53565 12.2825 2 12.4234V14.9219Z" stroke="#888888" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.5607 8.15191C7.72391 8.15191 7.88043 8.08708 7.99584 7.97167C8.11125 7.85626 8.17608 7.69974 8.17608 7.53653C8.17608 7.37332 8.11125 7.21679 7.99584 7.10138C7.88043 6.98598 7.72391 6.92114 7.5607 6.92114C7.39749 6.92114 7.24096 6.98598 7.12555 7.10138C7.01015 7.21679 6.94531 7.37332 6.94531 7.53653C6.94531 7.69974 7.01015 7.85626 7.12555 7.97167C7.24096 8.08708 7.39749 8.15191 7.5607 8.15191ZM12.4838 13.075C12.647 13.075 12.8035 13.0102 12.9189 12.8947C13.0343 12.7793 13.0992 12.6228 13.0992 12.4596C13.0992 12.2964 13.0343 12.1399 12.9189 12.0245C12.8035 11.9091 12.647 11.8442 12.4838 11.8442C12.3206 11.8442 12.164 11.9091 12.0486 12.0245C11.9332 12.1399 11.8684 12.2964 11.8684 12.4596C11.8684 12.6228 11.9332 12.7793 12.0486 12.8947C12.164 13.0102 12.3206 13.075 12.4838 13.075Z" stroke="#888888" stroke-width="1.23077" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span><?= $block->escapeHtml(__('Apply Coupon')) ?></span>
+            <span>
+                <svg class="apcu-svg-sidearrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20" fill="none">
+                    <path d="M8.33398 14.1666L12.5007 9.99992L8.33398 5.83325" stroke="#263238" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Updated Modal to match new design -->
+<div id="apcu-coupon-modal" class="apcu-modal-overlay">
+    <div class="apcu-modal-container">
+        <div class="apcu-modal-header">
+            <span class="apcu-modal-title"><?= $block->escapeHtml(__('Coupons & offers')) ?></span>
+            <button class="apcu-modal-close">
+                <svg class="apcu-svg-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 7L17 17M7 17L17 7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="apcu-modal-content">
+            <div class="coupon-input-container">
+                <form class="form form-discount" id="discount-form">
+                    <div class="coupon-input-wrapper">
+                        <input class="discount_code"
+                               type="text"
+                               id="discount-code"
+                               name="discount_code"
+                               placeholder="<?= $block->escapeHtml(__('Enter Coupon Code')) ?>"
+                               data-validate="{'required-entry':true}"/>
+                        <button class="apply-coupon-main-btn" type="submit" id="apply-discount-button">
+                            <?= $block->escapeHtml(__('Apply')) ?>
+                        </button>
+                    </div>
+                    <div id="discount-error"></div>
+                </form>
+            </div>
+            
+            <div class="available-coupons-wrapper">
+                <h3><?= $block->escapeHtml(__('Available coupons')) ?></h3>
+                <div id="available-coupons-list">
+                    <!-- Dynamic content will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function addTermsModal() {
+    const termsModalHTML = `
+    <div id="terms-modal" class="apcu-modal-overlay">
+        <div class="apcu-modal-container">
+            <div class="apcu-modal-header">
+                <span class="apcu-modal-back" id="terms-modal-back">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 19l-7-7 7-7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span class="apcu-modal-title">Terms & Conditions</span>
+                <span class="apcu-modal-close" id="terms-modal-close">
+                    <svg class="apcu-svg-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M7 7L17 17M7 17L17 7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </div>
+            <div class="apcu-modal-content">
+                <div class="terms-content">
+                    <h3>Coupon details</h3>
+                    <div class="coupon-details-dynamic">
+                        <ul>
+                            <li class="coupon-code-display"></li>
+                            <li class="coupon-description-display"></li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Terms & Conditions</h3>
+                    <ul>
+                        <li>The offers cannot be redeemed for cash or clubbed with any other offer or promotion.</li>
+                        <li>In case of any further query pertaining to the use of vouchers or regarding the sale/offers, please email our customer care at support@medizinhub.com.</li>
+                        <li>MedizinHub reserves its absolute right at any time to add, alter, withdraw, modify or change or vary any or all the terms and conditions of the offer at its sole discretion and the same shall be binding on the customer at all times.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+    
+    // Append terms modal to body
+    const modalContainer = document.createElement('div');
+    modalContainer.innerHTML = termsModalHTML;
+    document.body.appendChild(modalContainer);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    addTermsModal();
+    const discountManager = {
+        config: {
+            baseUrl: window.location.origin + '/rest/',
+            couponsUrl: window.location.origin + '/coupons/coupon/getAvailable',
+            tokenUrl: window.location.origin + '/coupons/token/generate'
+        },
+        
+        state: {
+            isApplied: false,
+            isLoading: false,
+            customerToken: null,
+            availableCoupons: [],
+            currentDiscount: 0,
+            appliedCouponName: '',
+            appliedCouponCode: '',
+            currentCouponDetails: null 
+        },
+
+        elements: {
+            modal: document.getElementById('apcu-coupon-modal'),
+            couponDisplay: document.getElementById('coupon-display'),
+            applyButtonMain: document.getElementById('apply-coupon-button'),
+            discountForm: document.getElementById('discount-form'),
+            discountInput: document.getElementById('discount-code'),
+            errorDisplay: document.getElementById('discount-error'),
+            appliedCouponName: document.getElementById('applied-coupon-name'),
+            discountAmount: document.getElementById('discount-amount'),
+            couponsList: document.getElementById('available-coupons-list'),
+            applyDiscountButton: document.getElementById('apply-discount-button'),
+            removeSpan: document.querySelector('.apcu-remove-svg'),
+            termsModal: document.getElementById('terms-modal'),
+            couponCodeDisplay: document.querySelector('.coupon-code-display'),
+            couponDescriptionDisplay: document.querySelector('.coupon-description-display')
+        },
+
+        init: function() {
+            this.bindEvents();
+            this.initializeAuth();
+            this.checkExistingCoupon();
+            
+            if (this.elements.applyDiscountButton) {
+                this.elements.applyDiscountButton.disabled = true;
+                this.elements.applyDiscountButton.classList.add('disabled');
+            }
+        },
+
+        bindEvents: function() {
+            // Modal controls
+            document.querySelector('.coupon-popup').addEventListener('click', () => this.openModal());
+            document.querySelector('.apcu-modal-close').addEventListener('click', () => this.closeModal());
+            this.elements.modal.addEventListener('click', (e) => {
+                if (e.target === this.elements.modal) this.closeModal();
+            });
+
+            // Form submission
+            this.elements.discountForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.applyCoupon();
+            });
+
+            if (this.elements.removeSpan) {
+                this.elements.removeSpan.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.cancelCoupon();
+                });
+            }
+            this.elements.discountInput.addEventListener('input', (e) => {
+                if (e.target.value.trim() === '') {
+                    this.elements.applyDiscountButton.disabled = true;
+                    this.elements.applyDiscountButton.classList.add('disabled');
+                    this.elements.applyDiscountButton.classList.remove('enabled');
+                } else {
+                    this.elements.applyDiscountButton.disabled = false;
+                    this.elements.applyDiscountButton.classList.remove('disabled');
+                    this.elements.applyDiscountButton.classList.add('enabled');
+                }
+            });
+            
+            this.bindTermsEvents = function() {
+                document.querySelectorAll('.terms-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();                       
+                        
+                        const couponItem = e.target.closest('.coupon-item-apcu');
+                        if (couponItem) {
+                            const couponCode = couponItem.querySelector('.coupon-code-apcu').textContent;
+                            const couponDescription = couponItem.querySelector('.coupon-description-apcu').textContent;
+                            
+                            this.state.currentCouponDetails = {
+                                code: couponCode,
+                                description: couponDescription
+                            };
+                        }
+
+                        this.closeModal();
+                        this.openTermsModal();
+                    });
+                });
+            };
+            
+            document.getElementById('terms-modal-close').addEventListener('click', () => {
+                this.closeTermsModal();
+            });
+            
+            document.getElementById('terms-modal-back').addEventListener('click', () => {
+                this.closeTermsModal();
+                this.openModal();
+            });
+            
+            document.getElementById('terms-modal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('terms-modal')) {
+                    this.closeTermsModal();
+                }
+            });
+        },
+
+        initializeAuth: function() {
+            this.fetchCustomerToken()
+                .then(() => this.fetchAvailableCoupons())
+                .catch(error => {
+                    console.error('Authentication failed:', error);
+                    this.showError('Unable to retrieve available coupons.');
+                });
+        },
+
+        fetchCustomerToken: function() {
+            return fetch(this.config.tokenUrl + '?type=customer', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.customerToken) {
+                    this.state.customerToken = data.customerToken;
+                } else {
+                    throw new Error(data.message || 'Failed to get customer token');
+                }
+            });
+        },
+
+        fetchAvailableCoupons: function() {
+            return fetch(this.config.couponsUrl, {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.state.availableCoupons = data.coupons;
+                    this.renderAvailableCoupons();
+                } else {
+                    throw new Error(data.message || 'Failed to fetch coupons');
+                }
+            });
+        },
+
+        renderAvailableCoupons: function() {
+            this.elements.couponsList.innerHTML = this.state.availableCoupons
+                .map((coupon, index) => {
+                    
+                    return `
+                    <div class="coupon-item-apcu">
+                        <div class="apcu-badge-img">
+                            <img class="coupon-badge-flat" src="${coupon.image}" class="apcu-modal-img" alt="${coupon.code}">
+                        </div>
+                        <div class="coupon-left">
+                            <div class="coupon-code-apcu">${coupon.code}</div>
+                            <div class="coupon-description-apcu">${coupon.description}</div>
+                            <a href="#" class="terms-link">Terms & conditions</a>
+                        </div>
+                        <button class="apply-coupon-btn" data-code="${coupon.code}">
+                            Apply
+                        </button>
+                    </div>
+                    <div class="apcu-box-line"></div>
+                `;
+                }).join('');
+
+            // Add click handlers for the apply buttons
+            this.elements.couponsList.querySelectorAll('.apply-coupon-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const code = e.target.dataset.code;
+                    const coupon = this.state.availableCoupons.find(c => c.code === code);
+                    if (coupon) {
+                        this.elements.discountInput.value = code;
+                        this.applyCoupon(coupon);
+                    }
+                });
+            });
+            this.bindTermsEvents();
+        },
+        
+        openTermsModal: function() {
+            if (this.state.currentCouponDetails) {
+                this.elements.couponCodeDisplay.textContent = this.state.currentCouponDetails.code;
+                this.elements.couponDescriptionDisplay.textContent = this.state.currentCouponDetails.description;
+            }
+            const termsModal = document.getElementById('terms-modal');
+            termsModal.classList.add('show');
+            termsModal.querySelector('.apcu-modal-container').classList.add('show');
+        },
+        
+        closeTermsModal: function() {
+            const termsModal = document.getElementById('terms-modal');
+            const container = termsModal.querySelector('.apcu-modal-container');
+            container.classList.remove('show');
+            termsModal.classList.remove('show');
+        },
+
+        applyCoupon: function(coupon = null) {
+            const code = this.elements.discountInput.value;
+            if (!code) {
+                this.showError('Please enter a coupon code.');
+                return;
+            }
+
+            if (!this.state.customerToken) {
+                this.showError('Not authenticated. Please refresh the page.');
+                return;
+            }
+
+            // Show loader before making the request
+            require(['jquery'], ($) => {
+                $('body').trigger('processStart');
+            });
+
+            fetch(this.config.baseUrl + 'V1/carts/mine/coupons/' + encodeURIComponent(code), {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + this.state.customerToken
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Invalid coupon code');
+                return response.json();
+            })
+            .then(() => {
+                this.state.isApplied = true;
+                this.state.appliedCouponCode = code;
+                this.state.appliedCouponName = coupon ? coupon.couponName : code;
+                
+                require(['Magento_Checkout/js/action/get-totals',
+                    'Magento_Customer/js/customer-data','jquery'], (getTotalsAction, customerData, $) => {
+                    
+                    customerData.reload(['cart'], true);
+                    const deferred = $.Deferred();
+                    getTotalsAction([], deferred);
+
+                    const messages = $.cookieStorage.get('mage-messages');
+                    if (!_.isEmpty(messages)) {
+                        customerData.set('messages', {messages: messages});
+                        $.cookieStorage.set('mage-messages', '');
+                    }
+
+                    const form = $('#form-validate');
+                    if (form.length) {
+                        $.ajax({
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            showLoader: true,
+                            success: (res) => {
+                                const parsedResponse = $.parseHTML(res);
+                                const result = $(parsedResponse).find("#form-validate");
+                                if (result.length) {
+                                    $("#form-validate").replaceWith(result);
+                                }
+                            }
+                        });
+                    }
+                });
+                return this.updateCartTotals();
+            })
+            .then(() => {
+                this.updateDisplay();
+                this.closeModal(); // Close the modal after successfully applying the coupon
+            })
+            .catch(error => {
+                this.showError(error.message);
+            })
+            .finally(() => {
+                // Hide loader after request completes
+                require(['jquery'], ($) => {
+                    $('body').trigger('processStop');
+                });
+            });
+        },
+
+        cancelCoupon: function() {
+            if (!this.state.customerToken) {
+                this.showError('Not authenticated. Please refresh the page.');
+                return;
+            }
+
+            // Show loader before making the request
+            require(['jquery'], ($) => {
+                $('body').trigger('processStart');
+            });
+
+            fetch(this.config.baseUrl + 'V1/carts/mine/coupons', {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + this.state.customerToken
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to remove coupon');
+                this.resetState();
+                
+                require(['Magento_Checkout/js/action/get-totals',
+                    'Magento_Customer/js/customer-data','jquery'], (getTotalsAction, customerData, $) => {
+                    
+                    customerData.reload(['cart'], true);
+                    const deferred = $.Deferred();
+                    getTotalsAction([], deferred);
+
+                    const messages = $.cookieStorage.get('mage-messages');
+                    if (!_.isEmpty(messages)) {
+                        customerData.set('messages', {messages: messages});
+                        $.cookieStorage.set('mage-messages', '');
+                    }
+
+                    const form = $('#form-validate');
+                    if (form.length) {
+                        $.ajax({
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            showLoader: true,
+                            success: (res) => {
+                                const parsedResponse = $.parseHTML(res);
+                                const result = $(parsedResponse).find("#form-validate");
+                                if (result.length) {
+                                    $("#form-validate").replaceWith(result);
+                                }
+                            }
+                        });
+                    }
+                });
+                return this.updateCartTotals();
+            })
+            .then(() => {
+                if (this.elements.discountInput) {
+                    this.elements.discountInput.readOnly = false;
+                }
+                this.updateDisplay();
+            })
+            .catch(error => {
+                this.showError(error.message);
+            })
+            .finally(() => {
+                // Hide loader after request completes
+                require(['jquery'], ($) => {
+                    $('body').trigger('processStop');
+                });
+            });
+        },
+
+        updateCartTotals: function() {
+            return fetch(this.config.baseUrl + 'V1/carts/mine/totals', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + this.state.customerToken
+                }
+            })
+            .then(response => response.json())
+            .then(totals => {
+                // Update discount amount
+                const discountAmount = Math.abs(totals.discount_amount || 0);
+                this.state.currentDiscount = discountAmount;
+
+                // Dispatch custom event with updated totals
+                const event = new CustomEvent('cart-totals-updated', {
+                    detail: {
+                        totals: totals
+                    }
+                });
+                document.dispatchEvent(event);
+
+                // Update relevant UI elements
+                if (this.elements.discountAmount) {
+                    this.elements.discountAmount.textContent = this.formatPrice(discountAmount);
+                }
+            });
+        },
+
+        resetState: function() {
+            this.state.isApplied = false;
+            this.state.appliedCouponCode = '';
+            this.state.appliedCouponName = '';
+            this.state.currentDiscount = 0;
+            
+            // Clear and enable the input field
+            if (this.elements.discountInput) {
+                this.elements.discountInput.value = '';
+                this.elements.discountInput.readOnly = false;
+            }
+            
+            this.updateDisplay();
+        },
+
+        updateDisplay: function() {
+            // Main view display logic
+            if (this.state.isApplied) {
+                // Hide the main "Apply Coupon" button
+                this.elements.applyButtonMain.style.display = 'none';
+                // Show the coupon display section
+                this.elements.couponDisplay.style.display = 'block';
+                // Update applied coupon name and amount
+                this.elements.appliedCouponName.textContent = this.state.appliedCouponName || this.state.appliedCouponCode;
+                this.elements.discountAmount.textContent = this.formatPrice(this.state.currentDiscount);
+                
+                // Modal button states when coupon is applied
+                if (this.elements.applyDiscountButton) {
+                    this.elements.applyDiscountButton.disabled = true;
+                    this.elements.applyDiscountButton.classList.add('disabled');
+                }
+
+                // Make input readonly when coupon is applied
+                if (this.elements.discountInput) {
+                    this.elements.discountInput.readOnly = true;
+                }
+
+                // Disable all apply coupon buttons in the available coupons list
+                const applyButtons = document.querySelectorAll('.apply-coupon-btn');
+                applyButtons.forEach(button => {
+                    button.disabled = true;
+                    button.classList.add('disabled');
+                });
+            } else {
+                // Show the main "Apply Coupon" button
+                this.elements.applyButtonMain.style.display = 'block';
+                // Hide the coupon display section
+                this.elements.couponDisplay.style.display = 'none';
+                
+                // Modal button states when no coupon is applied
+                if (this.elements.applyDiscountButton) {
+                    this.elements.applyDiscountButton.disabled = false;
+                    this.elements.applyDiscountButton.classList.remove('disabled');
+                }
+
+                // Make input editable when no coupon is applied
+                if (this.elements.discountInput) {
+                    this.elements.discountInput.readOnly = false;
+                    this.elements.discountInput.value = ''; // Clear the input
+                }
+
+                // Enable all apply coupon buttons in the available coupons list
+                const applyButtons = document.querySelectorAll('.apply-coupon-btn');
+                applyButtons.forEach(button => {
+                    button.disabled = false;
+                    button.classList.remove('disabled');
+                });
+            }
+        },
+
+        checkExistingCoupon: function() {
+            if (!this.state.customerToken) {
+                setTimeout(() => this.checkExistingCoupon(), 500);
+                return;
+            }
+
+            fetch(this.config.baseUrl + 'V1/carts/mine/totals', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + this.state.customerToken
+                }
+            })
+            .then(response => response.json())
+            .then(totals => {
+                if (totals.coupon_code) {
+                    this.state.isApplied = true;
+                    this.state.appliedCouponCode = totals.coupon_code;
+                    this.state.currentDiscount = Math.abs(totals.discount_amount || 0);
+                    
+                    // Find coupon name from available coupons
+                    const coupon = this.state.availableCoupons.find(c => c.code === totals.coupon_code);
+                    this.state.appliedCouponName = coupon ? coupon.couponName : totals.coupon_code;
+                    
+                    // Set the coupon code in the input field and make it readonly
+                    if (this.elements.discountInput) {
+                        this.elements.discountInput.value = totals.coupon_code;
+                        this.elements.discountInput.readOnly = true;
+                    }
+
+                    this.updateDisplay();
+                }
+            })
+            .catch(error => console.error('Error checking existing coupon:', error));
+        },
+
+        showError: function(message) {
+            this.elements.errorDisplay.textContent = message;
+            this.elements.errorDisplay.style.display = 'block';
+            setTimeout(() => {
+                this.elements.errorDisplay.style.display = 'none';
+            }, 5000);
+        },
+
+        formatPrice: function(amount) {
+            return '₹' + parseFloat(amount).toFixed(2);
+        },
+
+        openModal: function() {
+            this.elements.modal.classList.add('show');
+            this.elements.modal.querySelector('.apcu-modal-container').classList.add('show');
+        },
+
+        closeModal: function() {
+            const container = this.elements.modal.querySelector('.apcu-modal-container');
+            container.classList.remove('show');
+            this.elements.modal.classList.remove('show');
+        }
+    };
+
+    // Initialize the discount manager
+    discountManager.init();
+});
+</script>

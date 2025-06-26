@@ -1,0 +1,346 @@
+<?php
+// Get the product collection from the block
+$_productCollection = $block->getProductCollection();
+// Get pagination data from the block
+$paginationInfo = $block->getPaginationInfo();
+$currentPage = $paginationInfo['current_page'];
+$totalPages = $paginationInfo['total_pages'];
+?>
+
+<div class="cusrp-products-container">
+    <?php if ($_productCollection && $_productCollection->count()): ?>        
+        <div class="cusrp-products-grid">
+            <div class="row">
+                <?php foreach ($_productCollection as $_product): ?>    
+                    <div class="col-md-4 col-lg-4 col-xl-3 col-sm-4 col-6 mb-4">
+                        <div class="cusrp-product-item">
+                            <?php
+                            $regularPrice = $_product->getPrice();
+                            $finalPrice = $_product->getFinalPrice();
+                            $RegularCost = '₹' . round($regularPrice);
+                            $specialCost = '₹' . round($finalPrice);
+                            $discount = ($finalPrice < $regularPrice) ? round((($regularPrice - $finalPrice) / $regularPrice) * 100) : 0;
+                            if ($discount > 0):
+                            ?>
+                                <div class="cusrp-discount-badge">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="55" height="27" viewBox="0 0 55 27" fill="none">
+                                        <path d="M0 0H54.1993L45.9681 13.4631L54.1993 26.9261H0V0Z" fill="url(#paint0_linear_5394_11052)" />
+                                        <defs>
+                                            <linearGradient id="paint0_linear_5394_11052" x1="1.75418e-06" y1="2.3414" x2="92.1607" y2="35.3466" gradientUnits="userSpaceOnUse">
+                                                <stop stop-color="#24FEA5" />
+                                                <stop offset="1" stop-color="#01DA82" />
+                                            </linearGradient>
+                                        </defs>
+                                        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#000" font-family="Source Sans Pro" font-size="12px" font-weight="600" stroke-width="0.5" stroke="#000000" dy=".3em" style="color: #00151C;font-family:Source Sans Pro;font-size: 16px;font-style: normal;font-weight: 600;">
+                                            <?php echo $discount; ?>%
+                                        </text>
+                                    </svg>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <a href="<?= $_product->getProductUrl() ?>" class="cusrp-product-item-photo">
+                                <img src="<?= $block->getImageUrl($_product, 'category_page_grid') ?>"
+                                    alt="<?= $_product->getName() ?>" />
+                            </a>
+                            
+                            <div class="cusrp-product-info">
+                                <a href="<?= $_product->getProductUrl() ?>" style="text-decoration: none; color: inherit;">
+                                    <h5 class="cusrp-product-item-name">
+                                            <?= $_product->getName() ?>
+                                    </h5>
+                                </a>
+                                <div class="cusrp-price-box">
+                                    <div class="cusrp-mrp-price">
+                                        <?= __('MRP') ?> <span class="cusrp-mrp-price-crossed"><?= $RegularCost; ?></span>
+                                    </div>
+                                    <div class="cusrp-offer-price">
+                                        <?= __('*Offer Price') ?>&nbsp; <span class="cusrp-offer-price-high"><?= $specialCost; ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="cusrp-product-actions">
+                                <button class="cusrp-add-to-cart" id="cusrp-add-to-cart-btn" 
+                                        data-product-id="<?= $_product->getId() ?>" 
+                                        data-product-sku="<?= $_product->getSku() ?>">
+                                    <span><?= __('Add to Cart') ?></span>
+                                </button>
+                                
+                                <div class="cusrp-quantity-container">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" class="cusrp-decrement-btn" viewBox="0 0 27 27" fill="none">
+                                        <circle cx="13.082" cy="13.3408" r="13.082" fill="#03C777" />
+                                        <path d="M9.18457 13.2588H16.8158" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                    </svg>
+                                    <div class="cusrp-quantity-value">1</div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="27" class="cusrp-increment-btn" height="27" viewBox="0 0 27 27" fill="none">
+                                        <circle cx="13.082" cy="13.3408" r="13.082" fill="#03C777" />
+                                        <path d="M9.2666 13.3408H16.8978" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                        <path d="M13.082 17.1562V9.52506" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                    </svg>
+                                </div>
+                                
+                                <input type="hidden" name="form_key" value="<?= $block->getFormKey() ?>">
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        
+        <?php if ($block->hasMultiplePages()): ?>
+            <?php 
+            // Include pagination template with the correct data
+            echo $block->getLayout()
+                ->createBlock('Magento\Framework\View\Element\Template')
+                ->setTemplate('Mhb_SearchResult::pagination.phtml')
+                ->setData('current_page', $currentPage)
+                ->setData('total_pages', $totalPages)
+                ->toHtml(); 
+            ?>
+        <?php endif; ?>
+        
+    <?php else: ?>
+        <div class="cusrp-no-products">
+            <img class="cusrp-no-products-img" src="<?= $block->getViewFileUrl('Mhb_SearchResult::images/no_product_found.png'); ?>" alt="No Products Found">
+            <div class="cusrp-no-products-title">Sorry, No Results Found!</div>
+            <div class="cusrp-no-products-content">We couldn’t find any products matching your search. Please check the spelling or try searching for something else... </div>
+        </div>
+    <?php endif; ?>
+</div>
+
+<script>
+require(['jquery', 'Magento_Customer/js/customer-data'], function($, customerData) {
+    function checkSalableQuantity(sku, qty) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: '/ajaxshoppingcartupdate/product/getsalablequantity',
+                type: 'GET',
+                showLoader: true,
+                data: { sku: sku },
+                success: function(response) {
+                    if (response.success) {
+                        resolve(qty <= response.salable_quantity);
+                    } else {
+                        console.error(response.message);
+                        reject(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: " + status + ' ' + error);
+                    console.log(xhr.responseText);
+                    reject(error);
+                }
+            });
+        });
+    }
+    
+    function isProductInCart(productId) {
+        var cartData = customerData.get('cart')();
+        if (cartData && cartData.items) {
+            return cartData.items.some(function(item) {
+                return item.product_id === productId.toString();
+            });
+        }
+        return false;
+    }
+    
+    $(document).on('click', '.cusrp-add-to-cart', async function(e) {
+        e.preventDefault();
+        var $addToCartBtn = $(this);
+        var productId = $addToCartBtn.data('product-id');
+        var sku = $addToCartBtn.data('product-sku');
+        var qty = 1;
+        var formKey = $('input[name="form_key"]').val();
+
+        try {
+            const isSalable = await checkSalableQuantity(sku, qty);
+            if (!isSalable) {
+                alert('Sorry, this product is not available in the requested quantity.');
+                return;
+            }
+
+            $.ajax({
+                url: '/home/index/AddToCart',
+                method: 'POST',
+                showLoader: true,
+                dataType: 'json',
+                data: {
+                    product_id: productId,
+                    form_key: formKey,
+                    qty: qty
+                },
+                success: function(response) {
+                    if (response.success) {
+                        reloadCart();
+                        $addToCartBtn.hide();
+                        $addToCartBtn.siblings('.cusrp-quantity-container').removeClass('d-none').addClass('d-flex');
+                        var cartItems = sessionStorage.getItem('CartItems') ?
+                            JSON.parse(sessionStorage.getItem('CartItems')) : [];
+                        if (!cartItems.includes(productId)) {
+                            cartItems.push(productId);
+                            sessionStorage.setItem('CartItems', JSON.stringify(cartItems));
+                        }
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                }
+            });
+        } catch (error) {
+            alert('Error checking product availability. Please try again later.');
+            console.error(error);
+        }
+    });
+
+    $(document).on('click', '.cusrp-increment-btn', async function(e) {
+        e.preventDefault();
+        var $quantityContainer = $(this).closest('.cusrp-quantity-container');
+        var currentQuantity = parseInt($quantityContainer.find('.cusrp-quantity-value').text());
+        var $addToCartBtn = $quantityContainer.siblings('.cusrp-add-to-cart');
+        var productId = $addToCartBtn.data('product-id');
+        var sku = $addToCartBtn.data('product-sku');
+        var newQuantity = currentQuantity + 1;
+
+        try {
+            const isSalable = await checkSalableQuantity(sku, newQuantity);
+            if (!isSalable) {
+                alert('Sorry, this product is not available in the requested quantity.');
+                return;
+            }
+
+            $quantityContainer.find('.cusrp-quantity-value').text(newQuantity);
+            updateQuantity(productId, newQuantity);
+        } catch (error) {
+            alert('Error checking product availability. Please try again later.');
+            console.error(error);
+        }
+    });
+
+    $(document).on('click', '.cusrp-decrement-btn', function(e) {
+        e.preventDefault();
+        var $quantityContainer = $(this).closest('.cusrp-quantity-container');
+        var quantity = parseInt($quantityContainer.find('.cusrp-quantity-value').text());
+        var $addToCartBtn = $quantityContainer.siblings('.cusrp-add-to-cart');
+        var productId = $addToCartBtn.data('product-id');
+
+        if (quantity > 1) {
+            quantity -= 1;
+            $quantityContainer.find('.cusrp-quantity-value').text(quantity);
+            if (productId) {
+                updateQuantity(productId, quantity);
+            } else {
+                console.error("Invalid product ID:", productId);
+            }
+        } else {
+            if (productId) {
+                removeFromCart(productId);
+            } else {
+                console.error("Invalid product ID:", productId);
+            }
+        }
+    });
+
+    function removeFromCart(productId) {
+        var formKey = $('input[name="form_key"]').val();
+        $.ajax({
+            url: '/home/index/RemoveFromCart',
+            method: 'POST',
+            showLoader: true,
+            dataType: 'json',
+            data: {
+                product_id: productId,
+                form_key: formKey
+            },
+            success: function(response) {
+                reloadCart();
+                $('.cusrp-add-to-cart[data-product-id="' + productId + '"]').show();
+                $('.cusrp-add-to-cart[data-product-id="' + productId + '"]').siblings('.cusrp-quantity-container').removeClass('d-flex').addClass('d-none');
+            },
+            error: function(xhr, status, error) {
+                console.error("Error removing product from cart:", error);
+            }
+        });
+    }
+
+    function updateQuantity(productId, quantity) {
+        var formKey = $('input[name="form_key"]').val();
+        $.ajax({
+            url: '/home/index/UpdatedCart',
+            method: 'POST',
+            showLoader: true,
+            dataType: 'json',
+            data: {
+                product_id: productId,
+                form_key: formKey,
+                qty: quantity
+            },
+            success: function(response) {
+                reloadCart();
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating quantity:", error);
+            }
+        });
+    }
+
+    function fetchAndUpdateCartData() {
+        $.ajax({
+            url: '/home/index/AjaxController',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.hasOwnProperty('items')) {
+                    if (response.items.length === 0) {
+                        sessionStorage.removeItem('CartItems');
+                        $('.cusrp-quantity-container').removeClass('d-flex').addClass('d-none');
+                        $('.cusrp-add-to-cart').show();
+                    } else {
+                        var cartProductIds = response.items.map(function(product) {
+                            return product.product_id.toString();
+                        });
+
+                        $('.cusrp-add-to-cart').each(function() {
+                            var $addToCartBtn = $(this);
+                            var productId = $addToCartBtn.data('product-id');
+                            var $quantityContainer = $addToCartBtn.siblings('.cusrp-quantity-container');
+
+                            if (cartProductIds.includes(productId.toString())) {
+                                var cartItem = response.items.find(function(item) {
+                                    return item.product_id.toString() === productId.toString();
+                                });
+
+                                if (cartItem) {
+                                    var cartQty = parseInt(cartItem.qty);
+                                    $quantityContainer.find('.cusrp-quantity-value').text(
+                                        cartQty > 10 ? 11 : cartQty
+                                    );
+                                    $addToCartBtn.hide();
+                                    $quantityContainer.removeClass('d-none').addClass('d-flex');
+                                }
+                            } else {
+                                $addToCartBtn.show();
+                                $quantityContainer.removeClass('d-flex').addClass('d-none');
+                            }
+                        });
+                    }
+                } else {
+                    console.log('No items found in the response');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function reloadCart() {
+        var sections = ['cart'];
+        customerData.reload(sections, true);
+        setTimeout(fetchAndUpdateCartData, 1000);
+    }
+
+    setTimeout(reloadCart, 1000);
+});
+</script>

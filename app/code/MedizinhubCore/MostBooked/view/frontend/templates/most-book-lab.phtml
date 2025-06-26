@@ -1,0 +1,247 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$connection = $resource->getConnection();
+$tableName = $resource->getTableName('health_package');
+$labTestCategroy = $connection->fetchAll("SELECT DISTINCT category FROM $tableName");
+$labTestData = $connection->fetchAll("SELECT * FROM $tableName");
+$storeManager = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+$mediaUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$isLoggedIn = $customerSession->isLoggedIn();
+$customOrder = ['fullbody', 'fever', 'womens', 'pregnancy', 'senior', 'fitness', 'general'];
+usort($labTestCategroy, function ($a, $b) use ($customOrder) {
+    $posA = array_search($a['category'], $customOrder);
+    $posB = array_search($b['category'], $customOrder);
+    return ($posA === false ? PHP_INT_MAX : $posA) - ($posB === false ? PHP_INT_MAX : $posB);
+});
+?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<style>@media (min-width: 992px) { /* For large screens */
+    .col-lg-1-7 {
+        flex: 0 0 14.28%;
+        max-width: 14.28%;
+    }
+}.category-li {background-color: #fff;border-radius: 10px;transition: all 0.3s ease;color: #fff;border-radius: 8px;}.category-li.active {background-color: #01a462;box-shadow: 0 1px 8px 0 rgba(99,99,99,.2);color: #fff !important;}.category-title {background-color: #fff !important;color: #fff !important;border-radius: 8px;}.category-li.active .category-title {color: #fff !important;background-color: #01a462 !important;}category-li:active{background-color: #01a462; border-radius:10px;box-shadow:0 1px 8px 0 rgba(99,99,99,.2)}.category-li,.category-li:active{background-color: #01a462; border-radius:10px;box-shadow:0 1px 8px 0 rgba(99,99,99,.2)}.category-title,.category-title:active{font-family:"Source Sans Pro";font-size:16px;font-style:normal;font-weight:400;padding:9px 0;line-height:24px;letter-spacing:.16px}.category-li{background:#fff}.category-li:active{background:#03c777}.category-title{color:#000!important}.category-title:active{color:#fff!important}.lab-booknow-btn:hover{margin-top:10px!important;border-radius:8px!important}.lab-offer-text{color:#859ca8;font-family:Ubuntu,Sans-serif;font-size:18px;font-weight:400;padding-bottom:15px}.test-package-title{color:#063851;font-family:Source Sans Pro,Sans-serif;font-size:24px;font-weight:600}.package-most-book,.package-test-name{font-family:"Source Sans Pro";line-height:normal}.package-test-name{color:#313739!important;font-size:16px;font-style:normal;text-decoration:none;font-weight:600;margin-top:15px}.package-inner{box-shadow:rgba(60,64,67,.3) 0 1px 2px 0,rgba(60,64,67,.15) 0 2px 6px 2px;padding:18px 16px 4px 17px;border-radius:8px;margin-top:32px}.package-most-book{color:#535c5f;font-size:14px;font-style:italic;font-weight:400;margin:15px 0;height: 35px;}.diabetics-btn,.fever-book-btn,.fullbody-btn,.men-book-btn,.routine-btn,.senior-book-btn,.thyroid-btn,.women-book-btn{height:40px;border-radius:4.347px;font-family:Montserrat!important;font-style:normal;font-weight:600;width:107px;margin-top:15px;font-size:14px;color:#fff}.Senior-pack,.diabetics-pack,.fever-pack,.fullbody,.mens-pack,.routine-pack,.thyroid-pack,.womens-pack{padding:26px 0 27px 20px}.routine-btn{background:#062b37}.women-book-btn{background:#3f0e36}.men-book-btn{background:#6b0007}.senior-book-btn{background:#2c1254}.fever-book-btn{background:#054146}.fullbody-btn{background:#5a5507}.diabetics-btn{background:#934606}.thyroid-btn{background:#0a264d}.Senior-pack,.body-bg,.bp-bg,.breathing-bg,.diabetics-bg,.diabetics-pack,.fever-bg,.fever-pack,.fullbody,.mens-pack,.preganacy-bg,.routine-pack,.thyroid-pack,.womens-pack{background-repeat:no-repeat;background-size:cover;border-radius:8px}.lab-new-price,.show-more-btn,.test-include{font-family:"Source Sans Pro"}.fullbody{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/lab_pics1.png"); ?>)}.womens-pack{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/lab_5.png"); ?>)}.mens-pack{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/lab_6.png"); ?>)}.Senior-pack{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/lab_3.png"); ?>)}.page-title-wrapper{display:none}.fever-pack{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/lab_10.png"); ?>)}.diabetics-pack{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/lab_2.png"); ?>)}.thyroid-pack{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/lab_8.png"); ?>)}.routine-pack{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/lab_4.png"); ?>)}.diabetics-bg{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/diabetics.png"); ?>)}.preganacy-bg{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/bg_pic1.png"); ?>)}.breathing-bg{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/bg_pic3.png"); ?>)}.fever-bg{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/bg_pic4.png"); ?>)}.body-bg{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/bg_pic5.png"); ?>)}.bp-bg{background-image:url(<?= $block->getViewFileUrl("MedizinhubCore_Home::images/bg_pic6.png"); ?>)}.test-include{color:#535c5f;font-size:14px;font-style:italic;font-weight:400;line-height:normal}.labtest-name,.show-more-btn{font-weight:600;font-style:normal}.show-more-btn{width:360px;height:42px;padding:10px 18px;justify-content:center;align-items:center;border-radius:8px;border:1px solid #03c777;color:#03c777;font-size:16px;line-height:normal;background:0 0}.show-more-btn:hover{background:#03c777;color:#fff}.book-inner{border-radius:8px;border:1px solid #03c777;padding:20px 20px 52px}.labtest-name{color:#313739!important;font-family:Source Sans Pro;font-size:20px;text-decoration:none!important;margin-top:-6px}.lab-new-price{color:#313739;font-size:25px;font-style:normal;font-weight:700}.lab-new-name,.lab-old-price{font-family:"Source Sans Pro";font-style:normal;font-weight:400}.lab-new-name{color:#313739;font-size:14px;line-height:normal}.lab-old-price{color:#818d92;font-size:16px;margin-top:8px;text-decoration:line-through}.in-cart-btn,.lab-booknow-btn,.lab-offer-price{font-family:"Source Sans Pro";font-style:normal;font-weight:600}.lab-offer-price{color:#049b7e;font-size:18px;margin-top:6px;font-weight:700}.in-cart-btn,.in-cart-btn:hover,.lab-booknow-btn,.lab-booknow-btn:hover{background:linear-gradient(92deg,#03c777 11.69%,#01a462 102.33%);color:#fff}.in-cart-btn,.lab-booknow-btn{border-radius:8px;height:42px;font-size:16px;width:100%;line-height:normal;margin-top:10px;box-shadow:rgba(60,64,67,.3) 0 1px 2px 0,rgba(60,64,67,.15) 0 2px 6px 2px!important}.today-deals-view{float:right!important;color:#00739b!important;font-size:14px!important}.test-package-img{width:54px;height:52px;border-radius:8px;border:1px solid #03c777}.test-package-img img{width:100%;height:42px;object-fit:contain;margin:4px 0}.product-li-link,.today-deals-view{font-weight:600!important;font-family:Source Sans Pro!important;text-decoration:none!important}.in-cart-btn:active,.in-cart-btn:focus,.in-cart-btn:hover,.lab-booknow-btn:active,.lab-booknow-btn:focus,.lab-booknow-btn:hover{background:linear-gradient(92deg,#03c777 11.69%,#01a462 102.33%)!important;color:#fff!important}</style>
+<div class="mostbook-lab">
+    <div class="container">
+        <div class="row" id="lab-test-container">
+            <p class="test-package-title">Health Packages</p>
+            <p style="margin-bottom: -16px !important;" class="lab-offer-text">Book Your Lab Test Today — Accurate Results, Trusted Care<span><img class="subheading_logo" src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/stars.png'); ?>" /></span> <a style="display: none;" class="today-deals-view" href="/lab-test-all">VIEW ALL<span><img class="view_all_img" src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/view_all.png'); ?>" /></span></a></p>
+            <div style="margin-top: 25px;" class="row justify-content-center" id="category-row">
+    <?php
+    $activeCategory = 'fullbody';
+    $limitedCategories = array_slice($labTestCategroy, 0, 7);
+    foreach ($limitedCategories as $category):
+    ?>
+        <div class="col-6 col-md-3 col-lg-1-7 mb-4">
+            <a href="#" class="category-li text-decoration-none category-filter <?= ($category['category'] == $activeCategory) ? 'active' : '' ?>" data-category="<?= htmlspecialchars($category['category']) ?>">
+                <div class="h-100 shadow-sm <?= ($category['category'] == $activeCategory) ? 'active  text-white' : '' ?>">
+                    <div class="card-body text-center">
+                    <?php
+    $categoryName = htmlspecialchars($category['category']);
+    switch ($categoryName) {
+        case 'fever':
+            $testName = 'Fever';
+            break;
+        case 'womens':
+            $testName = 'Womens Health';
+            break;
+        case 'pregnancy':
+            $testName = 'Pregnancy';
+            break;
+        case 'fullbody':
+            $testName = 'Full Body';
+            break;
+        case 'fitness':
+            $testName = 'Fitness';
+            break;
+        case 'senior':
+            $testName = 'Senior Citizen';
+            break;
+            case 'general':
+                $testName = 'Individual';
+                break;
+        default:
+            $testName = 'Most Booked Lab Test';
+            break;
+    }
+    ?>
+                        <h6 id="PackageTitle" class="category-title card-title"><?= $testName ?></h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+            <div class="row" id="lab-test-content">
+                <?php foreach ($labTestData as $test): ?>
+                    <div class="col-md-3 lab-test-item" data-category="<?= htmlspecialchars($test['category']) ?>">
+                        <div class="package-inner">
+                            <div style="height: 41px;" class="package-name-contain">
+                                <a class="package-test-name test-name-truncate" href="<?= $test['packageurl'] ?>"><?= $test['package_name'] ?> </a>
+                            </div>
+                            <p class="package-most-book test-description-truncate"><?= $test['short_description'] ?></p>
+                            <p class="test-include">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                                    <g clip-path="url(#clip0_11232_11121)">
+                                        <path d="M13.2723 0.8042C12.837 0.803669 12.4844 1.15523 12.4839 1.59045C12.4834 2.02514 12.8354 2.37773 13.2701 2.37826C13.7048 2.37879 14.0577 2.0267 14.0582 1.59173C14.0585 1.15707 13.7069 0.804481 13.2723 0.8042Z" fill="#049B7E" />
+                                        <path d="M13.409 4.55518C13.4093 4.29914 13.2023 4.09196 12.9469 4.09168C12.6909 4.09143 12.4834 4.29861 12.4832 4.55436C12.4832 4.81008 12.6903 5.01755 12.9458 5.01755C13.2018 5.01811 13.409 4.81068 13.409 4.55518Z" fill="#049B7E" />
+                                        <path d="M14.4139 2.84497C14.1082 2.84416 13.8596 3.09147 13.8596 3.3971C13.8591 3.70325 14.1069 3.95057 14.4128 3.95135C14.7179 3.95135 14.9665 3.70429 14.9665 3.39841C14.967 3.09304 14.7195 2.84497 14.4139 2.84497Z" fill="#049B7E" />
+                                        <path d="M1.89538 12.8743C1.01744 13.7853 1.10212 15.1751 2.08418 15.9728C3.06628 16.7704 4.57966 16.6782 5.45765 15.7672L10.5 10.5L3.99998 10.4999L1.89538 12.8743Z" fill="#049B7E" />
+                                        <path d="M10.3868 4.59107C10.0139 4.21785 9.4068 4.21785 9.03386 4.59107C8.79261 4.83232 8.70764 5.1712 8.77839 5.48157L8.71714 5.54307L1.77361 12.4866C0.787051 13.4729 0.787051 15.0779 1.77361 16.0642C2.75968 17.0508 4.36493 17.0508 5.35099 16.0642L12.2948 9.1207L12.356 9.05945C12.6664 9.1302 13.0056 9.0452 13.2468 8.80398C13.6197 8.43076 13.62 7.82398 13.2468 7.45104L10.3868 4.59107ZM11.9324 8.84038L10.1363 10.6367L5.03002 15.743C4.21921 16.5535 2.90533 16.5535 2.09455 15.743C1.2843 14.9325 1.2843 13.6184 2.09455 12.8078L7.17577 7.7266L8.99743 5.90545L9.08452 5.81782C9.09664 5.83101 9.10883 5.8437 9.12146 5.85632L11.9815 8.71632C11.9939 8.72898 12.0068 8.74113 12.0197 8.75326L11.9324 8.84038ZM12.9253 8.48276C12.7899 8.61816 12.5964 8.65985 12.4249 8.60841L12.2947 8.47829L9.35955 5.5431L9.22943 5.41298C9.17768 5.24141 9.21968 5.0477 9.35505 4.91229C9.55118 4.7162 9.86946 4.7162 10.0656 4.91229L12.9253 7.77198C13.1216 7.96835 13.1216 8.28641 12.9253 8.48276Z" fill="#049B7E" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_11232_11121">
+                                            <rect width="16" height="16" fill="white" transform="translate(0 0.804199)" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                &nbsp;This test included <?= $test['included'] ?>  tests
+                            </p>
+                            <div style="margin-top: 5px;" class="row">
+                                <div class="col-md-4">
+                                    <?php $formattedPrice = number_format($test['special_price'], 2);
+                                    $formattedPrice = (substr($formattedPrice, -3) == '.00') ? substr($formattedPrice, 0, -3) : $formattedPrice; ?>
+                                    <p class="lab-new-price">₹<?= $formattedPrice; ?></p>
+                                </div>
+                                <div class="col-md-3">
+                                    <?php
+                                    $formattedOldPrice = number_format($test['price'], 2);
+                                    $formattedOldPrice = (substr($formattedOldPrice, -3) == '.00') ? substr($formattedOldPrice, 0, -3) : $formattedOldPrice;
+                                    ?>
+                                    <p class="lab-old-price">₹<?= $formattedOldPrice ?></p>
+                                </div>
+                                <div class="col-md-5">
+                                    <p class="lab-offer-price"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 24" fill="none" width="20" height="20" style="margin-top: -4px;margin-right: 2px;">
+                                            <path d="M19.8137 12.2569L20.8559 10.4557C20.9812 10.239 21.0152 9.98144 20.9506 9.73962C20.886 9.4978 20.728 9.29153 20.5113 9.16619L18.7082 8.12398V6.04711C18.7082 5.79674 18.6088 5.55663 18.4317 5.37959C18.2547 5.20255 18.0146 5.10309 17.7642 5.10309H15.6883L14.647 3.30094C14.5213 3.08467 14.3154 2.92663 14.074 2.86102C13.9543 2.82856 13.8293 2.82019 13.7063 2.83639C13.5833 2.8526 13.4647 2.89306 13.3575 2.95542L11.5544 3.99763L9.7513 2.95448C9.53448 2.8293 9.27681 2.79537 9.03497 2.86017C8.79314 2.92497 8.58695 3.08317 8.46176 3.29999L7.41955 5.10309H5.34363C5.09326 5.10309 4.85314 5.20255 4.6761 5.37959C4.49906 5.55663 4.3996 5.79674 4.3996 6.04711V8.12303L2.59651 9.16524C2.48892 9.22713 2.39462 9.30966 2.31902 9.4081C2.24343 9.50655 2.18803 9.61895 2.15601 9.73887C2.12399 9.85879 2.11598 9.98385 2.13245 10.1069C2.14891 10.2299 2.18951 10.3484 2.25194 10.4557L3.29414 12.2569L2.25194 14.0581C2.12731 14.2751 2.0935 14.5324 2.15787 14.7742C2.22224 15.0159 2.37957 15.2224 2.59556 15.3486L4.39866 16.3908V18.4668C4.39866 18.7171 4.49812 18.9572 4.67516 19.1343C4.8522 19.3113 5.09231 19.4108 5.34269 19.4108H7.41955L8.46176 21.2139C8.54533 21.3568 8.66466 21.4754 8.80801 21.5582C8.95135 21.6409 9.11377 21.6849 9.27929 21.6859C9.44355 21.6859 9.60686 21.6425 9.75224 21.5585L11.5535 20.5162L13.3565 21.5585C13.5733 21.6835 13.8308 21.7174 14.0726 21.6528C14.3143 21.5882 14.5206 21.4303 14.6461 21.2139L15.6874 19.4108H17.7633C18.0136 19.4108 18.2538 19.3113 18.4308 19.1343C18.6078 18.9572 18.7073 18.7171 18.7073 18.4668V16.3908L20.5104 15.3486C20.6178 15.2866 20.7119 15.2039 20.7874 15.1055C20.8628 15.007 20.9181 14.8946 20.9501 14.7748C20.9821 14.6549 20.9902 14.53 20.9739 14.407C20.9575 14.284 20.9171 14.1655 20.855 14.0581L19.8137 12.2569ZM9.19338 7.52735C9.56906 7.52748 9.92931 7.67684 10.1949 7.94257C10.4604 8.20831 10.6095 8.56866 10.6094 8.94434C10.6093 9.32002 10.4599 9.68027 10.1942 9.94583C9.92846 10.2114 9.56812 10.3605 9.19243 10.3604C8.81675 10.3603 8.45651 10.2109 8.19095 9.94516C7.92539 9.67942 7.77627 9.31908 7.77639 8.9434C7.77652 8.56771 7.92588 8.20747 8.19161 7.94191C8.45735 7.67635 8.8177 7.52723 9.19338 7.52735ZM9.47659 16.59L7.96614 15.4581L13.6303 7.90591L15.1408 9.0378L9.47659 16.59ZM13.9135 16.9676C13.7275 16.9676 13.5433 16.9309 13.3715 16.8596C13.1996 16.7884 13.0435 16.684 12.912 16.5524C12.7805 16.4208 12.6763 16.2646 12.6051 16.0928C12.534 15.9209 12.4974 15.7367 12.4975 15.5507C12.4975 15.3646 12.5342 15.1804 12.6055 15.0086C12.6767 14.8368 12.7811 14.6807 12.9127 14.5492C13.0443 14.4177 13.2005 14.3134 13.3724 14.2423C13.5442 14.1711 13.7284 14.1345 13.9145 14.1346C14.2901 14.1347 14.6504 14.2841 14.916 14.5498C15.1815 14.8156 15.3306 15.1759 15.3305 15.5516C15.3304 15.9273 15.181 16.2875 14.9153 16.5531C14.6496 16.8186 14.2892 16.9678 13.9135 16.9676Z" fill="#049B7E"></path>
+                                        </svg><?= number_format((($test['price'] - $test['special_price']) / $test['price']) * 100, 0) ?>% OFF</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button data-labtest-id="<?= $test['id'] ?>" data-labtest-name="<?= $test['package_name'] ?>" class="lab-booknow-btn">Add to Cart <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none" style="margin-top: -4px;margin-left: 6px;">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.8333 14.1375C10.8333 13.3975 11.4267 12.8042 12.1667 12.8042C12.5203 12.8042 12.8594 12.9447 13.1095 13.1947C13.3595 13.4448 13.5 13.7839 13.5 14.1375C13.5 14.4911 13.3595 14.8303 13.1095 15.0803C12.8594 15.3304 12.5203 15.4708 12.1667 15.4708C11.813 15.4708 11.4739 15.3304 11.2239 15.0803C10.9738 14.8303 10.8333 14.4911 10.8333 14.1375ZM1.5 3.47085V2.13751H3.68L4.30667 3.47085H14.1667C14.3435 3.47085 14.513 3.54108 14.6381 3.66611C14.7631 3.79113 14.8333 3.9607 14.8333 4.13751C14.8333 4.25085 14.8 4.36418 14.7533 4.47085L12.3667 8.78418C12.14 9.19085 11.7 9.47085 11.2 9.47085H6.23333L5.63333 10.5575C5.62 10.5775 5.61333 10.6042 5.61333 10.6375C5.61333 10.6817 5.63089 10.7241 5.66215 10.7554C5.6934 10.7866 5.7358 10.8042 5.78 10.8042H13.5V12.1375H5.5C5.14638 12.1375 4.80724 11.997 4.55719 11.747C4.30714 11.4969 4.16667 11.1578 4.16667 10.8042C4.16667 10.5708 4.22667 10.3508 4.32667 10.1642L5.23333 8.53085L2.83333 3.47085H1.5ZM4.16667 14.1375C4.16667 13.3975 4.76 12.8042 5.5 12.8042C5.85362 12.8042 6.19276 12.9447 6.44281 13.1947C6.69286 13.4448 6.83333 13.7839 6.83333 14.1375C6.83333 14.4911 6.69286 14.8303 6.44281 15.0803C6.19276 15.3304 5.85362 15.4708 5.5 15.4708C5.14638 15.4708 4.80724 15.3304 4.55719 15.0803C4.30714 14.8303 4.16667 14.4911 4.16667 14.1375ZM9.9 4.80414C9.9 4.58322 9.72091 4.40414 9.5 4.40414C9.27909 4.40414 9.1 4.58322 9.1 4.80414V5.90414H8C7.77909 5.90414 7.6 6.08322 7.6 6.30414C7.6 6.52505 7.77909 6.70414 8 6.70414H9.1V7.80414C9.1 8.02505 9.27909 8.20414 9.5 8.20414C9.72091 8.20414 9.9 8.02505 9.9 7.80414V6.70414H11C11.2209 6.70414 11.4 6.52505 11.4 6.30414C11.4 6.08322 11.2209 5.90414 11 5.90414H9.9V4.80414Z" fill="white"></path>
+                            </svg></button>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var isCustomerLoggedIn = <?php echo $isLoggedIn ? 'true' : 'false'; ?>;
+    $(document).ready(function($) {
+        $(document).ready(function($) {
+    const defaultCategory = 'fullbody';
+    function filterCategory(category) {
+        $('.category-filter').removeClass('active bg-primary text-white');
+        $(`.category-filter[data-category="${category}"]`).addClass('active bg-primary text-white');
+        $('.lab-test-item').each(function() {
+            const itemCategory = $(this).data('category');
+            if (category === 'Most Booked Lab Test' || itemCategory === category) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+    filterCategory(defaultCategory);
+    $('.category-filter').on('click', function(e) {
+        e.preventDefault();
+        const selectedCategory = $(this).data('category');
+        filterCategory(selectedCategory);
+    });
+});
+
+        const testNameElements = document.querySelectorAll('.test-name-truncate');
+        testNameElements.forEach(function(element) {
+            const fullText = element.textContent.trim();
+            if (fullText.length > 55) {
+                element.textContent = fullText.substring(0, 55) + '...';
+                element.setAttribute('title', fullText);
+            }
+        });
+        function fetchLabCartTests() {
+            $.ajax({
+                url: '/lab-test/labcart/gettests',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const testNames = response.test_names || [];
+                        if (testNames.length > 0) {
+                            $('.lab-booknow-btn').each(function() {
+                                const testName = $(this).data('labtest-name');
+                                if (testNames.includes(testName)) {
+                                    $(this)
+                                        .removeClass('lab-booknow-btn')
+                                        .addClass('in-cart-btn')
+                                        .text('Go to Cart')
+                                        .off('click')
+                                        .on('click', function() {
+                                            window.location.href = '/lab-test/cart';
+                                        });
+                                }
+                            });
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                }
+            });
+        }
+        $('.lab-booknow-btn').on('click', function() {
+            const $this = $(this);
+            const labTestName = $this.data('labtest-name');
+            const labTestId = $this.data('labtest-id');
+
+            if (isCustomerLoggedIn) {
+                $.ajax({
+                    url: '/lab-test/LabCart/AddtoCart',
+                    type: 'POST',
+                    showLoader: true,
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        labtest_name: labTestName
+                    }),
+                    success: function(data) {
+                        if (data.success) {
+                            $this
+                                .text('Go to Cart')
+                                .off('click')
+                                .on('click', function() {
+                                    window.location.href = '/lab-test/cart';
+                                })
+                                .removeClass('lab-booknow-btn')
+                                .addClass('in-cart-btn');
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while adding the lab test to the cart.');
+                    }
+                });
+            } else {
+                $this.addClass('customer-register-link');
+                BooklabPageRedirect();
+            }
+        });
+        fetchLabCartTests();
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const testNameElements = document.querySelectorAll('.test-description-truncate');
+        testNameElements.forEach(function(element) {
+            const fullText = element.textContent.trim();
+            if (fullText.length > 60) {
+                element.textContent = fullText.substring(0, 60) + '...';
+                element.setAttribute('title', fullText);
+            }
+        });
+        });
+</script>
+

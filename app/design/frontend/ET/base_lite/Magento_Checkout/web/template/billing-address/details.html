@@ -1,0 +1,57 @@
+<div class="billing-shipping-container">
+    <!-- Billing Address -->
+    <div if="isAddressDetailsVisible() && currentBillingAddress()" class="billing-address-details">
+        <p class="billing-payment-method-title">Billing Address :</p>
+        <text args="currentBillingAddress().prefix"></text> 
+        <span class="billing_fname" text="currentBillingAddress().firstname"></span>
+        <text args="currentBillingAddress().middlename"></text>
+        <span class="billing_lname" text="currentBillingAddress().lastname"></span> 
+        <text args="currentBillingAddress().suffix"></text><br>
+        <text args="_.values(_.compact(currentBillingAddress().street)).join(', ')"></text>,<br>
+        <text args="currentBillingAddress().city "></text>, 
+        <span text="currentBillingAddress().region"></span>
+        <text args="currentBillingAddress().postcode"></text>, 
+        <text args="getCountryName(currentBillingAddress().countryId)"></text><br>
+        <span>Ph.No:</span>
+        <a class="mob-ship" if="currentBillingAddress().telephone" 
+           text="currentBillingAddress().telephone"></a><br>
+        <if args="currentBillingAddress().vatId">
+            VAT: <text args="currentBillingAddress().vatId"></text><br>
+        </if>
+        <each args="data: currentBillingAddress().customAttributes, as: 'element'">
+            <text args="$parent.getCustomAttributeLabel(element)"></text>
+            <br>
+        </each>
+        <button visible="!isAddressSameAsShipping()"
+                type="button"
+                class="action action-edit-address"
+                click="editAddress">
+            <span translate="'Edit Address'"></span>
+        </button>
+    </div>
+
+    <!-- Shipping Address -->
+    <div if="!quote.isVirtual() && quote.shippingAddress()" class="shipping-address-details">
+        <p class="billing-payment-method-title">Shipping Address :</p>
+        <text args="quote.shippingAddress().prefix"></text> 
+        <span class="billing_fname" text="quote.shippingAddress().firstname"></span>
+        <text args="quote.shippingAddress().middlename"></text>
+        <span class="billing_lname" text="quote.shippingAddress().lastname"></span> 
+        <text args="quote.shippingAddress().suffix"></text><br>
+        <text args="_.values(_.compact(quote.shippingAddress().street)).join(', ')"></text>,<br>
+        <text args="quote.shippingAddress().city "></text>, 
+        <span text="quote.shippingAddress().region"></span>
+        <text args="quote.shippingAddress().postcode"></text>, 
+        <text args="getCountryName(quote.shippingAddress().countryId)"></text><br>
+        <span>Ph.No:</span>
+        <span class="mob-ship" if="quote.shippingAddress().telephone" 
+           text="quote.shippingAddress().telephone"></span><br>
+        <if args="quote.shippingAddress().vatId">
+            <span>VAT:</span> <text args="quote.shippingAddress().vatId"></text><br>
+        </if>
+        <each args="data: quote.shippingAddress().customAttributes, as: 'element'">
+            <text args="$parent.getCustomAttributeLabel(element)"></text>
+            <br>
+        </each>
+    </div>
+</div>

@@ -1,0 +1,605 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="payment-option _collapsible opc-payment-additional discount-code discount-wrapper">
+    <div class="payment-option-title field choice coupon-popup coupon-title" data-role="title">
+        <!-- ko ifnot: isApplied() -->
+        <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
+            <i class="discount-icon"></i>
+            <!-- ko i18n: 'Apply Coupon'--><!-- /ko -->
+        </span>
+        <!-- /ko -->        
+        <!-- ko if: isApplied() -->
+        <div class="savings-summary-inline">
+            <div class="saving-content">
+                <i class="discount-icon"></i>
+                <span class="coupon-nametitle" data-bind="text: appliedCouponName() || couponCode()"></span>
+            </div>
+            <div class="saving-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                    <g clip-path="url(#clip0_187_295)">
+                    <path d="M16.406 9.51845L15.572 8.72186C15.2789 8.44195 15.232 7.99592 15.4605 7.66123L16.1107 6.7087C16.1641 6.63045 16.1779 6.53389 16.1486 6.44373C16.1193 6.35367 16.0513 6.2837 15.9621 6.25173L14.8763 5.86335C14.4947 5.72679 14.2704 5.33835 14.3431 4.9397L14.5497 3.8051C14.5666 3.71185 14.54 3.61801 14.4766 3.54763C14.4132 3.47719 14.3226 3.44132 14.2282 3.44804L13.0781 3.53488C12.6739 3.56554 12.3112 3.30175 12.2154 2.90807L11.9426 1.78747C11.9201 1.69538 11.8576 1.62053 11.771 1.58194C11.6846 1.54353 11.5871 1.54716 11.5036 1.59203L10.4884 2.1391C10.1316 2.33128 9.69292 2.2381 9.44523 1.91744L8.74023 1.00472C8.68235 0.92975 8.59473 0.886719 8.49998 0.886719C8.40529 0.886719 8.31767 0.929719 8.25979 1.00472L7.55479 1.91738C7.3071 2.2381 6.86832 2.33138 6.5116 2.1391L5.49629 1.59203C5.41285 1.54716 5.31538 1.54341 5.22888 1.58197C5.14232 1.6205 5.07985 1.69541 5.05741 1.78744L4.78463 2.90804C4.68878 3.30175 4.32622 3.56579 3.92185 3.53485L2.77184 3.44801C2.67706 3.44122 2.58678 3.47722 2.52344 3.5476C2.45997 3.61804 2.43337 3.71188 2.45034 3.80513L2.65697 4.93973C2.72953 5.33838 2.50528 5.72682 2.12375 5.86332L1.03778 6.25176C0.948558 6.28367 0.88062 6.35364 0.85137 6.44376C0.822058 6.53382 0.835901 6.63045 0.889308 6.70867L1.53947 7.66126C1.76793 7.99589 1.72103 8.44192 1.42797 8.72183L0.593901 9.51845C0.525401 9.58389 0.491776 9.67546 0.501713 9.76964C0.511557 9.86392 0.563557 9.94649 0.644151 9.9963L1.62565 10.6021C1.97053 10.8149 2.10912 11.2414 1.95519 11.6163L1.51722 12.6832C1.48131 12.7709 1.48781 12.8683 1.53522 12.9503C1.58259 13.0323 1.66359 13.0866 1.7575 13.0993L2.90041 13.2535C3.30203 13.3077 3.60209 13.641 3.614 14.0461L3.64784 15.1988C3.65059 15.2935 3.69622 15.3798 3.77285 15.4355C3.84953 15.4912 3.94572 15.5079 4.03647 15.4812L5.14347 15.1572C5.2211 15.1344 5.29963 15.1236 5.37694 15.1236C5.68669 15.1236 5.9771 15.2987 6.11766 15.591L6.61741 16.6303C6.65848 16.7158 6.73523 16.7761 6.82794 16.7957C6.92044 16.8154 7.01526 16.7915 7.08741 16.7302L7.96676 15.984C8.27576 15.7219 8.72426 15.7219 9.0332 15.984L9.91261 16.7302C9.98483 16.7915 10.0794 16.8154 10.172 16.7957C10.2647 16.776 10.3415 16.7158 10.3825 16.6303L10.8824 15.591C11.058 15.2258 11.4677 15.0434 11.8566 15.1572L12.9635 15.4812C13.0545 15.508 13.1505 15.4912 13.2272 15.4355C13.3039 15.3798 13.3494 15.2935 13.3522 15.1988L13.386 14.0461C13.3979 13.6411 13.698 13.3077 14.0996 13.2535L15.2425 13.0993C15.3365 13.0867 15.4175 13.0324 15.4648 12.9503C15.5123 12.8683 15.5188 12.771 15.4828 12.6832L15.0449 11.6163C14.891 11.2415 15.0296 10.8149 15.3744 10.6021L16.3559 9.99636C16.4366 9.94658 16.4885 9.86402 16.4984 9.76977C16.5082 9.67542 16.4745 9.58389 16.406 9.51845ZM4.71113 6.90123C4.71113 6.03629 5.41485 5.33257 6.27976 5.33257C7.1447 5.33257 7.84842 6.03629 7.84842 6.9012C7.84842 7.76611 7.1447 8.46986 6.27976 8.46986C5.41485 8.46989 4.71113 7.7662 4.71113 6.90123ZM6.22251 11.7639C6.12085 11.8655 5.98763 11.9164 5.85441 11.9164C5.72119 11.9164 5.58797 11.8655 5.48632 11.7639C5.28304 11.5606 5.28304 11.231 5.48632 11.0276L10.7944 5.71951C10.9977 5.51629 11.3272 5.51629 11.5306 5.71951C11.7339 5.92279 11.7339 6.25242 11.5306 6.45576L6.22251 11.7639ZM10.3421 12.5322C9.47714 12.5322 8.77342 11.8285 8.77342 10.9636C8.77342 10.0986 9.47714 9.39492 10.3421 9.39492C11.207 9.39492 11.9107 10.0986 11.9107 10.9636C11.9107 11.8285 11.207 12.5322 10.3421 12.5322Z" fill="#049B7E"/>
+                    <path d="M6.28141 6.37305C5.99056 6.37305 5.75391 6.6097 5.75391 6.90055C5.75391 7.19139 5.99056 7.42805 6.28141 7.42805C6.57225 7.42805 6.80891 7.19139 6.80891 6.90055C6.80891 6.6097 6.57225 6.37305 6.28141 6.37305Z" fill="#049B7E"/>
+                    <path d="M10.3439 10.4355C10.0531 10.4355 9.81641 10.6722 9.81641 10.963C9.81641 11.2539 10.0531 11.4905 10.3439 11.4905C10.6348 11.4905 10.8714 11.2539 10.8714 10.963C10.8714 10.6722 10.6348 10.4355 10.3439 10.4355Z" fill="#049B7E"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_187_295">
+                    <rect width="16" height="16" fill="white" transform="translate(0.5 0.84375)"/>
+                    </clipPath>
+                    </defs>
+                </svg>&nbsp;&nbsp;
+                <span class="savings-label">You Saved 
+                    <span data-bind="text: getFormattedDiscount()"></span>
+                </span>
+                </span>&nbsp;&nbsp;
+                <span title="Remove">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                        <path d="M8.50065 2.17773C12.1827 2.17773 15.1673 5.1624 15.1673 8.8444C15.1673 12.5264 12.1827 15.5111 8.50065 15.5111C4.81865 15.5111 1.83398 12.5264 1.83398 8.8444C1.83398 5.1624 4.81865 2.17773 8.50065 2.17773ZM7.08665 6.48707C6.96696 6.36623 6.8056 6.29571 6.63562 6.28995C6.46563 6.28418 6.29987 6.3436 6.17226 6.45604C6.04465 6.56849 5.96485 6.72546 5.94918 6.89482C5.93351 7.06418 5.98317 7.23312 6.08798 7.36707L6.14398 7.4304L7.55732 8.84373L6.14398 10.2584C6.02315 10.3781 5.95263 10.5394 5.94686 10.7094C5.9411 10.8794 6.00052 11.0452 6.11296 11.1728C6.22541 11.3004 6.38237 11.3802 6.55173 11.3959C6.72109 11.4115 6.89004 11.3619 7.02398 11.2571L7.08665 11.2017L8.50065 9.78707L9.91465 11.2017C10.0343 11.3226 10.1957 11.3931 10.3657 11.3989C10.5357 11.4046 10.7014 11.3452 10.829 11.2328C10.9566 11.1203 11.0365 10.9633 11.0521 10.794C11.0678 10.6246 11.0181 10.4557 10.9133 10.3217L10.858 10.2584L9.44332 8.8444L10.858 7.4304C10.9788 7.31071 11.0493 7.14935 11.0551 6.97937C11.0609 6.80938 11.0015 6.64362 10.889 6.51601C10.7766 6.3884 10.6196 6.3086 10.4502 6.29293C10.2809 6.27726 10.1119 6.32692 9.97798 6.43173L9.91465 6.48707L8.50065 7.90173L7.08665 6.48707Z" fill="#F51526"/>
+                    </svg>
+                </span>
+            </div>            
+        </div>
+        <!-- /ko --> 
+    </div>
+</div>
+
+<div id="apcu-coupon-modal" class="apcu-modal-overlay">
+    <div class="apcu-modal-container">
+        <div class="apcu-modal-header">
+            <h2 class="apcu-modal-title">Apply Discount</h2>
+            <span class="apcu-modal-close">&times;</span>
+        </div>
+        <div class="apcu-modal-content">
+            <div class="payment-option-contents" data-role="content">
+                <!-- ko foreach: getRegion('messages') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+                <form class="form form-discount" id="discount-form">
+                    <div class="payment-option-inner discount-wrapper-inner">
+                        <div class="field">
+                            <div class="control input-control">
+                                <input class="input-text"
+                                       type="text"
+                                       id="discount-code"
+                                       name="discount_code"
+                                       data-validate="{'required-entry':true}"
+                                       data-bind="value: couponCode,
+                                                attr: {
+                                                    disabled: isApplied,
+                                                    placeholder: $t('Enter discount code')
+                                                }" />
+                                <span class="input-focus-effect"></span>
+                            </div>
+                        </div>
+                            <!-- ko if: isApplied() -->
+                            <div class="discount-amount-display">
+                                <span class="discount-label"><!-- ko i18n: 'You Save:'--><!-- /ko --></span>
+                                <span class="discount-value" data-bind="text: getFormattedDiscount()"></span>
+                            </div>
+                            <!-- /ko -->
+                    </div>
+                    <div class="actions-toolbar discount-btn">
+                        <div class="primary">
+                            <!-- ko ifnot: isApplied() -->
+                            <button class="action action-apply" type="submit"
+                                    data-bind="click: apply, css: {'loading': isLoading}">
+                                <i class="button-icon apply-icon"></i>
+                                <span><!-- ko i18n: 'Apply Discount'--><!-- /ko --></span>
+                            </button>
+                            <!-- /ko -->
+                            <!-- ko if: isApplied() -->
+                            <button class="action action-cancel" type="submit"
+                                    data-bind="click: cancel, css: {'loading': isLoading}">
+                                <i class="button-icon cancel-icon"></i>
+                                <span><!-- ko i18n: 'Cancel coupon'--><!-- /ko --></span>
+                            </button>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </form>
+                <div class="available-coupons-wrapper">
+                    <h3>Available Coupons</h3>
+                    <div data-bind="foreach: getAvailableCoupons()">
+                        <div class="coupon-item">
+                            <div>
+                                <i class="discount-icon"></i>
+                                <span class="coupon-code" data-bind="text: code"></span>
+                                <span class="coupon-discount">(</span>
+                                <span class="coupon-discount" data-bind="text: couponName"></span>
+                                <span class="coupon-discount">)</span><br/>
+                                <span class="coupon-description" data-bind="text: description"></span>
+                            </div>
+                            <div>
+                                <button class="apply-coupon-btn"
+                                    data-bind="click: $parent.applyAvailableCoupon.bind($parent, $data)">
+                                Apply
+                            </button>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+.coupon-nametitle{
+    color: #000;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.14px;
+}
+
+.saving-content{
+    display: flex;
+    align-items: center;
+    margin-right: -8px !important;
+}
+
+.apcu-modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.apcu-modal-container {
+    background: rgb(241, 249, 254, 1);
+    margin: 3% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.apcu-modal-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.apcu-modal-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+.apcu-modal-container.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.apcu-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 21px;
+}
+
+.apcu-modal-close:hover {
+    color: #333;
+}
+
+.apcu-modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.apcu-modal-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.discount-wrapper {
+    font-family: 'Inter', sans-serif;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid #01B46B;
+    overflow: hidden;
+}
+.available-coupons-wrapper {
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.available-coupons-wrapper h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+
+.coupon-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.coupon-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.coupon-item .coupon-code {
+    font-weight: 600;
+    color: #4CAF50;
+    font-size: 16px;
+    margin-right: 15px;
+}
+
+.coupon-item .coupon-description {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.coupon-item .discount-icon{    
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.coupon-item .coupon-discount {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4CAF50;
+}
+
+.coupon-discount {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4CAF50;
+}
+
+.apply-coupon-btn {
+    background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.apply-coupon-btn:hover {
+    background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.apply-coupon-btn:active {
+    transform: scale(0.98);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .coupon-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .coupon-item > * {
+        margin: 5px 0;
+    }
+
+    .apply-coupon-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+.discount-wrapper:hover {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;;
+    transform: translateY(-3px);
+}
+
+.coupon-title {
+    background: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.discount-icon {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    margin-right: 7px !important;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='21' viewBox='0 0 20 21' fill='none'%3E%3Cpath d='M3.93924 14.2908C2.65174 13.0025 2.00757 12.3591 1.7684 11.5233C1.5284 10.6875 1.7334 9.79997 2.1434 8.0258L2.37924 7.00247C2.7234 5.50914 2.8959 4.76247 3.40674 4.2508C3.91757 3.73914 4.66507 3.56747 6.1584 3.2233L7.18174 2.98664C8.95674 2.57747 9.8434 2.37247 10.6792 2.61164C11.5151 2.85164 12.1584 3.4958 13.4459 4.7833L14.9709 6.3083C17.2134 8.54997 18.3326 9.66997 18.3326 11.0616C18.3326 12.4541 17.2126 13.5741 14.9717 15.815C12.7301 18.0566 11.6101 19.1766 10.2176 19.1766C8.8259 19.1766 7.70507 18.0566 5.46424 15.8158L3.93924 14.2908Z' stroke='black'/%3E%3Cpath d='M8.34999 9.4207C9.00086 8.76982 9.00086 7.71455 8.34999 7.06368C7.69911 6.4128 6.64384 6.4128 5.99296 7.06368C5.34209 7.71455 5.34209 8.76982 5.99296 9.4207C6.64384 10.0716 7.69911 10.0716 8.34999 9.4207Z' stroke='black'/%3E%3Cpath d='M9.61719 16.26L15.433 10.4434' stroke='black' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center;
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+.coupon-title:hover .discount-icon {
+    transform: rotate(-15deg);
+}
+
+.discount-wrapper-inner {
+    padding: 20px 20px 0 20px;
+}
+
+.input-control {
+    position: relative;
+}
+
+#discount-code {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: white;
+    letter-spacing: 0.5px;
+}
+
+#discount-code:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.15);
+}
+
+#discount-code:disabled {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+.input-focus-effect {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    border-radius: 8px !important;
+    height: 0px;
+    background: #4CAF50;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+#block-discount-heading{
+    display: block !important;
+}
+#discount-code:focus ~ .input-focus-effect {
+    width: 100%;
+    left: 0;
+}
+
+.discount-btn .primary {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 0 20px 20px;
+}
+
+.discount-btn .action-apply, .action-cancel {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    min-width: 160px;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.discount-btn .action-apply {
+    background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);
+    color: white;
+}
+
+.discount-btn .action-apply:hover {
+    background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);
+    transform: translateY(-2px);
+}
+
+.discount-btn .action-cancel {
+    background: linear-gradient(145deg, #ff4444, #cc0000);
+    color: white;
+}
+
+#discount-form .action-cancel {
+display: flex !important;
+}
+
+.action-cancel:hover {
+    background: linear-gradient(145deg, #cc0000, #bb0000);
+    transform: translateY(-2px);
+}
+.discount-amount-display,
+.previous-discount-display {
+    margin-top: 15px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.discount-amount-display {
+    background: #e8f5e9;
+    border: 1px solid #c8e6c9;
+}
+
+.previous-discount-display {
+    background: #fff3e0;
+    border: 1px solid #ffe0b2;
+}
+
+.discount-label,
+.previous-discount-label {
+    font-weight: 500;
+    color: #2e7d32;
+}
+
+.previous-discount-label {
+    color: #f57c00;
+}
+
+.discount-value,
+.previous-discount-value {
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.button-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.apply-icon {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E") no-repeat center;
+}
+
+.cancel-icon {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'/%3E%3C/svg%3E") no-repeat center;
+}
+
+/* Button press effect */
+.action-apply:active, .action-cancel:active {
+    transform: scale(0.98);
+}
+
+/* Success animation */
+@keyframes success-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.action-apply.success {
+    animation: success-animation 0.5s ease;
+}
+
+/* Error shake animation */
+@keyframes error-shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+    20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.error-shake {
+    animation: error-shake 0.6s ease-in-out;
+}
+
+/* Loading animation */
+@keyframes loading-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: loading-spin 0.8s linear infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .discount-wrapper {
+        margin: 15px 0;
+    }
+
+    .payment-option-inner {
+        padding: 15px;
+    }
+
+    #discount-code {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    .discount-btn .action-apply, .action-cancel {
+        padding: 10px 20px;
+        font-size: 14px;
+        min-width: 140px;
+    }
+}
+
+.savings-summary-inline {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.savings-summary-inline .discount-icon {
+    margin-right: 15px;
+}
+
+.savings-label {
+    color: #049B7E;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.14px;
+}
+
+.savings-label-remove{
+    color: #bb0000;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.14px;
+    }
+</style>
+

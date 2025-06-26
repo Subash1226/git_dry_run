@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      layout="1column" 
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="ContactUs_CustomPage::css/custom-contact.css"/>
+        <title>Contact Us</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="ContactUs\CustomPage\Block\ContactForm" 
+                   name="contactus.form" 
+                   template="ContactUs_CustomPage::form.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- <event name="sales_order_place_after">
+        <observer name="lof_subtotal_create_points" instance="Lof\Subtotal\Observer\CreatePoints" />
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="lof_subtotal_update_points" instance="Lof\Subtotal\Observer\UpdatePoints" />
+    </event> -->
+</config>

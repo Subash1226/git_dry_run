@@ -1,0 +1,225 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<li
+id="sp-checkout"
+class="checkout-prescription-details"
+data-bind="fadeVisible: isVisible, attr: { id: stepCode }"
+>
+<div style="width: 1140px;padding: 30px 0;" class="prescription-step-checkout">
+<div class="container">
+    <div class="row">
+    <div style="padding: 0 0 20px 0;" class="prescription-title">
+        <p style="color: #063851;font-family: Source Sans Pro;font-size: 24px;font-style: normal;font-weight: 600;line-height: normal;">Upload Prescription</p>
+    <span style="color: #859CA8;font-family: Ubuntu;font-size: 18px;font-style: normal;font-weight: 400;line-height: normal;">Prescription required for your purchase product</span>
+    </div>
+        <div style="margin-left:-7px;" class="col-md-6">
+        <div class="sp-checkout-orderattachment">
+            <div
+                class="payment-option _collapsible opc-payment-additional order-attachments"
+            >
+                <div class="payment-option-title field choice" data-role="title">
+                    <h2
+                        class="test-shipment action action-toggle"
+                        style="display: none;"
+                        id="block-attachments-heading"
+                        role="heading"
+                        aria-level="2"
+                        data-bind="text: getTitle()"
+                    ></h2>
+                </div>
+                <div
+                    style="background-color: rgba(231, 245, 253, 1);border: 1px solid #ccc;padding: 0 !important;border-radius: 8px 8px 0 0;"
+                    class="payment-option-content"
+                >
+                    <div class="payment-option-inner">
+                        <div class="field">
+                            <div
+                                class="info"
+                                data-bind="html: getAttachmentInfo()"
+                            ></div>
+                            <div class="control">
+                                <input
+                                    class="input"
+                                    type="file"
+                                    style="display: none"
+                                    data-bind="event: {change: fileUpload}"
+                                    id="order-attachment"
+                                    name="order-attachment[]"
+                                />
+                                <div
+                                    class="sp-attachment-drag-area"
+                                    style="cursor: pointer;width: 100% !important;padding:20px;"
+                                    data-bind="
+                                        click: selectFiles,
+                                        event: {
+                                            dragenter: dragEnter,
+                                            dragover: dragOver,
+                                            drop: drop
+                                        }"
+                                >
+                                    <div class="checkout-prescription-content">
+                                        <p
+                                            class="checkout-prescription-upload"
+                                            style="
+                                                font-family: Source Sans Pro;
+                                                font-size: 24px;
+                                                font-style: normal;
+                                                font-weight: 600;
+                                                display: none;
+                                            "
+                                        >
+                                            Upload Prescription
+                                        </p>
+                                        <p
+                                            class="checkout-prescription-resctrict"
+                                            style="
+                                                font-family: Source Sans Pro;
+                                                font-size: 16px; margin-top: -10px;
+                                                font-style: italic;
+                                                padding: 18px 0 0 0;
+                                            "
+                                        >
+                                        Supported Format
+                                            <span
+                                                style="
+                                                    color: #049b7e;
+                                                    font-family: Source Sans Pro;
+                                                    font-size: 16px;
+                                                "
+                                                >JPEG, PNG & PDF</span
+                                            >
+                                        </p>
+                                        <button
+                                            style="
+                                                border-radius: 12px;
+                                                border: 1px dashed #7a7a7a;
+                                                background: #fff;
+                                                width: 245px;
+                                                height: 45px;
+                                                margin: 20px 0 25px 0;color: #063851;
+                                                font-family: Source Sans Pro;
+                                                font-size: 16px;"
+                                            class="checkout-prescription-btn"
+                                        >
+                                            Upload Prescription&nbsp;&nbsp; <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24" fill="none">
+                                                <path d="M2.0092 2.77051V21.5231H15.8111V2.77051H13.7127V4.63082C13.7127 4.99856 13.4236 5.2975 13.067 5.2975H4.82346C4.46778 5.2975 4.17863 4.99856 4.17863 4.63082V2.77051H2.00879H2.0092ZM10.0088 14.9889H3.73464V13.9749H10.0088V14.9889ZM14.236 18.7197H12.9562V20.0437H11.8476V18.7197H10.567V17.5736H11.8476V16.2505H12.9562V17.5736H14.236V18.7197ZM14.236 12.653H3.73464V11.639H14.236V12.653ZM14.236 10.3175H3.73464V9.30349H14.236V10.3175ZM14.236 6.96715V7.98118H3.73464V6.96715H14.236Z" fill="white"/>
+                                                <path d="M13.0674 0H4.8238C4.46812 0 4.17897 0.298517 4.17897 0.667098V1.17666H0.822557C0.462765 1.17666 0.169922 1.47857 0.169922 1.8514V22.5743C0.169922 22.9467 0.462765 23.2491 0.822557 23.2491H16.9306C17.2912 23.2491 17.5841 22.9463 17.5841 22.5743V1.8514C17.5841 1.47815 17.2912 1.17666 16.9306 1.17666H13.713V0.667098C13.713 0.298517 13.4239 0 13.0674 0ZM5.46905 1.99535H12.4226V3.96395H5.46905V1.99535ZM15.811 2.77115V21.5238H2.00913V2.77115H4.17897V4.63147C4.17897 4.9992 4.46771 5.29814 4.8238 5.29814H13.0674C13.4239 5.29814 13.713 4.9992 13.713 4.63147V2.77115H15.8114H15.811Z" fill="#616E7D"/>
+                                                <path d="M14.2347 6.96729H3.7334V7.98131H14.2347V6.96729Z" fill="#03C777"/>
+                                                <path d="M14.2347 9.3042H3.7334V10.3182H14.2347V9.3042Z" fill="#03C777"/>
+                                                <path d="M14.2347 11.6396H3.7334V12.6537H14.2347V11.6396Z" fill="#03C777"/>
+                                                <path d="M10.0076 13.9751H3.7334V14.9891H10.0076V13.9751Z" fill="#03C777"/>
+                                                <path d="M5.01444 16.3105V17.6337H3.7334V18.7794H5.01444V20.1038H6.12256V18.7794H7.40278V17.6337H6.12256V16.3105H5.01444Z" fill="#EF0101"/>
+                                                <path d="M12.4242 1.99512H5.4707V3.96372H12.4242V1.99512Z" fill="#03C777"/>
+                                              </svg>
+                                        </button>
+                                        <p style="font-family: Source Sans Pro;font-size: 16px; color: rgba(241, 59, 72, 1); display: none;" id="prescription-required">*Kindly upload your prescription</p>
+                                        <p
+                                            style="
+                                                font-family: Source Sans Pro;
+                                                font-size: 16px;
+                                                font-style: italic;
+                                            "
+                                            class="checkout-prescription-note"
+                                        >
+                                            <b>Note:</b>Prescription should be clear & within 5MB
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- <div data-bind="text: myTimer"></div> -->
+                                <div
+                                    class="attachment-container row"
+                                    data-bind="foreach:attachmentList"
+                                >
+                                    <div class="col-md-2"
+                                        data-bind="attr: { rel: hash, class:'sp-attachment-row attach-'+hash}"
+                                    >
+                                        <div class="sp-attachment-row-content">
+                                            <div class="order-attachment-preview">
+                                                <img
+                                                    class="thumbnail"
+                                                    data-bind="attr: { src: url}"
+                                                />
+                                                <div class="attachment-file">
+                                                    <div
+                                                        class="filename"
+                                                        data-bind="text: path"
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                            <div style="display: none;" class="order-attachment-content">
+                                                <textarea
+                                                    data-bind="attr: { id: 'attachment-comment'+attachment_id, name:'attachment['+attachment_id+'][comment]'},text: comment,event: { blur: $parent.updateComment.bind($parent,attachment_id,hash,'attachment-comment'+attachment_id) }"
+                                                    rows="4"
+                                                    class="comment"
+                                                    placeholder="Write comment here"
+                                                >
+                                                </textarea>
+
+                                                <a
+                                                    id="sp-attachment-remove2"
+                                                    class="sp-attachment-remove"
+                                                    title="Remove Item"
+                                                    data-bind="click: $parent.deleteFile.bind($parent,attachment_id,hash)"
+                                                    href="#"
+                                                ></a>
+                                                <input
+                                                    type="hidden"
+                                                    data-bind="attr: { value: attachment_id, class: attachment_class}"
+                                                    name="attachment-id"
+                                                />
+                                                <input
+                                                    type="hidden"
+                                                    name="attachment-hash"
+                                                    data-bind="attr: { value: hash, class: hash_class}"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div style="background: rgba(231, 245, 253, 1);padding: 20px;border: 1px solid #ccc;margin-top: -16px;border-radius: 0 0 8px 8px;" class="prescription-consult">
+            <p style="color: #313739;font-family:Source Sans Pro;font-size: 24px;font-style: normal;font-weight: 600;">Don’t have prescription? Consult Doctor <input style="float: right;margin-top: 15px;" type="checkbox" id="consult-fee" value="Doctor Consult"></p>
+            <p style="color: #313739;font-family:Source Sans Pro;font-size: 16px;">Book Doctor online consult with <span style="color: #049B7E;font-family:Source Sans Pro;font-size: 16px;">50% OFF</span></p>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div style="float: right;margin-top: -15px;" class="line-check">
+            <svg xmlns="http://www.w3.org/2000/svg" width="2" height="479" viewBox="0 0 2 479" fill="none">
+                <path d="M1.16406 478.69L1.16408 0.414798" stroke="#03C777"/>
+            </svg>
+    </div>
+</div>
+    <div class="col-md-5">
+        <div style="width: 100%;text-align: center;margin-top:-40px;" class="prescription-refrence">
+            <img
+                src="http://local.medizinhub.com/media/wysiwyg/Group 46.png"
+                alt=""
+            />
+        </div>
+    </div>
+</div>
+<div style="width: 100%;text-align: center;margin-top: 25px;" class="sumbit-btn-prescription">
+    <form data-bind="submit: navigateToNextStep" novalidate="novalidate">
+                <button
+                    id="checkout-prescription-btn"
+                    style="width: 327px !important;font-size: 21px;height: 52px;padding: 10px 18px;border-radius: 8px;margin-top: -20px;background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);border: 1px solid #03C777 !important;text-transform: capitalize;margin-top: 20px;"
+                    data-role="opc-continue"
+                    type="submit"
+                    class="button action continue primary prescription-continue"
+                >
+                <span>Continue</span>
+                </button>
+    </form>
+</div>
+</div>
+</div>
+</li>
+
+

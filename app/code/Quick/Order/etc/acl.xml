@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+	<acl>
+		<resources>
+			<resource id="Magento_Backend::admin">
+				<resource id="Quick_Order::menu" title="Customform" sortOrder="10">
+					<resource id="Quick_Order::delete" title="Manage Customform" sortOrder="10" />
+					<resource id="Quick_Order::edit" title="Save Customform" sortOrder="10" />
+					<resource id="Quick_Order::manage" title="Delete Customform" sortOrder="20" />
+					<resource id="Quick_Order::inlineedit" title="Update Customform" sortOrder="30" />
+					<resource id="Quick_Order::massdelete" title="View Customform" sortOrder="40" />
+					<resource id="Quick_Order::massdisable" title="Save Customform" sortOrder="50" />
+					<resource id="Quick_Order::massenable" title="Delete Customform" sortOrder="60" />
+					<resource id="Quick_Order::newaction" title="Update Customform" sortOrder="70" />
+					<resource id="Quick_Order::save" title="View Customform" sortOrder="80" />
+				</resource>
+			</resource>
+		</resources>
+	</acl>
+</config>

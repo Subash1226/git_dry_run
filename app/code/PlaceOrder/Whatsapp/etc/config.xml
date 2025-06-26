@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <whatsapp_settings>
+            <general>
+                <enabled>1</enabled>
+                <api_key>YOUR_AISENSY_API_KEY</api_key>
+                <new_order_campaign_name>new_order_staff_notification</new_order_campaign_name>
+                <status_change_campaign_name>order_status_change_staff_notification</status_change_campaign_name>
+                <staff_numbers>staff1_number,staff2_number,staff3_number</staff_numbers>
+            </general>
+        </whatsapp_settings>
+    </default>
+</config>

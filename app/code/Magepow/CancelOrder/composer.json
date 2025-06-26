@@ -1,0 +1,25 @@
+{
+  "name": "magepow/cancelorder",
+  "description": "Customer Cancel Order magento2",
+  "require": {
+    "magepow/core": "^1.0.0"
+  },
+  "type": "magento2-module",
+  "license": [
+    "MIT"
+  ],
+  "authors": [
+    {
+      "name": "Shiyam Lawrence",
+      "email": "shiyam.lawrence@teanso.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Magepow\\CancelOrder\\": ""
+    },
+    "files": [
+      "registration.php"
+    ]
+  }
+}

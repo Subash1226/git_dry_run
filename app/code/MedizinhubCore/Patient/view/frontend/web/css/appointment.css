@@ -1,0 +1,329 @@
+.download-file{
+    margin-right: 10px;
+ }
+ .arrow{
+     font-size: 20px;
+     float: right;
+ }
+ .doctor-comments-header{
+     margin-top: 20px;
+     color: #063851;
+     font-family: "Source Sans Pro";
+     font-size: 17px;
+     font-weight: 600;
+     text-decoration-line: underline;
+     text-transform: capitalize;
+ }
+ .patient-detail-label{
+     color: #313739;
+     font-family: "Source Sans Pro";
+     font-size: 16px;
+     font-weight: 500;
+     text-transform: capitalize;
+ }
+ .patient-vaules{
+     color: #000;
+     font-family: "Source Sans Pro";
+     font-size: 16px;
+     font-weight: 600;
+     text-transform: capitalize;
+     padding: 0 5px;
+ }
+ .appointment-container {
+     display: flex;
+     flex-direction: column;
+     padding: 20px;
+ }
+
+ .appointment-card {
+     border: 1px solid #e5e5e5;
+     border-radius: 8px;
+     padding: 20px;
+     margin-bottom: 10px;
+     background-color: #fff;
+     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+ }
+
+ .patient-details h3 {
+     margin: 0 0 10px;
+ }
+
+ .patient-details p, .appointment-details p {
+     margin: 5px 0;
+     font-size: 16px;
+     color: #333;
+ }
+
+ .appointment-details p strong {
+     font-weight: bold;
+ }
+
+ .report-list {
+     list-style: none;
+     padding: 0;
+ }
+
+ .report-list li {
+     margin: 5px 0;
+ }
+
+ .appointment-actions {
+     float: right;
+     margin-top: -38px;
+ }
+ .comment-actions{
+     text-align: center;
+     padding: 10px 0;
+ }
+
+ .btn {
+     padding: 10px 15px;
+     border-radius: 4px;
+     cursor: pointer;
+ }
+
+ .btn.download,
+ .cancel-appointment {
+     border: 1px solid #28a745;
+     color: #28a745;
+     background: #fff;
+ }
+ .btn.view-file,
+ .retry-payment,
+ .reschedule {
+     border: 1px solid #28a745;
+     color: #fff;
+     background: #28a745;
+ }
+
+ .btn:hover {
+     opacity: 0.9;
+ }
+
+ .view-comments {
+     display: block;
+     color: #063851 !important;
+     text-decoration: none;
+     font-size: 14px;
+     float: right;
+     padding: 2px;
+ }
+ .view-comments:hover {
+     color: #063851 !important;
+     text-decoration: underline;
+ }
+ .appointment-model {
+     display: none; 
+     position: fixed; 
+     z-index: 1; 
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(0, 0, 0, 0.4) !important; 
+ }
+ .appointment-model-content {
+     background-color: #fff;
+     margin: 5% auto;
+     padding: 20px;
+     border: 1px solid #888;
+     width: 80%;
+     max-width: 400px;
+ }
+ .close {
+     color: #aaa;
+     float: right;
+     font-size: 28px;
+     font-weight: bold;
+ }
+ .close:hover,
+ .close:focus {
+     color: black;
+     text-decoration: none;
+     cursor: pointer;
+ }
+ .appointment-title {
+     color: #063851;
+     font-family: "Source Sans Pro";
+     font-size: 24px;
+     font-weight: 600;
+     margin-top: 0 !important;
+ }
+ .report-actions {
+     margin-bottom: 10px;
+ }
+
+ /* Popup container */
+ .popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: white;
+    border-radius: 10px;
+    width: 400px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+}
+
+.popup-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.popup-header img {
+    width: 150px;
+    margin-bottom: 15px;
+}
+
+.popup-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.popup-description {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.btn-reschedule {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-reschedule:hover {
+    background-color: #45a049;
+}
+
+#confirmReschedule {
+    background-color: #45a049;
+}
+
+#confirmReschedule:hover {
+    background-color: #45a049;
+}
+
+.reschedule-helptext {
+    color: #888;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 21.5px; /* 143.333% */
+    letter-spacing: -0.51px;
+}
+
+.reschdule-btn {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.reschedule-imagesection{
+    margin: 0 auto;
+    text-align: center;
+}
+
+.reschedule-image{
+    width: 45%;
+}
+
+.modal-content label {
+    color: var(--Black-font, #313739);
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.modal-content input,
+.modal-content select {
+    border-radius: 4px;
+    border: 2px solid #BCE9D6;
+}
+
+.mandatory-field{
+    color: var(--Red, #CA1A1A);
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.cancelled-appointment{
+    color: #03C777;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    border: 1px solid #03C777;
+    border-radius: 8px;
+    background: transparent;
+}
+.missed-appointment,
+.rescheduled{
+    border-radius: 5px;
+    background: #B5B5B5;
+    color: #fff;
+}
+
+ @media (max-width: 680px) {
+    .appointment-actions {
+        margin: 0;
+    }
+    button {
+        margin: 5px;
+    }
+    .appointment-model-content {
+        margin: 0;
+    }
+}

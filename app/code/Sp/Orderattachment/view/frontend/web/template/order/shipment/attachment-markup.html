@@ -1,0 +1,124 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<li id="sp-checkout" class="checkout-prescription-details" data-bind="fadeVisible: isVisible, attr: { id: stepCode }" >
+<div class="container prescription-step-checkout">
+<div class="container">
+    <div class="row">
+    <div class="prescription-title">
+        <p class="upload_prescrition-p">Upload Prescription</p>
+    <span class="req_presscription-span">Prescription required for your purchase product </span><span><img class="subheading_logo" id="StarsImg" alt="" /></span>
+    </div>
+        <div style="margin-left:-7px;" class="col-md-6">
+            <div class="sp-note col-md-12">
+                <span class="sp-note-title col-xl-1 col-sm-2 col-md-2 col-2">Note : </span>
+                <span class="sp-note-content col-xl-11 col-sm-10 col-md-10 col-10">The prescription should be clear and under 5MB in size. Orders may be cancelled if the prescription is unclear or invalid.</span>
+            </div>  
+        <div class="sp-checkout-orderattachment">
+            <div class="payment-option _collapsible opc-payment-additional order-attachments" >
+                <div class="payment-option-title field choice" data-role="title">
+                    <h2 class="test-shipment action action-toggle" style="display: none;" id="block-attachments-heading" role="heading" aria-level="2" data-bind="text: getTitle()" ></h2>
+                </div>
+                <div class="payment-option-content" >
+                    <div class="payment-option-inner">
+                        <div class="field">
+                            <div class="info" data-bind="html: getAttachmentInfo()"></div>
+                            <div class="control">
+                                <input class="input" type="file" style="display: none" data-bind="event: {change: fileUpload}" id="order-attachment"  name="order-attachment[]" />
+                                <div class="sp-attachment-drag-area" id="dragOption" data-bind="click: selectFiles, event: {dragenter: dragEnter,dragover: dragOver,drop: drop}">
+                                    <div class="checkout-prescription-content">
+                                        <span class="checkout-prescription-resctrict">Supported Format&nbsp;&nbsp;<span class="format-jpg-span">JPEG, PNG & PDF</span>
+                                        </span>
+                                        <input type="radio" checked id="DragClick" class="with_prescription" value="with_prescription" name="div-selection" data-bind="event: {change: withPrescription}">
+                                        <button id="checkout-prescription-btn" class="checkout-prescription-btn up-prescription-res"  data-bind="event: {click: withPrescription_image}">
+                                            Upload Prescription&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24" fill="none">
+                                                <path d="M2.0092 2.77051V21.5231H15.8111V2.77051H13.7127V4.63082C13.7127 4.99856 13.4236 5.2975 13.067 5.2975H4.82346C4.46778 5.2975 4.17863 4.99856 4.17863 4.63082V2.77051H2.00879H2.0092ZM10.0088 14.9889H3.73464V13.9749H10.0088V14.9889ZM14.236 18.7197H12.9562V20.0437H11.8476V18.7197H10.567V17.5736H11.8476V16.2505H12.9562V17.5736H14.236V18.7197ZM14.236 12.653H3.73464V11.639H14.236V12.653ZM14.236 10.3175H3.73464V9.30349H14.236V10.3175ZM14.236 6.96715V7.98118H3.73464V6.96715H14.236Z" fill="white"/>
+                                                <path d="M13.0674 0H4.8238C4.46812 0 4.17897 0.298517 4.17897 0.667098V1.17666H0.822557C0.462765 1.17666 0.169922 1.47857 0.169922 1.8514V22.5743C0.169922 22.9467 0.462765 23.2491 0.822557 23.2491H16.9306C17.2912 23.2491 17.5841 22.9463 17.5841 22.5743V1.8514C17.5841 1.47815 17.2912 1.17666 16.9306 1.17666H13.713V0.667098C13.713 0.298517 13.4239 0 13.0674 0ZM5.46905 1.99535H12.4226V3.96395H5.46905V1.99535ZM15.811 2.77115V21.5238H2.00913V2.77115H4.17897V4.63147C4.17897 4.9992 4.46771 5.29814 4.8238 5.29814H13.0674C13.4239 5.29814 13.713 4.9992 13.713 4.63147V2.77115H15.8114H15.811Z" fill="#616E7D"/>
+                                                <path d="M14.2347 6.96729H3.7334V7.98131H14.2347V6.96729Z" fill="#03C777"/>
+                                                <path d="M14.2347 9.3042H3.7334V10.3182H14.2347V9.3042Z" fill="#03C777"/>
+                                                <path d="M14.2347 11.6396H3.7334V12.6537H14.2347V11.6396Z" fill="#03C777"/>
+                                                <path d="M10.0076 13.9751H3.7334V14.9891H10.0076V13.9751Z" fill="#03C777"/>
+                                                <path d="M5.01444 16.3105V17.6337H3.7334V18.7794H5.01444V20.1038H6.12256V18.7794H7.40278V17.6337H6.12256V16.3105H5.01444Z" fill="#EF0101"/>
+                                                <path d="M12.4242 1.99512H5.4707V3.96372H12.4242V1.99512Z" fill="#03C777"/>
+                                              </svg>
+                                        </button>
+                                        <p id="prescription-required">*Kindly upload your prescription</p>
+                                    </div>
+                                </div>
+
+                                <!-- <div data-bind="text: myTimer"></div> -->
+                                <div id="attach-container" style="padding: 0 25px 0 10px;" class="row attachment-container" data-bind="foreach:attachmentList">
+                                    <div data-bind="attr: { rel: hash, class:'sp-width sp-attachment-row attach-'+hash}">
+                                        <div class="sp-attachment-row-content">
+                                            <div class="order-attachment-preview">
+                                                <a id="sp-attachment-remove2" class="sp-attachment-remove" title="Remove Item" data-bind="click: $parent.deleteFile.bind($parent,attachment_id,hash)" href="#"></a>
+                                                <img class="thumbnail" data-bind="attr: { src: thumbnailUrl}"/>
+                                                <div class="attachment-file">
+                                                    <div style="display: none;" class="filename" data-bind="text: path"></div>
+                                                </div>
+                                            </div>
+                                            <div class="order-attachment-content">
+                                                <textarea style="display: none;" data-bind="attr: { id: 'attachment-comment'+attachment_id, name:'attachment['+attachment_id+'][comment]'},text: comment,event: { blur: $parent.updateComment.bind($parent,attachment_id,hash,'attachment-comment'+attachment_id) }" rows="4" class="comment" placeholder="Write comment here"></textarea>
+                                                <input type="hidden" data-bind="attr: { value: attachment_id, class: attachment_class}" name="attachment-id"/>
+                                                <input type="hidden" name="attachment-hash" data-bind="attr: { value: hash, class: hash_class}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                 <button id="checkout-prescription-btns" data-bind="click: CheckOn" class="checkout-prescription-btn add-more-prescription">Add More Prescription&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24" fill="none">
+                                        <path d="M2.0092 2.77051V21.5231H15.8111V2.77051H13.7127V4.63082C13.7127 4.99856 13.4236 5.2975 13.067 5.2975H4.82346C4.46778 5.2975 4.17863 4.99856 4.17863 4.63082V2.77051H2.00879H2.0092ZM10.0088 14.9889H3.73464V13.9749H10.0088V14.9889ZM14.236 18.7197H12.9562V20.0437H11.8476V18.7197H10.567V17.5736H11.8476V16.2505H12.9562V17.5736H14.236V18.7197ZM14.236 12.653H3.73464V11.639H14.236V12.653ZM14.236 10.3175H3.73464V9.30349H14.236V10.3175ZM14.236 6.96715V7.98118H3.73464V6.96715H14.236Z" fill="white"/>
+                                        <path d="M13.0674 0H4.8238C4.46812 0 4.17897 0.298517 4.17897 0.667098V1.17666H0.822557C0.462765 1.17666 0.169922 1.47857 0.169922 1.8514V22.5743C0.169922 22.9467 0.462765 23.2491 0.822557 23.2491H16.9306C17.2912 23.2491 17.5841 22.9463 17.5841 22.5743V1.8514C17.5841 1.47815 17.2912 1.17666 16.9306 1.17666H13.713V0.667098C13.713 0.298517 13.4239 0 13.0674 0ZM5.46905 1.99535H12.4226V3.96395H5.46905V1.99535ZM15.811 2.77115V21.5238H2.00913V2.77115H4.17897V4.63147C4.17897 4.9992 4.46771 5.29814 4.8238 5.29814H13.0674C13.4239 5.29814 13.713 4.9992 13.713 4.63147V2.77115H15.8114H15.811Z" fill="#616E7D"/>
+                                        <path d="M14.2347 6.96729H3.7334V7.98131H14.2347V6.96729Z" fill="#03C777"/>
+                                        <path d="M14.2347 9.3042H3.7334V10.3182H14.2347V9.3042Z" fill="#03C777"/>
+                                        <path d="M14.2347 11.6396H3.7334V12.6537H14.2347V11.6396Z" fill="#03C777"/>
+                                        <path d="M10.0076 13.9751H3.7334V14.9891H10.0076V13.9751Z" fill="#03C777"/>
+                                        <path d="M5.01444 16.3105V17.6337H3.7334V18.7794H5.01444V20.1038H6.12256V18.7794H7.40278V17.6337H6.12256V16.3105H5.01444Z" fill="#EF0101"/>
+                                        <path d="M12.4242 1.99512H5.4707V3.96372H12.4242V1.99512Z" fill="#03C777"/>
+                                      </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="prescription-consult">
+            <a href="/doctors">
+                <p class="donot_prescription_p">Don’t have prescription? Consult Doctor
+                    <input type="radio" class="without_prescription" name="div-selection" data-bind="event: {change: withOutPrescription}">
+                </p>
+                <p class="checkout-prescription-note">Book Doctor online consult with <span class="off_span_per">25% OFF</span></p>
+                <button class="book_consult_btn">Consult Doctor Now</button>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="line-check"></div>
+    </div>
+    <div class="col-md-5">
+        <div class="prescription-refrence-div" >
+            <p class="upload_prescrition-p prescription-refrence">Reference Prescription</p>
+            <img id="myImage" alt="" />
+        </div>
+    </div>
+</div>
+<div class="sumbit-btn-prescription">
+    <form data-bind="submit: navigateToNextStep" novalidate="novalidate">
+                <button id="checkout-prescription-btn" data-role="opc-continue" type="submit" class="button action continue primary prescription-continue">
+                <span>Continue</span>
+                </button>
+    </form>
+</div>
+</div>
+</div>
+</li>
+<script>
+function FeeAdd() {
+    if (document.getElementById('consult-fee').checked) {
+         document.getElementById('dragOption').style.cursor = 'unset';
+    } else {
+        document.getElementById('dragOption').style.cursor = 'pointer';
+    }
+};
+</script>

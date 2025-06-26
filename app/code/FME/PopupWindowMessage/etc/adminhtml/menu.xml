@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!-- /**
+ * FME Extensions
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the fmeextensions.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.fmeextensions.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    FME
+ * @package     FME_PopupWindowMessage
+ * @author      Dara Baig  
+ * @copyright   Copyright (c) 2018 FME (http://fmeextensions.com/)
+ * @license     https://fmeextensions.com/LICENSE.txt
+ */ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <update id="FME_Extensions::fmeextensions"
+             title="FME Extensions" translate="title" 
+             module="FME_PopupWindowMessage" sortOrder="30"
+             resource="FME_Extensions::fmeextensions" />
+
+        <add id="FME_PopupWindowMessage::manage_popup_manager"
+             title="Popup Manager" translate="title" 
+        	 module="FME_PopupWindowMessage" sortOrder="1" 
+        	 parent="FME_Extensions::fmeextensions"        	
+        	 resource="FME_PopupWindowMessage::main_menu" />
+
+        <add id="FME_PopupWindowMessage::manage_popup"
+             title="Manage Popup Window Message" 
+             module="FME_PopupWindowMessage" sortOrder="2" 
+             parent="FME_PopupWindowMessage::manage_popup_manager" 
+             action="popupwindowmessage/popup/"  
+             resource="FME_PopupWindowMessage::manage_popup" />         
+
+        <add id="FME_PopupWindowMessage::configuration"
+             title="Popup Window Message Configurations"
+             module="FME_PopupWindowMessage" sortOrder="5" 
+             parent="FME_PopupWindowMessage::manage_popup_manager" 
+             action="adminhtml/system_config/edit/section/popup"
+             resource="FME_PopupWindowMessage::configuration" /> 
+    </menu>
+</config>
+
+ 

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="MedizinhubCore\Lab\Controller\LabCart\AddToCart">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session</argument>
+        </arguments>
+    </type>
+    
+    <preference for="MedizinhubCore\Lab\Api\LabCartManagementInterface" type="MedizinhubCore\Lab\Model\LabCartManagement" />
+    <preference for="MedizinhubCore\Lab\Api\Data\LabCartInterface" type="MedizinhubCore\Lab\Model\Data\LabCart" />
+    <preference for="MedizinhubCore\Lab\Api\Data\LabResponseInterface" 
+                type="MedizinhubCore\Lab\Model\LabResponse" />
+
+    <type name="MedizinhubCore\Lab\Model\LabCartManagement">
+        <arguments>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
+        </arguments>
+    </type>
+
+    <type name="MedizinhubCore\Lab\Model\LabCartManagement">
+        <arguments>
+            <argument name="userContext" xsi:type="object">Magento\Authorization\Model\CompositeUserContext</argument>
+        </arguments>
+    </type>
+</config>   

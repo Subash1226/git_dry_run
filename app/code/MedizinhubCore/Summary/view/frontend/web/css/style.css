@@ -1,0 +1,340 @@
+.checkout-cart-index .summary-table .mark {
+    background-color: transparent !important;
+}
+payment-summary
+.checkout-index-index .payment-summary .mark {
+    background-color: transparent !important;
+}
+
+.checkout-cart-index .summary-table .totals th {
+    color: #263238;
+    font-family: "Source Sans Pro";
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.16px;
+    padding: 6px 0px;
+}
+
+.checkout-index-index .payment-summary .totals th {
+    color: #263238;
+    font-family: "Source Sans Pro";
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.16px;
+    padding: 6px 0px;
+}
+
+.checkout-cart-index .summary-table .totals .amount {
+    color: #263238;
+    font-family: "Source Sans Pro";
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.16px;
+    padding: 6px;
+    text-align: right;
+}
+
+.checkout-index-index .payment-summary .totals .amount {
+    color: #263238;
+    font-family: "Source Sans Pro";
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.16px;
+    padding: 6px;
+    text-align: right;
+}
+
+.checkout-cart-index .summary-table .sub .mark {
+    color: #066E92 !important;
+    font-weight: 500 !important;
+}
+
+.checkout-index-index .payment-summary .sub .mark {
+    color: #066E92 !important;
+    font-weight: 500 !important;
+}
+
+.checkout-cart-index .summary-table .sub .price {
+    color: #066E92 !important;
+    font-weight: 500 !important;
+}
+
+.checkout-index-index .payment-summary .sub .price {
+    color: #066E92 !important;
+    font-weight: 500 !important;
+}
+
+.checkout-cart-index .summary-table .sub .svg-price-summary path {
+    fill: #066E92 !important;
+}
+
+.checkout-index-index .payment-summary .sub .svg-price-summary path {
+    fill: #066E92 !important;
+}
+
+.checkout-cart-index .summary-table .payable .svg-price-summary path {
+    fill: #066E92 !important;
+}
+
+.checkout-index-index .payment-summary .payable .svg-price-summary path {
+    fill: #066E92 !important;
+}
+
+.checkout-cart-index .summary-table .dashed-line-summary {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='323' height='3' viewBox='0 0 323 2' fill='none'%3E%3Cpath d='M0 1H323' stroke='%2301B46B' stroke-dasharray='3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;
+    top: 4px;  
+}
+
+.checkout-cart-index .summary-table .dashed-line-summary th{
+    padding: 6px 0px !important;
+}
+
+.checkout-cart-index .summary-table .dashed-line-summary td{
+    padding: 6px 0px !important;
+}
+
+.checkout-cart-index .summary-table .payable-line-summary {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='35' height='2' viewBox='0 0 323 2' fill='none'%3E%3Cpath d='M0 1H323' stroke='%2301B46B'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.shipping-free {
+    color: #01AA65 !important;
+    font-family: "Source Sans Pro";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.2px;
+}
+
+.svg-price-summary {
+    margin-top: -3px;
+}
+
+.checkout-cart-index .table-wrapper .payable th strong {
+    color: #00739B;
+    font-family:Source Sans Pro;
+    font-size: 20px!important;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.checkout-index-index .payment-summary .payable th strong {
+    color: #00739B;
+    font-family:Source Sans Pro;
+    font-size: 20px!important;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.checkout-cart-index .table-wrapper .payable td strong span {
+    color: #00739B !important;
+    font-family:Source Sans Pro;
+    font-size: 20px!important;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.checkout-index-index .payment-summary .payable td strong span {
+    color: #00739B !important;
+    font-family:Source Sans Pro;
+    font-size: 20px!important;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.checkout-cart-index .table-wrapper .payable .svg-price-summary {
+    margin-top: -5px;
+}
+
+.checkout-index-index .payment-summary .payable .svg-price-summary {
+    margin-top: -5px;
+}
+
+.abs-sidebar-totals .grand .mark, .cart-totals .grand .mark, .opc-block-summary .table-totals .grand .mark{
+    border: none;
+}
+
+.abs-sidebar-totals .grand .mark, .cart-totals .grand .mark, .opc-block-summary .table-totals .grand .amount{
+    border: none;
+}
+
+.checkout-index-index .payment-summary .dashed-line-summary {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='323' height='3' viewBox='0 0 323 2' fill='none'%3E%3Cpath d='M0 1H323' stroke='%2301B46B' stroke-dasharray='3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;
+    top: 4px;
+}
+
+.checkout-index-index .payment-summary .payable-line-summary {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='323' height='3' viewBox='0 0 323 2' fill='none'%3E%3Cpath d='M0 1H323' stroke='%2301B46B'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;
+    top: 4px;
+}
+
+@media only screen and (min-width: 767px) and (max-width: 992px) {
+    .checkout-cart-index .summary-table .totals th {
+        font-size: 14px;
+        padding: 3px 0px;
+    }
+    
+    .checkout-cart-index .summary-table .totals .amount {
+        font-size: 14px;
+        padding: 3px;
+    }
+
+    .checkout-cart-index .table-wrapper .payable th strong {
+        font-size: 15px !important;
+    }
+    
+    .checkout-cart-index .table-wrapper .payable td strong span {
+        font-size: 16px !important;
+    }
+
+    .svg-price-summary {
+        margin-top: -1px;
+        width: 14px;
+        height: 14px;
+        margin-left: -2px;
+    }
+
+    .checkout-cart-index .payment-summary .payable .svg-price-summary {
+        margin-top: -3px !important;
+        width: 17px !important;
+        height: 17px !important;
+    }
+    
+    .checkout-index-index .payment-summary .totals th {
+        font-size: 14px;
+    }
+    
+    .checkout-index-index .payment-summary .totals .amount {
+        font-size: 14px;
+    }
+
+    .checkout-index-index .payment-summary .payable th strong {
+        font-size: 15px !important;
+    }
+    
+    .checkout-index-index .payment-summary .payable td strong span {
+        font-size: 16px !important;
+    }
+
+    .svg-price-summary {
+        margin-top: -1px;
+        width: 14px;
+        height: 14px;
+        margin-left: -2px;
+    }
+
+    .checkout-index-index .payment-summary .payable .svg-price-summary {
+        margin-top: -3px !important;
+        width: 17px !important;
+        height: 17px !important;
+    }
+}
+
+@media only screen and (max-width: 766.98px) {
+    .checkout-cart-index .summary-table{
+        width: 90%;
+    }  
+}
+
+@media only screen and (max-width: 639px) {
+    .checkout-cart-index .summary-table{
+        width: 86%;
+    }  
+}
+
+@media only screen and (min-width: 480px) and (max-width: 766.98px) {
+    .checkout-cart-index .cart-summary .checkout-methods-items .action.primary.checkout{
+        width: 50%;
+    }
+
+    .checkout-cart-index .summary-table .payable-line-summary {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='35' height='1' viewBox='0 0 323 2' fill='none'%3E%3Cpath d='M0 1H323' stroke='%2301B46B'/%3E%3C/svg%3E");
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-cart-index .summary-table{
+        width: 86.5%;
+        margin-left: 22px;
+    }
+
+    .checkout-cart-index .summary-table .totals th {
+        font-size: 14px;
+        padding: 3px 0px;
+    }
+    
+    .checkout-cart-index .summary-table .totals .amount {
+        font-size: 14px;
+        padding: 3px;
+    }
+
+    .checkout-cart-index .table-wrapper .payable th strong {
+        font-size: 17px !important;
+    }
+    
+    .checkout-cart-index .table-wrapper .payable td strong span {
+        font-size: 17px !important;
+    }
+
+    .svg-price-summary {
+        margin-top: -1px;
+        width: 14px;
+        height: 14px;
+        margin-left: -2px;
+    }
+
+    .checkout-cart-index .payment-summary .payable .svg-price-summary {
+        margin-top: -3px !important;
+        width: 17px !important;
+        height: 17px !important;
+    }
+
+    .checkout-index-index .payment-summary .totals th {
+        font-size: 14px;
+    }
+    
+    .checkout-index-index .payment-summary .totals .amount {
+        font-size: 14px;
+    }
+
+    .checkout-index-index .payment-summary .payable th strong {
+        font-size: 17px !important;
+    }
+    
+    .checkout-index-index .payment-summary .payable td strong span {
+        font-size: 17px !important;
+    }
+
+    .svg-price-summary {
+        margin-top: -1px;
+        width: 14px;
+        height: 14px;
+        margin-left: -2px;
+    }
+
+    .checkout-index-index .payment-summary .payable .svg-price-summary {
+        margin-top: -3px !important;
+        width: 17px !important;
+        height: 17px !important;
+    }
+}

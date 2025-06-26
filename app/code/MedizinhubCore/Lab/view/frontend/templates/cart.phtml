@@ -1,0 +1,205 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$customerId = $customerSession->isLoggedIn() ? $customerSession->getCustomerId() : null;
+$storeManager = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+$mediaBaseUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+$healthPackageDetails = null;
+$totalMRP = 0;
+$totalDiscount = 0;
+$mediaUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+if ($customerId) {
+    $connection = $objectManager->get(\Magento\Framework\App\ResourceConnection::class)->getConnection();
+    $select = $connection->select()
+        ->from(['lc' => 'labcart'], ['test_name'])
+        ->where('lc.customer_id = ?', $customerId)
+        ->where('lc.status = ?', 1);
+    $testNames = $connection->fetchCol($select);
+    if (!empty($testNames)) {
+        $cartItems = [];
+        foreach ($testNames as $testName) {
+            $selectHealthPackage = $connection->select()
+                ->from(['hp' => 'health_package'], ['id', 'package_name', 'price', 'special_price', 'description', 'importance', 'age', 'gender', 'blood_group', 'fasting_required', 'image'])
+                ->where('hp.package_name = ?', $testName);
+            $healthPackageDetails = $connection->fetchRow($selectHealthPackage);
+            if ($healthPackageDetails) {
+                $originalPrice = floatval($healthPackageDetails['price']);
+                $specialPrice = floatval($healthPackageDetails['special_price']);
+                $discountPercentage = round((($originalPrice - $specialPrice) / $originalPrice) * 100);
+                $image = $healthPackageDetails['image'];
+                $id = $healthPackageDetails['id'];
+                $cartItems[] = [
+                    'name' => $healthPackageDetails['package_name'],
+                    'original_price' => $originalPrice,
+                    'special_price' => $specialPrice,
+                    'discount_percentage' => $discountPercentage,
+                    'image' => $image,
+                    'id' => $id
+                ];
+                $totalMRP += $originalPrice;
+                $totalDiscount += ($originalPrice - $specialPrice);
+            }
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="mb-4 labpackage-cart">My Cart</h1>
+        <p class="labpackage-cart-sub">Click on Proceed to book lab test</p>
+        <div class="row">
+            <div class="col-md-8 mb-4">
+                <div class="row">
+                    <?php if (!empty($cartItems)): ?>
+                        <?php foreach ($cartItems as $item): ?>
+                            <div class="col-md-6 mb-3">
+                                <div class="package-item">
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-3 package-item-images">
+                                            <img class="test-item-image" src="<?php echo $mediaUrl . $item['image'] ?>" alt="Test Image">
+                                        </div>
+                                        <div class="package-item-info">
+                                        <a href="<?= $block->getUrl('lab-test/package/index', ['id' => $item['id']]) ?>" class="labtest-name">   <h5 class="package-item-title test-name-truncate"><?php echo htmlspecialchars($item['name']); ?></h5>
+                                            <p class="package-item-discount"><?php echo $item['discount_percentage']; ?>% OFF</p>
+                                            <p class="package-item-price">₹ <?php echo number_format($item['special_price'], 2); ?> <span class="package-old-price">₹ <?php echo number_format($item['original_price'], 2); ?></span></p>
+                                            </a>
+                                        </div>
+                                        <p class="remove-item" data-test-name="<?php echo htmlspecialchars($item['name']); ?>"> <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                <path d="M18.1625 8.41223L17.375 21.181C17.3562 21.5747 17.0188 21.9122 16.625 21.9122H8.375C7.98125 21.9122 7.64375 21.5747 7.625 21.181L6.8375 8.41223H6.0875L6.875 21.2372C6.93125 22.0247 7.5875 22.6622 8.375 22.6622H16.625C17.4125 22.6622 18.0688 22.0247 18.125 21.2372L18.9125 8.41223H18.1625ZM19.625 5.03723H5.375C4.9625 5.03723 4.625 5.37473 4.625 5.78723V7.28723C4.625 7.69973 4.9625 8.03723 5.375 8.03723H19.625C20.0375 8.03723 20.375 7.69973 20.375 7.28723V5.78723C20.375 5.37473 20.0375 5.03723 19.625 5.03723ZM19.625 7.28723H5.375V5.78723H19.625V7.28723Z" fill="#00739B" />
+                                                <path d="M12.6876 20.356C12.5751 20.356 12.5001 20.281 12.5001 20.1685V9.34973C12.5001 9.23723 12.5751 9.16223 12.6876 9.16223C12.8001 9.16223 12.8751 9.23723 12.8751 9.34973V20.1685C12.8751 20.2622 12.8001 20.356 12.6876 20.356ZM15.4626 20.356C15.3501 20.356 15.2751 20.2622 15.2751 20.1685L15.6876 9.34973C15.6876 9.23723 15.7813 9.16223 15.8751 9.16223C15.9876 9.16223 16.0626 9.25598 16.0626 9.34973L15.6501 20.1685C15.6501 20.2622 15.5751 20.356 15.4626 20.356ZM9.81885 20.356C9.7251 20.356 9.63135 20.281 9.63135 20.1685L9.1626 9.34973C9.1626 9.23723 9.2376 9.16223 9.3501 9.16223C9.44385 9.16223 9.5376 9.23723 9.5376 9.34973L10.0063 20.1685C10.0063 20.2622 9.93135 20.3372 9.81885 20.356Z" fill="#3B97D3" />
+                                                <path d="M10.4375 4.66223V4.28723C10.4375 4.08098 10.6062 3.91223 10.8125 3.91223H14.5625C14.7688 3.91223 14.9375 4.08098 14.9375 4.28723V4.66223H15.6875V4.28723C15.6875 3.66848 15.1813 3.16223 14.5625 3.16223H10.8125C10.1938 3.16223 9.6875 3.66848 9.6875 4.28723V4.66223H10.4375Z" fill="#00739B" />
+                                            </svg></p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="col-12">
+                            <div class="alert alert-info">No items in your cart.</div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pricing-details">
+                    <p class="price-header">Pricing Details</p>
+                    <h4 class="fee-text">Total MRP <span class="home-visit-fee" id="doctor-fee">₹ <?php echo number_format($totalMRP, 2); ?></span></h4>
+                    <h4 class="fee-text">Discount on MRP<span class="home-visit-fee" id="discount">- ₹ <?php echo number_format($totalDiscount, 2); ?></span></h4>
+                    <hr class="pricing-line">
+                    <h4 class="total-fee">Total Amount to Pay <span class="home-visit-fee" id="total-amount">₹ <?php echo number_format($totalMRP - $totalDiscount, 2); ?></span></h4>
+                    <button onclick="ProceedPackage()" class="package-btn"> Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            $('.remove-item').click(function() {
+                const testName = $(this).data('test-name');
+                const $button = $(this);
+                if (confirm('Are you sure you want to remove this item?')) {
+                    $.ajax({
+                        url: '<?php echo $this->getUrl("lab-test/index/delete"); ?>',
+                        type: 'POST',
+                        showLoader: true,
+                        data: {
+                            test_name: testName
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $button.closest('.col-md-6').remove();
+                                location.reload();
+                                if ($('.col-md-6').length === 0) {
+                                    $('.cart-container').html('<p>No items in your cart</p>');
+                                }
+                            } else {}
+                        },
+                        error: function() {
+                            alert('An error occurred while trying to remove the item.');
+                        }
+                    });
+                }
+            });
+        });
+
+        function fetchLabCartTests(callback) {
+            jQuery.ajax({
+                url: '/lab-test/labcart/gettests',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const testNames = response.test_names;
+                        callback(testNames);
+                    } else {
+                        console.error('Error:', response.message);
+                        callback([]);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                    callback([]);
+                }
+            });
+        }
+
+        function ProceedPackage() {
+            const packagePrice = document.getElementById('doctor-fee').textContent.replace(/[^0-9.]/g, '');
+            const packageDiscount = document.getElementById('discount').textContent.replace(/[^0-9.]/g, '');
+            const packageAmount = document.getElementById('total-amount').textContent.replace(/[^0-9.]/g, '');
+            sessionStorage.setItem('PackagePrice', packagePrice);
+            sessionStorage.setItem('PackageDiscount', packageDiscount);
+            sessionStorage.setItem('PackageAmount', packageAmount);
+            fetchLabCartTests(function(testNames) {
+                sessionStorage.setItem('Packages', JSON.stringify(testNames));
+                const packagesArray = testNames || [];
+                if (
+                    packagesArray.length === 0 ||
+                    packagePrice === "0.00" ||
+                    packageDiscount === "0.00" ||
+                    packageAmount === "0.00"
+                ) {
+                    alert("Please add valid package details before proceeding.");
+                    return;
+                }
+                window.location.href = "/sample-collection";
+            });
+        }
+        jQuery(document).ready(function($) {
+            console.log('Document is ready.');
+        });
+
+        const testNames = JSON.parse(sessionStorage.getItem('Packages') || '[]');
+        if (Array.isArray(testNames)) {
+            const testNamesString = testNames.join(',');
+            console.log(testNamesString)
+            formData.append('test_name', testNamesString);
+        } else {
+            console.error('TestNames is not a valid array');
+        }
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const testNameElements = document.querySelectorAll('.test-name-truncate');
+    testNameElements.forEach(function(element) {
+        const fullText = element.textContent.trim();
+        if (fullText.length > 20) {
+            element.textContent = fullText.substring(0, 20) + '...';
+            element.setAttribute('title', fullText);
+        }
+    });
+});
+</script>
+</body>
+</html>

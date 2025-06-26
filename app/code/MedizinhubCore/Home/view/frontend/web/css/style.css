@@ -1,0 +1,459 @@
+/* Base Styles */
+:root {
+  /* Color variables */
+  --primary-green: #03C777;
+  --dark-green: #01A462;
+  --primary-text: #063851;
+  --secondary-text: #859ca8;
+  --link-color: #00739B;
+  --white: #FFF;
+  --black: #000;
+  --grey: #797979;
+
+  /* Font family variables */
+  --font-source: 'Source Sans Pro', sans-serif;
+  --font-ubuntu: 'Ubuntu', sans-serif;
+  --font-montserrat: Montserrat, sans-serif;
+  --font-reem: 'Reem Kufi', sans-serif;
+
+  /* Common dimensions */
+  --border-radius-sm: 4.347px;
+  --border-radius: 8px;
+  --btn-height: 40px;
+  --btn-width: 107px;
+}
+
+/* Common Button Styles */
+.book-lab-btn-base {
+  height: var(--btn-height);
+  border-radius: var(--border-radius-sm);
+  color: var(--white);
+  font-family: var(--font-montserrat);
+  font-size: 14px;
+  font-weight: 600;
+  width: var(--btn-width);
+  margin-top: 15px;
+}
+
+/* Spacing utilities */
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-40 {
+    margin-top: 40px;
+}
+
+.my-40 {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.ms-n22 {
+    margin-left: -22px;
+}
+
+/* Order Sections */
+.order-prescription {
+  background-color: rgba(251, 231, 208, 1);
+  padding: 20px;
+  border-radius: var(--border-radius);
+}
+
+.order-doctor {
+  background-color: rgba(204, 255, 240, 1);
+  padding: 20px;
+  border-radius: var(--border-radius);
+}
+
+/* Button Variations */
+.routine-btn, .routine-btn:hover {
+  background: #062B37;
+}
+
+.women-book-btn, .women-book-btn:hover {
+  background: #3F0E36;
+}
+
+.men-book-btn, .men-book-btn:hover {
+  background: #6B0007;
+}
+
+.senior-book-btn, .senior-book-btn:hover {
+  background: #2C1254;
+}
+
+.fever-book-btn, .fever-book-btn:hover {
+  background: #054146;
+}
+
+.diabetics-btn, .diabetics-btn:hover {
+  background: #934606;
+}
+
+.thyroid-btn, .thyroid-btn:hover {
+  background: #0A264D;
+}
+
+.fullbody-btn, .fullbody-btn:hover {
+  background: #5A5507;
+}
+
+/* Typography */
+.today-deals-title, .home-today-deals, .section-title, .deal-title {
+  color: var(--primary-text);
+  font-family: var(--font-source);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.today-deals-discount, .cms-deals-sub, .section-sub-title, .deal-description {
+  color: var(--secondary-text);
+  font-family: var(--font-ubuntu);
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.view-all-link, .today-deals-view {
+  text-decoration: none;
+  float: right;
+  font-weight: 600;
+  color: var(--link-color) !important;
+  font-size: 14px;
+  font-family: var(--font-source);
+}
+
+/* Product Card */
+.product-card, .product-slide {
+  border-radius: 9.404px;
+  border: 1px solid var(--primary-green);
+  box-shadow: rgba(0, 0, 0, 0.05) 0 0 0 1px, rgb(209, 213, 219) 0 0 0 1px inset;
+  background: var(--white);
+  height: 336px !important;
+  border-radius: var(--border-radius);
+  padding: 10px;
+}
+
+.discount-percentage, .deals-discount-percentage {
+  position: relative;
+  display: inline-block;
+  margin-left: -11px;
+}
+
+.product-image-container {
+  width: 100%;
+  text-align: center;
+  height: 133px;
+  margin: -10px 0 0 0;
+}
+
+.product-image {
+  object-fit: contain;
+  height: 133px;
+}
+
+.product-details, .deals-product-details {
+  margin-top: 5px;
+  padding: 0 10px;
+}
+
+.product-name {
+  height: 41px;
+  margin-bottom: 15px;
+}
+
+.product-li-link {
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-source);
+  color: var(--black) !important;
+}
+
+/* Pricing */
+.product-price, .deals-old-price {
+  margin-bottom: -6px;
+}
+
+.regular-price, .deals-regular-price {
+  color: var(--grey);
+  font-family: var(--font-source);
+  font-size: 16px;
+  font-weight: 400;
+  text-decoration: line-through;
+}
+
+.offer-price, .deals-final-price-link {
+  text-decoration: none;
+  color: var(--black) !important;
+  font-family: var(--font-source);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.deals-final-price {
+  color: #313739;
+  font-family: var(--font-source);
+  font-size: 24px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn, .add-to-cart-btn:hover {
+  margin-top: 10px;
+  width: 100%;
+  height: 44px;
+  padding: 10px 18px;
+  border-radius: var(--border-radius);
+  background: linear-gradient(94deg, var(--primary-green) 56.99%, var(--dark-green) 99.73%);
+  color: var(--white);
+  font-family: var(--font-source);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Quantity Controls */
+.quantity-container {
+  display: none;
+  margin-top: 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid #01A964;
+  padding: 6px 33px;
+}
+
+.decrement-btn,
+.increment-btn {
+  fill: white;
+  cursor: pointer;
+}
+
+.quantity-value {
+  padding: 0 15px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-source);
+}
+
+/* Book My Button */
+.book-my-btn, .book-my-btn:hover {
+  background-color: var(--primary-green);
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--white);
+  height: 44px;
+}
+
+/* Grow Effect */
+.grow {
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.grow:hover {
+  transform: scale(1.1);
+}
+
+/* Main Content */
+.home-index-index #maincontent {
+  display: none !important;
+}
+
+.scroll-inner {
+  width: 100%;
+  text-align: center;
+}
+
+/* Prescription Content */
+.order-prescription-content {
+  color: #003827;
+  font-family: var(--font-source);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.order-offer-prescription {
+  color: #004D36;
+  font-family: var(--font-source);
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: -10px;
+}
+
+/* Swiper and Deal Styles */
+.swiper-wrapper {
+  margin: 10px 0;
+}
+
+.care-device {
+  margin-top: 40px;
+}
+
+.deal-info {
+  padding: 20px 88px 10px 20px;
+  color: var(--white);
+  font-family: var(--font-reem);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+/* Test Package Base Styles */
+.test-package-base {
+  font-family: var(--font-reem);
+  font-size: 22px;
+  line-height: 34px;
+  font-weight: 600;
+}
+
+/* Test Package Variations */
+.test-package-name, .test-package-off {
+  color: #5a5507;
+}
+
+.test-package-name-diabetics, .test-package-off-diabetics {
+  color: #934606;
+}
+
+.test-package-name-full, .test-package-off-full {
+  color: #5a5507;
+}
+
+.test-package-name-thyroid, .test-package-off-thyroid {
+  color: #0a264d;
+}
+
+.test-package-name-routine, .test-package-off-routine {
+  color: #062b37;
+}
+
+.test-package-name-women, .test-package-off-women {
+  color: #3f0e36;
+}
+
+.test-package-name-men, .test-package-off-men {
+  color: #6b0007;
+}
+
+.test-package-name-senior, .test-package-off-senior {
+  color: #2c1254;
+}
+
+.test-package-name-fever, .test-package-off-fever {
+  color: #054146;
+}
+
+/* Product Name */
+.deals-product-name {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  font-family: var(--font-source) !important;
+  text-decoration: none;
+  text-transform: capitalize !important;
+}
+
+/* Background Styles - Combined */
+.Senior-pack, .body-bg, .bp-bg, .breathing-bg, .diabetics-bg, .diabetics-pack,
+.fever-bg, .fever-pack, .fullbody, .mens-pack, .preganacy-bg, .routine-pack,
+.thyroid-pack, .womens-pack {
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+}
+
+/* Miscellaneous */
+.deco-lab {
+  text-decoration: none !important;
+}
+
+.test-package-off-diabetics, .test-package-off-fever, .test-package-off-full,
+.test-package-off-men, .test-package-off-routine, .test-package-off-senior,
+.test-package-off-thyroid, .test-package-off-women {
+  font-size: 18px !important;
+}
+
+.combo-category{
+    margin: 40px 0px;
+}
+
+.combo-lab-row{
+    margin-left: -22px;
+}
+
+.combo-lab-row-2{
+    margin-left: -22px;
+    margin-top: 20px;
+}
+
+/* Responsive Styles - Mobile First */
+@media screen and (max-width: 768px) {
+  .swiper-container {
+    width: 100%;
+  }
+
+  .swiper-slide {
+    width: calc(50% - 20px);
+    margin-right: 10px;
+  }
+
+  .container.today-deals .row {
+    flex-wrap: wrap;
+  }
+
+  .quantity-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .order-doctor {
+    margin-top: 2rem;
+  }
+
+  .lab-mt {
+    margin-top: 2rem;
+    margin-left: 3rem;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .swiper-slide {
+    width: calc(33.33% - 20px);
+    margin-right: 10px;
+  }
+
+  .category_img {
+    width: 90% !important;
+  }
+
+  .lab-mt-md {
+    margin-top: 2rem;
+  }
+
+  .order-prescription-content {
+    font-size: 19px !important;
+  }
+
+  .order-offer-prescription {
+    font-size: 15px !important;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .swiper-slide {
+    width: calc(16.66% - 20px);
+    margin-right: 10px;
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+  .order-prescription-content {
+    font-size: 20px !important;
+  }
+
+  .order-offer-prescription {
+    font-size: 13px !important;
+  }
+}

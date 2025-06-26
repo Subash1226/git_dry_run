@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="snowdog_custom_description" resource="default" engine="innodb" comment="Product Custom Description">
+        <column xsi:type="smallint" name="entity_id" padding="6" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" comment="Product Id"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Description Title"/>
+        <column xsi:type="smallint" name="expiry_status_option" padding="6" unsigned="false" nullable="false" default="0" comment="Custom Status"/>
+        <column xsi:type="varchar" name="expiry_status" nullable="true" comment="Expiry Status"/>
+        <column xsi:type="varchar" name="expiry_date" nullable="true" comment="Expiry Date"/>
+        <column xsi:type="decimal" name="purchase_rate" scale="4" precision="12" unsigned="false" nullable="true" comment="Purchase Rate"/>
+        <column xsi:type="decimal" name="price" scale="2" precision="12" unsigned="false" nullable="false" comment="Description"/>
+        <column xsi:type="decimal" name="special_price" scale="4" precision="12" unsigned="false" nullable="true" default="0.0000" comment="Special Price"/>
+        <column xsi:type="varchar" name="special_price_from_date" nullable="true" comment="Special Price From Date"/>
+        <column xsi:type="varchar" name="special_price_to_date" nullable="true" comment="Special Price To Date"/>
+        <column xsi:type="int" name="purchase_quantity" padding="10" unsigned="true" nullable="true" comment="Purchase Quantity"/>
+        <column xsi:type="int" name="quantity" padding="10" unsigned="true" nullable="true" comment="Quantity"/>
+        <column xsi:type="text" name="comments" nullable="false" comment="Comments"/>
+        <column xsi:type="varchar" name="image" nullable="false" length="400" comment="Image"/>
+        <column xsi:type="smallint" name="position" padding="6" unsigned="false" nullable="false" default="0" comment="Position"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="SNOWDOG_CUSTOM_DESCRIPTION_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID" 
+                    table="snowdog_custom_description" column="product_id" 
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id" 
+                    onDelete="CASCADE"/>
+        <index referenceId="SNOWDOG_CUSTOM_DESCRIPTION_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+    </table>
+</schema>

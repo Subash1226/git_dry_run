@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+	<argument name="data" xsi:type="array">
+		<item name="js_config" xsi:type="array">
+			<item name="provider" xsi:type="string">
+				patients_appointments_listing.patients_appointments_listing_data_source
+			</item>
+			<item name="deps" xsi:type="array">
+				<item name="0" xsi:type="string">
+					patients_appointments_listing.patients_appointments_listing_data_source
+				</item>
+			</item>
+		</item>
+		<item name="spinner" xsi:type="string">
+			appointment_column
+		</item>
+		<item name="buttons" xsi:type="array">
+			<item name="add" xsi:type="array">
+				<item name="name" xsi:type="string">
+					add
+				</item>
+				<item name="label" xsi:type="string">
+					Add Appointment
+				</item>
+				<item name="class" xsi:type="string">
+					primary
+				</item>
+				<item name="url" xsi:type="string">
+					patient/appointments/add
+				</item>
+			</item>
+		</item>
+	</argument>
+	<dataSource name="patients_appointments_listing_data_source">
+		<argument name="dataProvider" xsi:type="configurableObject">
+			<argument name="class" xsi:type="string">
+				MedizinhubCore\Patient\Ui\DataProvider\Appointments\ListingAppointmentDataProvider
+			</argument>
+			<argument name="name" xsi:type="string">
+				patients_appointments_listing_data_source
+			</argument>
+			<argument name="primaryFieldName" xsi:type="string">
+				appointment_id
+			</argument>
+			<argument name="requestFieldName" xsi:type="string">
+				appointment_id
+			</argument>
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="update_url" xsi:type="url" path="mui/index/render" />
+					<item name="storageConfig" xsi:type="array">
+						<item name="indexField" xsi:type="string">
+							appointment_id
+						</item>
+					</item>
+				</item>
+			</argument>
+		</argument>
+		<argument name="data" xsi:type="array">
+			<item name="js_config" xsi:type="array">
+				<item name="component" xsi:type="string">
+					Magento_Ui/js/grid/provider
+				</item>
+			</item>
+		</argument>
+	</dataSource>
+	<listingToolbar name="listing_top">
+		<bookmark name="bookmarks" />
+		<columnsControls name="columns_controls" />
+		<massaction name="listing_massaction">
+			<argument name="data" xsi:type="array">
+				<item name="data" xsi:type="array">
+					<item name="selectProvider" xsi:type="string">
+						patients_appointments_listing.patients_appointments_listing.appointment_column.ids
+					</item>
+					<item name="displayArea" xsi:type="string">
+						bottom
+					</item>
+					<item name="component" xsi:type="string">
+						Magento_Ui/js/grid/tree-massactions
+					</item>
+					<item name="indexField" xsi:type="string">
+						appointment_id
+					</item>
+				</item>
+			</argument>
+			<action name="delete">
+				<argument name="data" xsi:type="array">
+					<item name="config" xsi:type="array">
+						<item name="type" xsi:type="string">
+							delete
+						</item>
+						<item name="label" xsi:type="string" translate="true">
+							Delete
+						</item>
+						<item name="url" xsi:type="url" path="patient/appointments/massDelete" />
+						<item name="confirm" xsi:type="array">
+							<item name="title" xsi:type="string" translate="true">
+								Delete items
+							</item>
+							<item name="message" xsi:type="string" translate="true">
+								Are you sure you want to delete selected items?
+							</item>
+						</item>
+					</item>
+				</argument>
+			</action>
+		</massaction>
+		<filters name="listing_filters">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="templates" xsi:type="array">
+						<item name="filters" xsi:type="array">
+							<item name="select" xsi:type="array">
+								<item name="component" xsi:type="string">
+									Magento_Ui/js/form/element/ui-select
+								</item>
+								<item name="template" xsi:type="string">
+									ui/grid/filters/elements/ui-select
+								</item>
+							</item>
+						</item>
+					</item>
+				</item>
+			</argument>
+		</filters>
+		<paging name="listing_paging" />
+	</listingToolbar>
+	<columns name="appointment_column">
+		<selectionsColumn name="ids">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="indexField" xsi:type="string">
+						appointment_id
+					</item>
+				</item>
+			</argument>
+		</selectionsColumn>
+		<column name="appointment_id">
+			<settings>
+				<filter>
+					textRange
+				</filter>
+				<label translate="true">
+					Appointment ID
+				</label>
+				<resizeDefaultWidth>
+					25
+				</resizeDefaultWidth>
+			</settings>
+		</column>
+		<column name="patient_id">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Patient ID
+				</label>
+			</settings>
+		</column>
+		<column name="customer_id">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Customer ID
+				</label>
+			</settings>
+		</column>
+		<column name="patient_name">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Patient Name
+				</label>
+			</settings>
+		</column>
+		<column name="practitioner_id" class="MedizinhubCore\Patient\Ui\Component\Appointments\Listing\Column\PractitionerName">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Practitioner Name
+				</label>
+			</settings>
+		</column>
+		<column name="hospital_id" class="MedizinhubCore\Patient\Ui\Component\Appointments\Listing\Column\HospitalName">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Hospital Name
+				</label>
+			</settings>
+		</column>
+		<column name="date">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Appointment Date
+				</label>
+			</settings>
+		</column>
+		<column name="time_slot" class="MedizinhubCore\Patient\Ui\Component\Appointments\Listing\Column\TimeSlot">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Time Slot
+				</label>
+			</settings>
+		</column>
+		<column name="patient_issue">
+			<settings>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Description
+				</label>
+			</settings>
+		</column>
+		<column name="report_doc" class="MedizinhubCore\Patient\Ui\Component\Appointments\Listing\Column\ReportImage">
+			<settings>
+				<bodyTmpl>
+					ui/grid/cells/html
+				</bodyTmpl>
+				<label translate="true">
+					Report Document
+				</label>
+				<sortable>
+					false
+				</sortable>
+			</settings>
+		</column>
+		<column name="appointment_status" class="MedizinhubCore\Patient\Ui\Component\Appointments\Listing\Column\AppointmentStatus">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Status
+				</label>
+			</settings>
+		</column>
+		<column name="created_at">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Created
+				</label>
+			</settings>
+		</column>
+		<column name="updated_at">
+			<settings>
+				<filter>
+					text
+				</filter>
+				<bodyTmpl>
+					ui/grid/cells/text
+				</bodyTmpl>
+				<label translate="true">
+					Modified
+				</label>
+			</settings>
+		</column>
+<column name="doctor_comment" class="MedizinhubCore\Patient\Ui\Component\Appointments\Listing\Column\DoctorComment" sortOrder="5550">
+    <settings>
+        <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+        <label translate="true">Comment</label>
+        <sortable>false</sortable>
+    </settings>
+</column>
+		<actionsColumn name="actions" class="MedizinhubCore\Patient\Ui\Component\Appointments\Listing\Column\Actions" sortOrder="5555">
+			<settings>
+				<indexField>
+					appointment_id
+				</indexField>
+			</settings>
+		</actionsColumn>
+	</columns>
+</listing>

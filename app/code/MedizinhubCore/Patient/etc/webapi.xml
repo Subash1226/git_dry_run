@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/customers/:customerId/patients" method="GET">
+        <service class="MedizinhubCore\Patient\Api\PatientInterface" method="getPatientsByCustomerId"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/hospitals" method="GET">
+        <service class="MedizinhubCore\Patient\Api\AppointmentInterface" method="getHospitals"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/practitioners" method="GET">
+        <service class="MedizinhubCore\Patient\Api\AppointmentInterface" method="getPractioners"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/timeslots" method="GET">
+        <service class="MedizinhubCore\Patient\Api\AppointmentInterface" method="getTimeslots"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+</routes>

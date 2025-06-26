@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <medizinhubshipping>
+                <active>1</active>
+                <model>MedizinhubCore\Shipping\Model\Carrier</model>
+                <title>Medizinhub Shipping</title>
+                <name>Medizinhub Shipping</name>
+                <default_rate>149.00</default_rate>
+                
+                <!-- Special Pincode Configuration -->
+                <special_pincode>600044,600045</special_pincode>
+                <special_pincode_rate>79.00</special_pincode_rate>
+                <special_pincode_threshold>250.00</special_pincode_threshold>
+                <special_pincode_above_rate>29.00</special_pincode_above_rate>
+
+                <!-- Weight Configuration Defaults -->
+                <packaging_weight>20</packaging_weight>
+                <strip_base_weight>100</strip_base_weight>
+                <single_product_default_weight>200</single_product_default_weight>
+                <multiple_product_default_weight>100</multiple_product_default_weight>
+                
+                <!-- Tamil Nadu Weight-Based Rates -->
+                <tn_weight_tier1>49.00</tn_weight_tier1>        <!-- Up to 200gm -->
+                <tn_weight_tier2>79.00</tn_weight_tier2>        <!-- 200gm to 500gm -->
+                <tn_weight_tier3>119.00</tn_weight_tier3>       <!-- 500gm to 1000gm -->
+                <tn_weight_tier4>119.00</tn_weight_tier4>       <!-- Above 1000gm -->
+                
+                <!-- Border States Configuration -->
+                <border_states>KA,KL,AP</border_states>
+                <border_weight_tier1>79.00</border_weight_tier1>    <!-- Up to 200gm -->
+                <border_weight_tier2>99.00</border_weight_tier2>    <!-- 200gm to 500gm -->
+                <border_weight_tier3>159.00</border_weight_tier3>   <!-- 500gm to 1000gm -->
+                <border_weight_tier4>199.00</border_weight_tier4>   <!-- Above 1000gm -->
+                
+                <!-- Other States Configuration -->
+                <other_states>AR,AS,BR,CG,GA,GJ,HR,HP,JH,MP,MH,MN,ML,MZ,NL,OD,PB,RJ,SK,TG,TR,UP,UK,WB,AN,CH,DH,DL,JK,LA,LD,PY</other_states>
+                <other_weight_tier1>99.00</other_weight_tier1>      <!-- Up to 200gm -->
+                <other_weight_tier2>119.00</other_weight_tier2>     <!-- 200gm to 500gm -->
+                <other_weight_tier3>179.00</other_weight_tier3>     <!-- 500gm to 1000gm -->
+                <other_weight_tier4>249.00</other_weight_tier4>     <!-- Above 1000gm -->
+            </medizinhubshipping>
+        </carriers>
+    </default>
+</config>

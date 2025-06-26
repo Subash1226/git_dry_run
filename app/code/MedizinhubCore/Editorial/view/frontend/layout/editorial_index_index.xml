@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+ <head>
+    <css src="MedizinhubCore_Editorial::css/style.css" />
+    <css src="css/bootstrap.min.css"/>
+        <link src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <title>Editorial Policy</title>
+    </head>
+    <body>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <referenceContainer name="content">
+                <block class="MedizinhubCore\Editorial\Block\Editorial" name="editorial" template="MedizinhubCore_Editorial::editorial.phtml">
+                </block>
+        </referenceContainer>
+    </body>
+</page>

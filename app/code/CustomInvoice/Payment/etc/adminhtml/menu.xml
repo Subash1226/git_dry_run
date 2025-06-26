@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+    	<add id="CustomInvoice_Payment::home" title="Online Payment" module="CustomInvoice_Payment" sortOrder="18" resource="CustomInvoice_Payment::home"/>
+        <add id="CustomInvoice_Payment::payment" title="Custom Online Payment" module="CustomInvoice_Payment" sortOrder="17" parent="CustomInvoice_Payment::home" action="custominvoice/payment/index" resource="CustomInvoice_Payment::payment"/>
+    </menu>
+</config>

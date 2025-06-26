@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order_user_log" resource="default" engine="innodb" comment="Sales Order User Log">
+        <column xsi:type="int" name="log_id" unsigned="true" nullable="false" identity="true" comment="Log ID"/>
+        <column xsi:type="int" name="order_id" unsigned="true" nullable="false" comment="Order ID"/>
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="false" comment="User ID"/>
+        <column xsi:type="varchar" name="username" nullable="false" length="255" comment="Username"/>
+        <column xsi:type="varchar" name="activity_type" nullable="false" length="255" comment="Activity Type"/>
+        <column xsi:type="timestamp" name="viewed_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Viewed At"/>
+        
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="SALES_ORDER_USER_LOG_ORDER_ID_SALES_ORDER_ENTITY_ID"
+                    table="sales_order_user_log" column="order_id" referenceTable="sales_order"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="SALES_ORDER_USER_LOG_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+    </table>
+</schema>

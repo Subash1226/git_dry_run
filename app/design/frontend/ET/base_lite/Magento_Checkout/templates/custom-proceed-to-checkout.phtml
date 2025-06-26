@@ -1,0 +1,30 @@
+<?php
+/**
+ * Custom template for "Proceed to Checkout" button
+ * 
+ * @var $block \Magento\Checkout\Block\Onepage\Link
+ */
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+$isLoggedIn = $customerSession->isLoggedIn();
+?>
+<?php if ($block->isPossibleOnepageCheckout()): ?>
+    <?php if ($isLoggedIn): ?>
+        <!-- For logged in users - regular checkout process -->
+        <button type="button"
+                data-role="proceed-to-checkout"
+                title="<?= $block->escapeHtmlAttr(__('Proceed to Checkout')) ?>"
+                data-mage-init='{"Magento_Checkout/js/proceed-to-checkout":{"checkoutUrl":"<?= $block->escapeJs($block->getCheckoutUrl()) ?>"}}' 
+                class="action primary checkout loginCheckout">
+            <?= $block->escapeHtml(__('Proceed to Checkout')) ?>
+        </button>
+    <?php else: ?>
+        <!-- For guest users - trigger login popup -->
+        <button type="button"
+                title="<?= $block->escapeHtmlAttr(__('Proceed to Checkout')) ?>"
+                class="action primary checkout loginCheckout customer-register-link">
+            <?= $block->escapeHtml(__('Proceed to Checkout')) ?>
+        </button>
+    <?php endif; ?>
+<?php endif; ?>

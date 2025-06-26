@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Mhb_SearchResult::css/custom.css"/>
+    </head>
+    <body>
+        <!-- Remove the default search layered navigation and results -->
+        <referenceBlock name="catalogsearch.leftnav" remove="true" />
+        <referenceBlock name="search.result" remove="true" />
+        
+        <!-- Add main custom search result block -->
+        <referenceContainer name="content">
+            <block class="Mhb\SearchResult\Block\Filter" name="search.result.main" template="Mhb_SearchResult::result.phtml" />
+        </referenceContainer>
+        
+        <!-- These blocks will be included by result.phtml -->
+        <block class="Mhb\SearchResult\Block\Filter" name="custom.filter" template="Mhb_SearchResult::filter.phtml" />
+        <block class="Mhb\SearchResult\Block\Filter" name="search.result.list" template="Mhb_SearchResult::product/list.phtml" />
+    </body>
+</page>

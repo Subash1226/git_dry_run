@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Quick\Order\Api\CustomformRepositoryInterface" type="Quick\Order\Model\CustomformRepository"/>
+	<preference for="Quick\Order\Api\Data\CustomformInterface" type="Quick\Order\Model\Data\Customform" />
+	<preference for="Quick\Order\Api\Data\CustomformSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Quick\Order\Model\ResourceModel\Customform\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">quick_order</argument>
+			<argument name="resourceModel" xsi:type="string">Quick\Order\Model\ResourceModel\Customform\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="quick_order_listing_data_source" xsi:type="string">Quick\Order\Model\ResourceModel\Customform\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+	<virtualType name="Quick\Order\CustomformImageUpload" type="Quick\Order\Model\ImageUploader">
+	    <arguments>
+	            <argument name="baseTmpPath" xsi:type="string">quick/order/tmp</argument>
+	            <argument name="basePath" xsi:type="string">quick/order</argument>
+	            <argument name="allowedExtensions" xsi:type="array">
+	                <item name="jpg" xsi:type="string">jpg</item>
+	                <item name="jpeg" xsi:type="string">jpeg</item>
+	                <item name="gif" xsi:type="string">gif</item>
+	                <item name="png" xsi:type="string">png</item>
+	            </argument>
+	    </arguments>
+	</virtualType>
+	<type name="Quick\Order\Controller\Adminhtml\Customform\FileUploader\Save">
+	    <arguments>
+	            <argument name="imageUploader" xsi:type="object">Quick\Order\CustomformImageUpload</argument>
+	    </arguments>
+	</type>
+</config>

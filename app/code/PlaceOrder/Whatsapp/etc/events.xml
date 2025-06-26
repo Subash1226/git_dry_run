@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_place_after">
+        <observer name="placeorder_whatsapp_notification" 
+                 instance="PlaceOrder\Whatsapp\Observer\OrderCreated"/>
+    </event>    
+    <event name="sales_order_shipment_save_after">
+        <observer name="placeorder_whatsapp_shipment_created"
+                 instance="PlaceOrder\Whatsapp\Observer\ShipmentCreated"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="placeorder_whatsapp_order_status_changed" instance="PlaceOrder\Whatsapp\Observer\OrderStatusChanged" />
+    </event>
+</config>

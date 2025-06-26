@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sales_order_tabs">
+            <action method="addTab">
+                <argument name="tabId" xsi:type="string">user_log_tab</argument>
+                <argument name="block" xsi:type="string">SalesOrder\UserLog\Block\Adminhtml\Order\View\ViewLog</argument>
+                <argument name="group" xsi:type="string">sales_order_tabs</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

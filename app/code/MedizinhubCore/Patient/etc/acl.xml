@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="MedizinhubCore_Patient::main_menu" title="Patient Management" sortOrder="10">
+                    <resource id="MedizinhubCore_Patient::manage_patients" title="Manage Patients" sortOrder="10" />
+                    <resource id="MedizinhubCore_Patient::manage_appointments" title="Manage Appointments" sortOrder="20" />
+                    <resource id="MedizinhubCore_Patient::delete" title="Delete Appointments" sortOrder="20" />
+                    <resource id="MedizinhubCore_Patient::add" title="Add Appointments" sortOrder="20" />
+                    <resource id="MedizinhubCore_Patient::edit" title="Edit Appointments" sortOrder="20" />
+                    <resource id="MedizinhubCore_Patient::save" title="Save Appointments" sortOrder="20" />
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

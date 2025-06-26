@@ -1,0 +1,988 @@
+<script async> var _ctct_m = "<my cc id>"; </script>
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Add to Cart');
+$baseUrl = $this->getBaseUrl();
+$blocks = $this->getLayout()->createBlock(\MedizinhubCore\Home\Block\Home::class);
+$todayids = [25];
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+$mediaBaseUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+$TodayDeals = $blocks->getProductCollectionByCategories($todayids);
+$prescIcon = $baseUrl . '/static/frontend/ET/base_lite/en_US/MedizinhubCore_Home/images/precription_icon.png';
+$CouponGif = $baseUrl . '/static/frontend/ET/base_lite/en_US/MedizinhubCore_Home/images/sale-coupons.gif'; ?>
+<?php if ($_product->isSaleable()) : ?>
+    <?php
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $productModel = $objectManager->get(\Magento\Catalog\Model\ProductFactory::class);
+    $attributeRepository = $objectManager->get(\Magento\Eav\Api\AttributeRepositoryInterface::class);
+    $product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+    $categories = $product->getCategoryIds();
+    foreach ($categories as $category) {
+        $cat = $objectManager->create('Magento\Catalog\Model\Category')->load($category);
+    }
+
+    $prescription_check = $_product->getData('prescription_check');
+    $manufacturer = $_product->getData('manufacturer');
+    $category_check = $_product->getData('category_check');
+    $special_price = $_product->getData('special_price');
+    $selectedQuantityContent = $_product->getData('quantity_contents');
+    $coupons_percentage = 11;
+    $coupon_price = $special_price - ($special_price * ($coupons_percentage / 100));
+    try {
+        $attribute = $attributeRepository->get(\Magento\Catalog\Model\Product::ENTITY, 'quantity_contents');
+        $options = $attribute->getSource()->getAllOptions(false);
+    } catch (\Exception $e) {
+        echo "Error fetching category options: " . $e->getMessage();
+        $options = [];
+    }
+    $quantityContentLabel = '';
+    foreach ($options as $option) {
+        if ($option['value'] == $selectedQuantityContent) {
+            $quantityContentLabel = $option['label'];
+            break;
+        }
+    }
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $salesRuleCollection = $objectManager->create(\Magento\SalesRule\Model\ResourceModel\Rule\Collection::class);
+    $mediaUrl = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class)
+        ->getStore()
+        ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+
+    $salesRuleCollection->addFieldToFilter('is_active', 1)
+        ->getSelect()
+        ->joinLeft(
+            ['coupon' => $salesRuleCollection->getTable('salesrule_coupon')],
+            'main_table.rule_id = coupon.rule_id',
+            ['code']
+        )
+        ->group('main_table.rule_id');
+?>
+
+<div id="couponDrawer" class="drawer">
+    <div class="drawer-content">
+        <div class="drawer-header">
+            <h2>Unlock discounts on medicines and save more with these coupons:</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="coupon-list">
+            <?php if ($salesRuleCollection->getSize()) : ?>
+                <?php foreach ($salesRuleCollection as $rule) :
+                    $minSubtotal = $rule->getData('conditions_serialized');
+                    $minAmount = 0;
+                    if ($minSubtotal) {
+                        $conditions = json_decode($minSubtotal, true);
+                        if (isset($conditions['conditions'])) {
+                            foreach ($conditions['conditions'] as $condition) {
+                                if (isset($condition['attribute']) && $condition['attribute'] == 'base_subtotal') {
+                                    $minAmount = $condition['value'];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    $discountAmount = $rule->getDiscountAmount();
+                    $discountType = $rule->getSimpleAction();
+                    $discountText = '';
+                    $percentageDisplay = '';
+                    $discountAmount += 1;
+                    switch($discountType) {
+                        case 'by_percent':
+                            $discountText = "Get flat " . number_format($discountAmount, 0) . "% OFF";
+                            $percentageDisplay = number_format($discountAmount, 0)."%";
+                            break;
+                        case 'by_fixed':
+                            $discountText = "Get flat {$discountAmount}% OFF";
+                            $percentageDisplay = "₹{$discountAmount}";
+                            break;
+                        case 'cart_fixed':
+                            $discountText = "Get flat {$discountAmount}% OFF";
+                            $percentageDisplay = "₹{$discountAmount}";
+                            break;
+                    }
+                ?>
+                    <div class="coupon-item">
+                        <div class="coupon-lock-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="width: 20px;margin-top:-3px;font-weight:600;">
+                                <path d="M19 11H5C3.89543 11 3 11.8954 3 13V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V13C21 11.8954 20.1046 11 19 11Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="M7 11V7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7V11" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="coupon-header">
+                            <h3><?= $discountText ?> | Shop items above ₹<?= $minAmount ?></h3>
+                        </div>
+                        <div class="coupon-content">
+                            <div class="offer-box">
+                                <div class="offer-text">
+                                    <span>FLAT</span>
+                                    <span class="percentage"><?= $percentageDisplay ?></span>
+                                    <span>OFFER</span>
+                                </div>
+                            </div>
+                            <div class="offer-details">
+                                <ul>
+                                    <li>Flat <?= $percentageDisplay ?> OFF for Orders Above ₹<?= $minAmount ?> Only</li>
+                                    <li>Only Applicable For Cart Total More than ₹<?= $minAmount ?></li>
+                                </ul>
+                                <div class="coupon-meta">
+    <span>Expiry: <?= $rule->getToDate() ? date('d M Y', strtotime($rule->getToDate())) : 'No Expiry' ?></span> |
+    <?php if ($rule->getData('code')) : ?>
+        <span>Code: <span class="coupon-code"><?= $rule->getData('code') ?></span>
+            <p class="copy-text" onclick="copyCouponCode(this, '<?= $rule->getData('code') ?>')" style="display: inline; cursor: pointer; margin-left: 5px;">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M13.3 0H6.7C5.76 0 5 0.76 5 1.7V11.3C5 12.24 5.76 13 6.7 13H13.3C14.24 13 15 12.24 15 11.3V1.7C15 0.76 14.24 0 13.3 0Z" fill="currentColor"/>
+                    <path d="M2.7 3H2V14.3C2 15.24 2.76 16 3.7 16H12V15.3H3.7C3.31 15.3 3 14.99 3 14.3V3Z" fill="currentColor"/>
+                </svg>
+            </p>
+        </span>
+    <?php endif; ?>
+</div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <p class="no-coupons">No available coupons at this time.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+    <p class="category-text" id="category-name">Manufacture:&nbsp;<span id="category-role" data-product-sku="<?= $product->getSku() ?>"><?php echo  $manufacturer . '<br>'; ?></span> </p>
+    <?php if ($prescription_check == '37') {
+    ?>
+        <img data-bs-toggle="tooltip" title="Prescription Required" class="prescription-icon" src="<?php echo $prescIcon; ?>" title="Precription_Icon.png" alt="Precription_Icon.png">
+    <?php
+    }
+    ?>
+    <?php if ($special_price = " ") {
+    ?>
+        <script>
+            const swatch = document.querySelector("div[data-role='swatch-options']");
+            var offer = document.getElementById("off-ends");
+            if (swatch) {
+                offer.style.display = "none";
+            }
+            const productPriceElement = document.getElementById("product-price-3");
+            const discount = document.getElementById("discount old-price-3");
+            if (productPriceElement) {
+                const priceAmount = productPriceElement.getAttribute("data-price-amount");
+                const priceWithSymbol = "₹" + priceAmount;
+                productPriceElement.innerHTML = priceWithSymbol;
+            }
+            if (discount) {
+                const DiscAmount = discount.getAttribute("data-price-amount");
+                const priceWithSymbol = "₹" + DiscAmount;
+                discount.innerHTML = priceWithSymbol;
+            }
+        </script>
+    <?php
+        $timerDuration = 2 * 60 * 60;
+        if (!isset($_SESSION['timer_end_time'])) {
+            $_SESSION['timer_end_time'] = time() + $timerDuration;
+        }
+        $currentTime = time();
+        $remainingTime = $_SESSION['timer_end_time'] - $currentTime;
+        if ($remainingTime <= 0) {
+            $_SESSION['timer_end_time'] = $currentTime + $timerDuration;
+            $remainingTime = $timerDuration;
+        }
+        $timerEndTime = $_SESSION['timer_end_time'] * 1000;
+    ?>
+<div class="coupon-applys">
+  <div id="GetCoupons" class="coupon-addtocart">
+    <div class="single-coupon-avaliable">
+      <img width="24px" height="24px" title="Avaliable Coupons" src="<?php echo $CouponGif; ?>" alt="">
+      <p class="coupon-single-text">
+        Get @ ₹<?php echo number_format($coupon_price, 2); ?>
+      </p>
+    </div>
+  </div>
+  <p id="viewOffersBtn" class="view-offers-text">View All Offers
+    </p>
+</div>
+    <p class="offer-ends" id="off-ends" style="display: flex; align-items: center;">
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none" style="margin-top: 2px;">
+        <path d="M10.8811 5.72432H9.90478C9.81548 5.72432 9.74241 5.79739 9.74241 5.8867V11.4744C9.74241 11.5271 9.76676 11.5759 9.80939 11.6063L13.1644 14.0561C13.2375 14.1089 13.339 14.0947 13.3918 14.0216L13.9722 13.23C14.027 13.1549 14.0108 13.0535 13.9377 13.0027L11.0434 10.9101V5.8867C11.0434 5.79739 10.9704 5.72432 10.8811 5.72432ZM15.3423 7.25064L18.5248 8.028C18.6263 8.05235 18.7257 7.97523 18.7257 7.87171L18.742 4.5938C18.742 4.45781 18.5857 4.38068 18.4801 4.46593L15.2814 6.96445C15.2572 6.98315 15.2388 7.0083 15.2283 7.037C15.2178 7.06569 15.2155 7.09678 15.2219 7.12667C15.2283 7.15657 15.2429 7.18406 15.2642 7.20599C15.2855 7.22792 15.3126 7.2434 15.3423 7.25064ZM18.746 13.362L17.5952 12.9662C17.5551 12.9524 17.5112 12.9549 17.4728 12.9731C17.4345 12.9913 17.4049 13.0238 17.3902 13.0636C17.3516 13.1671 17.311 13.2686 17.2684 13.3701C16.9071 14.2246 16.3896 14.9938 15.7279 15.6535C15.0736 16.3098 14.2981 16.833 13.4445 17.194C12.5603 17.5678 11.6097 17.7597 10.6497 17.7582C9.67949 17.7582 8.73975 17.5695 7.85482 17.194C7.00122 16.833 6.22576 16.3098 5.57144 15.6535C4.9118 14.9938 4.39423 14.2246 4.03092 13.3701C3.65912 12.4853 3.46863 11.5349 3.47073 10.5752C3.47073 9.60505 3.65949 8.66328 4.03498 7.77835C4.39626 6.92386 4.91383 6.15461 5.5755 5.49497C6.22982 4.83862 7.00528 4.31544 7.85888 3.95445C8.73975 3.57897 9.68152 3.39021 10.6517 3.39021C11.6219 3.39021 12.5616 3.57897 13.4466 3.95445C14.3002 4.31544 15.0756 4.83862 15.7299 5.49497C15.937 5.70403 16.1318 5.9212 16.3104 6.15055L17.5242 5.20067C15.9268 3.15882 13.4405 1.84563 10.6476 1.84766C5.78455 1.84969 1.87947 5.79942 1.92819 10.6645C1.9769 15.4444 5.86371 19.3028 10.6517 19.3028C14.4167 19.3028 17.6236 16.9159 18.8455 13.5731C18.8759 13.4878 18.8313 13.3924 18.746 13.362Z" fill="#049B7E"></path>
+    </svg>
+    <span style="margin-left: 5px;">Offers ends in <span id="timer_offer_ends"></span></span>
+    </p>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const drawer = document.getElementById('couponDrawer');
+    const textLink = document.getElementById('viewOffersBtn');
+    const GetCoupons = document.getElementById('GetCoupons');
+    const span = document.getElementsByClassName('close')[0];
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+    GetCoupons.style.cursor = 'pointer';
+    let lastCopyTime = 0;
+    const COPY_COOLDOWN = 2000;
+
+    textLink.onclick = function() {
+        drawer.style.display = 'block';
+        drawer.offsetHeight;
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    GetCoupons.onclick = function() {
+        drawer.style.display = 'block';
+        drawer.offsetHeight;
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+        drawer.classList.remove('open');
+        setTimeout(() => {
+            drawer.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }, 300);
+    }
+
+    span.onclick = closeDrawer;
+
+    window.onclick = function(event) {
+        if (event.target == drawer) {
+            closeDrawer();
+        }
+    }
+});
+
+function copyCouponCode(element, code) {
+    const now = Date.now();
+    if (now - window.lastCopyTime < 2000) {
+        showToast('Please wait before copying again');
+        return;
+    }
+    window.lastCopyTime = now;
+
+    if (window.isCartBusy) {
+        showToast('Please wait for current cart operation to complete');
+        return;
+    }
+
+    validateCartState().then(isValid => {
+        if (!isValid) {
+            showToast('Cannot copy code at this time');
+            return;
+        }
+
+        const textarea = document.createElement('textarea');
+        textarea.value = code;
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            document.execCommand('copy');
+
+            const originalHTML = element.innerHTML;
+            element.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 8L8 10L11 6" stroke="#00B67A" stroke-width="2"/></svg>';
+
+            showToast('Coupon code copied!');
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+            }, 2000);
+
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+            showToast('Failed to copy code');
+        }
+
+        document.body.removeChild(textarea);
+    });
+}
+
+function showToast(message) {
+    const toast = document.querySelector('.toast');
+    toast.textContent = message;
+    toast.style.display = 'block';
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 2000);
+}
+
+async function validateCartState() {
+    try {
+        if (window.isCartBusy) {
+            return false;
+        }
+
+        const cartState = await getCartState();
+
+        if (cartState.isPending || cartState.isProcessing) {
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Error validating cart state:', error);
+        return false;
+    }
+}
+
+async function getCartState() {
+    return new Promise((resolve) => {
+        resolve({
+            isPending: false,
+            isProcessing: false
+        });
+    });
+}
+</script>
+    <script>
+        let timerEndTime = <?php echo $timerEndTime; ?>;
+        function updateTimer() {
+            const now = new Date().getTime();
+            let remainingTime = timerEndTime - now;
+            if (remainingTime <= 0) {
+                timerEndTime = now + (1 * 60 * 1000);
+                remainingTime = 1 * 60 * 1000;
+            }
+            const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            const timeString = String(hours).padStart(2, '0') + ":" +
+                               String(minutes).padStart(2, '0') + ":" +
+                               String(seconds).padStart(2, '0');
+            document.getElementById("timer_offer_ends").innerHTML = timeString;
+            setTimeout(updateTimer, 1000);
+        }
+        updateTimer();
+        document.addEventListener('DOMContentLoaded', function() {
+    const viewOffersButton = document.createElement('button');
+    viewOffersButton.textContent = 'View All Offe';
+    Object.assign(viewOffersButton.style, {
+        marginTop: '5px',
+        fontSize: '14px',
+        textDecoration: 'none',
+        color: '#009B5D',
+        fontWeight: '600',
+        border: 'none',
+        background: 'none',
+        cursor: 'pointer'
+    });
+
+    const couponsContainer = document.createElement('div');
+    couponsContainer.id = 'coupons-container';
+    couponsContainer.style.display = 'none';
+
+    const config = {
+        baseUrl: window.location.origin + '/rest/',
+        tokenUrl: window.location.origin + '/coupons/token/generate'
+    };
+
+    function showLoading() {
+        couponsContainer.innerHTML = '<div class="loading-spinner">Loading coupons...</div>';
+        couponsContainer.style.display = 'block';
+    }
+
+    async function fetchAdminToken() {
+        try {
+            const response = await fetch(config.tokenUrl + '?type=admin', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await response.json();
+
+            if (data.success && data.adminToken) {
+                return data.adminToken;
+            } else {
+                throw new Error(data.message || 'Failed to get admin token');
+            }
+        } catch (error) {
+            console.error('Error fetching admin token:', error);
+            return null;
+        }
+    }
+
+    async function fetchSalesRuleDetails(adminToken, ruleId) {
+        try {
+            const response = await fetch(config.baseUrl + `V1/salesRules/${ruleId}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken
+                }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching sales rule details:', error);
+            return null;
+        }
+    }
+
+    async function fetchAndDisplayCoupons() {
+        showLoading();
+
+        const adminToken = await fetchAdminToken();
+        if (!adminToken) {
+            couponsContainer.innerHTML = '<div class="error">Unable to load coupons</div>';
+            return;
+        }
+
+        try {
+            const response = await fetch(config.baseUrl + 'V1/coupons/search?searchCriteria=all', {
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken
+                }
+            });
+            const data = await response.json();
+            const couponsPromises = data.items.map(async coupon => {
+                const ruleInfo = await fetchSalesRuleDetails(adminToken, coupon.rule_id);
+                return {
+                    code: coupon.code,
+                    couponName: ruleInfo.name,
+                    description: ruleInfo.description
+                };
+            });
+
+            const coupons = await Promise.all(couponsPromises);
+            displayCoupons(coupons);
+        } catch (error) {
+            console.error('Error fetching coupons:', error);
+            couponsContainer.innerHTML = '<div class="error">Failed to load coupons</div>';
+        }
+    }
+    function displayCoupons(coupons) {
+        const couponsList = coupons.map(coupon => `
+            <div class="coupon-item" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 4px;">
+                <i class="discount-icon" style="margin-right: 5px;">🏷️</i>
+                <span style="font-weight: bold;">${coupon.code}</span>
+                <span>(${coupon.couponName})</span><br/>
+                <span style="color: #666;">${coupon.description || ''}</span>
+            </div>
+        `).join('');
+
+        couponsContainer.innerHTML = couponsList;
+    }
+    viewOffersButton.addEventListener('click', function() {
+        if (couponsContainer.style.display === 'none') {
+            fetchAndDisplayCoupons();
+        } else {
+            couponsContainer.style.display = 'none';
+        }
+    });
+    document.body.appendChild(viewOffersButton);
+    document.body.appendChild(couponsContainer);
+});
+    </script>
+    <?php
+    }
+    ?>
+    <div class="box-tocart">
+        <div class="fieldset">
+            <?php if ($block->shouldRenderQuantity()) : ?>
+                <div class="field qty">
+                    <div class="control">
+                        <?php
+                        $tablets = $cat->getName();
+                        if ($category_check == "39") {
+                        ?>
+                            <div style="display: flex; align-items: center;">
+                                <label class="label-box" for="qty"><span id="qty-label"><?= $block->escapeHtml(__(' Qty:')) ?></span></label>
+                                <select name="qty" id="qty-strips">
+                                    <option value="1">1 Strips</option>
+                                    <option value="2">2 Strips</option>
+                                    <option value="3">3 Strips</option>
+                                    <option value="4">4 Strips</option>
+                                    <option value="5">5 Strips</option>
+                                    <option value="6">6 Strips</option>
+                                    <option value="7">7 Strips</option>
+                                    <option value="8">8 Strips</option>
+                                    <option value="9">9 Strips</option>
+                                    <option value="10">10 Strips</option>
+                                    <option style="display: none;" id="max" value="11">Max Strips</option>
+                                </select>
+                                <p id="cart-strip"><?php echo $quantityContentLabel; ?></p>
+                            </div>
+                        <?php
+                        } else if ($category_check == "45") {
+                        ?>
+                            <div style="display: flex; align-items: center;">
+                                <label class="label-box" for="qty"><span id="qty-label"><?= $block->escapeHtml(__(' Qty:')) ?></span></label>
+                                <select name="qty" id="qty-strips">
+                                    <option value="1">1 Bottle</option>
+                                    <option value="2">2 Bottle</option>
+                                    <option value="3">3 Bottle</option>
+                                    <option value="4">4 Bottle</option>
+                                    <option value="5">5 Bottle</option>
+                                    <option value="6">6 Bottle</option>
+                                    <option value="7">7 Bottle</option>
+                                    <option value="8">8 Bottle</option>
+                                    <option value="9">9 Bottle</option>
+                                    <option value="10">10 Bottle</option>
+                                    <option style="display: none;" id="max" value="11">Max Bottle</option>
+                                </select>
+                                <p id="cart-strip"><?php echo $quantityContentLabel; ?></p>
+                            </div>
+                        <?php
+                        } else if ($category_check == "42") {
+                        ?>
+                            <span class="qty-section">
+                                <label style="color: #313739;font-family: Source Sans Pro;font-size: 18px;font-weight: 400;" class="label-qty" for="qty">
+                                    <?= $block->escapeHtml(__('Select your required quantity &nbsp;:')) ?>
+                                </label>
+                                <label style="background: #E7F5FD;font-size: 18px !important;font-weight: 600 !important;font-family: Source Sans Pro !important;padding: 10px;margin-right: 10px;border-radius: 8px;" class="label-box" for="qty"><span id="qty-label"><?= $block->escapeHtml(__(' Qty')) ?></span>
+                                    <span class="qty-btn qty-dec"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                    <input type="number" name="qty" id="qty" min="0" value="<?= $block->getProductDefaultQty() * 1 ?>" title="<?= $block->escapeHtmlAttr(__('Qty')) ?>" class="input-text qty qty-default" data-validate="<?= $block->escapeHtmlAttr(json_encode($block->getQuantityValidators())) ?>" />
+                                    <span class="qty-btn qty-inc"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                </label>
+                            </span>
+                            </br>
+                        <?php
+                        } else if ($category_check == "43") {
+                        ?>
+                            <script>
+                                var category = document.getElementById("category-name");
+                                category.style.display = "none";
+                            </script>
+                        <?php
+                        }
+                        ?>
+<script type="text/javascript">
+    require(['jquery'], function ($) {
+        $(document).ready(function () {
+            var isProductAdded = false;
+            var qtyField = $('.qty-default');
+            var AddToCart = $('#product-addtocart-button');
+            var ViewCart = $('#sticky-cart-btn');
+            var sku = $('#category-role').data('product-sku');
+            function checkSalableQuantity(sku, qty) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: '/ajaxshoppingcartupdate/product/getsalablequantity',
+                        type: 'GET',
+                        data: { sku: sku },
+                        success: function (response) {
+                            if (response.success) {
+                                resolve(qty <= response.salable_quantity);
+                            } else {
+                                console.error(response.message);
+                                reject(response.message);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("AJAX Error: " + status + ' ' + error);
+                            console.log(xhr.responseText);
+                            reject(error);
+                        }
+                    });
+                });
+            }
+            function updateCart(productId, qty) {
+                checkSalableQuantity(sku, qty).then((isAvailable) => {
+                    if (isAvailable) {
+                        $.ajax({
+                            url: '/home/index/UpdateCart',
+                            type: 'POST',
+                            dataType: 'json',
+                            showLoader: true,
+                            data: { productId: productId, qty: qty },
+                            success: function (response) {
+                                reloadCart();
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    } else {
+                        alert('Insufficient stock available.');
+                        qtyField.val(1);
+                    }
+                }).catch((error) => {
+                    alert('Error checking stock: ' + error);
+                });
+            }
+            function reloadCart() {
+                require(['Magento_Customer/js/customer-data'], function (customerData) {
+                    customerData.reload(['cart'], true);
+                });
+            }
+            function getProductId() {
+                return AddToCart.data('product-id');
+            }
+            function checkProductInCart() {
+                var productId = getProductId();
+                $.ajax({
+                    url: '/home/index/AjaxController',
+                    type: 'GET',
+                    dataType: 'json',
+                    showLoader: true,
+                    success: function (response) {
+                        if (response.hasOwnProperty('items') && response.items.length > 0) {
+                            response.items.forEach(function (product) {
+                                if (productId.toString() === product.product_id.toString()) {
+                                    isProductAdded = true;
+                                    qtyField.val(product.qty);
+                                    AddToCart.text('View Cart').attr('type', 'button');
+                                    ViewCart.text('View Cart');
+                                    AddToCart.off('click').on('click', function () {
+                                        window.location.href = '/checkout/cart';
+                                    });
+                                    ViewCart.off('click').on('click', function () {
+                                        window.location.href = '/checkout/cart';
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+            checkProductInCart();
+            AddToCart.on('click', function () {
+                isProductAdded = true;
+            });
+            $('.qty-inc').click(function () {
+                var newQty = Number(qtyField.val()) + 1;
+                checkSalableQuantity(sku, newQty).then((isAvailable) => {
+                    if (isAvailable) {
+                        qtyField.val(newQty);
+                        if (isProductAdded) {
+                            updateCart(getProductId(), newQty);
+                        }
+                    } else {
+                        alert('Insufficient stock available.');
+                    }
+                });
+            });
+            $('.qty-dec').click(function () {
+                var newQty = Number(qtyField.val()) - 1;
+                if (newQty > 0) {
+                    qtyField.val(newQty);
+                    if (isProductAdded) {
+                        updateCart(getProductId(), newQty);
+                    }
+                }
+            });
+            qtyField.on('change', function () {
+                var newQty = Number($(this).val());
+                if (newQty > 0) {
+                    checkSalableQuantity(sku, newQty).then((isAvailable) => {
+                        if (isAvailable) {
+                            if (isProductAdded) {
+                                updateCart(getProductId(), newQty);
+                            }
+                        } else {
+                            alert('Insufficient stock available.');
+                            qtyField.val(1);
+                        }
+                    });
+                } else {
+                    $(this).val(1);
+                }
+            });
+        });
+});
+</script>
+                    </div>
+                </div> <br>
+            <?php endif; ?>
+
+            <div class="loading-mask" style="display: none;"></div>
+            <div class="actions">
+                <button type="submit" title="<?= $block->escapeHtmlAttr($buttonTitle) ?>" class="action primary tocart" id="product-addtocart-button" data-product-id="<?= $_product->getId() ?>" disabled>
+                    <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                </button>
+                <?= $block->getChildHtml('', true) ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<div style="display:none;width:100%;float:left;text-align:center;margin-left:-28px;margin-top:25px;" class="add-to-cart-offer-content">
+<img src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/we_offer.png'); ?>" alt="">
+<div style="width:100%;margin-top:40px;width:100%;text-align:center;background:#D9F0FC;" class="container today-deals">
+    <div style="padding:47px;" class="row">
+        <!-- <p style="color: #063851;font-family: Source Sans Pro,Sans-serif;font-size: 24px;font-weight: 600;">Deals Product</p> <br>
+        <p style="color: #859ca8;font-family: Ubuntu,Sans-serif;font-size: 18px;font-weight: 400;">Get flat 50% discount on top deals</p> -->
+
+        <?php if ($TodayDeals && is_iterable($TodayDeals)) : ?>
+            <?php $count = 0; ?>
+            <?php foreach ($TodayDeals as $product) : ?>
+                <?php if ($count >= 6) break; ?>
+                <?php
+                $productName = $product->getName();
+                if ($productName !== null) {
+                    $productName = strlen($productName) > 40 ? substr($productName, 0, 40) . '...' : $productName;
+                }
+                $productUrl = $product->getProductUrl();
+                $productImage = $product->getImage();
+                $Marketer = $product->getData('manufacturer');
+                if ($Marketer !== null) {
+                    $Marketer = strlen($Marketer) > 20 ? substr($Marketer, 0, 20) . '...' : $Marketer;
+                }
+                $productImageUrl = $mediaBaseUrl . 'catalog/product' . $productImage;
+                $regularPrice = (int) $product->getPrice();
+                $finalPrice = $product->getPriceInfo()->getPrice('final_price')->getAmount()->getValue();
+                $categoryIds = $product->getCategoryIds();
+                $categoryId = reset($categoryIds);
+                $category = $objectManager->create('Magento\Catalog\Model\Category')->load($categoryId);
+                $categoryName = $category->getName();
+                $discountPercentage = 0;
+                if ($regularPrice > 0) {
+                    $discountPercentage = (($regularPrice - $finalPrice) / $regularPrice) * 100;
+                }
+                $discountPercentage = (int) round($discountPercentage, 2);
+                ?>
+                <div class="col-md-6">
+                    <div class="product-slide" style="border-radius: 9.404px;border: 1px solid #03C777;box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;background: #f1f9fe; height: 306px !important; border-radius: 8px; padding:10px;">
+                        <div class="discount-percentage" style="position: relative; display: inline-block;margin-left:-11px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="82" height="27" viewBox="0 0 82 27" fill="none">
+                                <path d="M0.808533 0H81.2209L72.9897 13.4631L81.2209 26.9261H0.808533V0Z" fill="url(#paint0_linear_1066_527)" />
+                                <defs>
+                                    <linearGradient id="paint0_linear_1066_527" x1="0.808534" y1="2.3414" x2="92.9692" y2="35.3466" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#24FEA5" />
+                                        <stop offset="1" stop-color="#01DA82" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <p style="position:absolute; top: 45%; left: 44%; transform: translate(-50%, -50%); color: #000; font-family: Source Sans Pro; font-size: 12px; font-weight: 600;  border-radius: 4px;">
+                                <?php echo $discountPercentage; ?>% OFF
+                            </p>
+                        </div>
+                        <div style="width:100%;text-align:center;height:133px;margin:-10px 0px 0px 0px;" class="product-image-container">
+                            <a href="<?= $productUrl ?>"><img style="object-fit:contain;height:133px;" class="grow" src="<?= $productImageUrl ?>" alt="<?= $productName ?>"></a>
+                        </div>
+                        <div style="margin-top:15px;padding:0 10px;" class="product-details">
+                        <p style="height:41px;margin-bottom: 15px;"><a style="text-decoration:none;color:#000;" href="<?= $productUrl ?>"><span style="font-size: 16px !important; font-weight: 500 !important; font-family: Source Sans Pro !important; text-decoration:none;" class="product-name">
+                        <?= $productName ?></span></a></p>
+                            <p style="margin-bottom: -6px;"><a style="text-decoration:none;color:#797979;font-family: Source Sans Pro; font-size: 16px;" href="<?= $productUrl ?>">MRP &nbsp;<span style="color:#797979;font-family: Source Sans Pro; font-size: 16px; font-style: normal; font-weight: 400; line-height: normal; text-decoration:line-through;" class="product-price">₹<?= $regularPrice ?></span></a></p>
+                            <a style="text-decoration:none;color:#000;font-family: Source Sans Pro; font-size: 16px;font-weight:600;" href="">*Offer Price &nbsp;<span style="font-family: Source Sans Pro;color:#313739; font-size: 24px; font-style: normal; font-weight: 600; line-height: normal; text-decoration:none;" class="product-price">₹<?= $finalPrice ?></span></a>
+                            <button class="add-to-cart-btn grow" id="add-to-cart-btn" data-product-id="<?= $product->getId() ?>">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <?php $count++; ?>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <p>No deals available today.</p>
+        <?php endif; ?>
+        <div style="width:100%;text-align:center;" class="cart-viewall">
+        <a style="text-decoration:none;float:right;font-weight: 600;color:#00739B !important;font-size: 14px;font-family: Source Sans Pro;" href="/product_list/index/index/id/25/">VIEW ALL</a>
+
+        </div>
+    </div>
+</div>
+
+<img src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/off_book.png'); ?>" alt="">
+</div>
+
+<style>
+.col-md-6 {
+	flex: 0 0 40.333%;
+	max-width: 49.3%;
+	margin-right: 20px;
+	margin-bottom: 20px;
+}
+.product-details-list li{
+list-style: none;
+color: #313739;
+font-family: "Source Sans Pro";
+font-size: 16px;
+}
+.product-details-list{
+ margin-left: -37px;
+}
+#product-addtocart-button {
+	width: 333px !important;
+	height: 54px !important;
+	border-radius: 8px !important;
+	margin-left: 4px !important;
+	margin-top: 15px !important;
+    background: linear-gradient(92deg, #03C777 11.69%, #01A462 102.33%) !important;
+}
+.product-info-main{
+	z-index: 100;
+	width: 560px !important;
+	height: 400px !important;
+	box-shadow: 0 0 10px rgba(0,115,155,.15);
+	padding: 30px 0 0 30px;
+	position: inherit;
+	top: 120px;
+}
+
+.product-list{
+    color: #313739;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+}
+
+.mfp-bg {
+    display:none !important;
+}
+
+.mfp-content{
+    display:none !important;
+}
+
+</style>
+<script>
+    require(['jquery', 'Magento_Customer/js/customer-data'], function($, customerData) {
+        var Qty = $('#qty-strips');
+        function fetchAndUpdateCartData() {
+            var productId = $('#product-addtocart-button').data('product-id');
+            var AddToCart = $('#product-addtocart-button');
+            var ViewCart = $('#sticky-cart-btn');
+            var Max = $('#max');
+            $.ajax({
+                url: '/home/index/AjaxController',
+                type: 'GET',
+                dataType: 'json',
+                showLoader: true,
+                success: function(response) {
+                    if (response.hasOwnProperty('items')) {
+                        if (response.items.length === 0) {
+                            sessionStorage.removeItem('CartItems');
+                        } else {
+                            response.items.forEach(function(product) {
+                                var cartProductId = product.product_id;
+                                var cartQty = product.qty;
+                                if (productId.toString() === cartProductId.toString()) {
+                                    if (parseInt(Qty.val()) > 10) {
+                                        $('#max').show();
+                                        Qty.val(10);
+                                    } else {
+                                        Qty.val(cartQty);
+                                    }
+                                    AddToCart.text('View Cart');
+                                    AddToCart.attr('type', 'button');
+                                    ViewCart.text('View Cart');
+                                    ViewCart.off('click').on('click', function() {
+                                        window.location.href = '/checkout/cart';
+                                    });
+                                    AddToCart.off('click').on('click', function() {
+                                        window.location.href = '/checkout/cart';
+                                    });
+                                }
+                            });
+                        }
+                    } else {
+                        console.log('No items found in the response');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function checkSalableQuantity(sku, qty) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: '/ajaxshoppingcartupdate/product/getsalablequantity',
+                    type: 'GET',
+                    data: { sku: sku },
+                    success: function(response) {
+                        if (response.success) {
+                            resolve(qty <= response.salable_quantity);
+                        } else {
+                            console.error(response.message);
+                            reject(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error: " + status + ' ' + error);
+                        console.log(xhr.responseText);
+                        reject(error);
+                    }
+                });
+            });
+        }
+
+        $(document).ready(function() {
+            fetchAndUpdateCartData();
+            $('#product-addtocart-button').on('click', function() {
+                var sku = $('#category-role').data('product-sku');
+                var qty = parseInt($('#qty-strips').val() || $('.qty-default').val());
+                checkSalableQuantity(sku, qty)
+                    .then((isSalable) => {
+                        if (isSalable) {
+                            setTimeout(function() {
+                                fetchAndUpdateCartData();
+                            }, 7000);
+                            var productId = $('#product-addtocart-button').data('product-id');
+                            var cartItems = sessionStorage.getItem('CartItems') ? JSON.parse(sessionStorage.getItem('CartItems')) : [];
+                            if (!cartItems.includes(productId)) {
+                                cartItems.push(productId);
+                                sessionStorage.setItem('CartItems', JSON.stringify(cartItems));
+                            }
+                        } else {
+                            alert('Requested quantity exceeds available stock!');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error checking salable quantity:', error);
+                    });
+            });
+
+            $(document).on('change', '#qty-strips', function() {
+                var qty = parseInt($(this).val());
+                var sku = $('#category-role').data('product-sku');
+                var qty = parseInt(Qty.val());
+                var productId = $('#product-addtocart-button').data('product-id');
+                var CartItemStorage = sessionStorage.getItem('CartItems');
+                var cartItems = CartItemStorage ? JSON.parse(CartItemStorage) : [];
+
+                checkSalableQuantity(sku, qty)
+                    .then((isSalable) => {
+                        if (isSalable) {
+                            if (cartItems.includes(productId)) {
+                                updateCart(productId, qty);
+                            }
+                        } else {
+                            alert('Requested quantity exceeds available stock!');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error checking salable quantity:', error);
+                    });
+            });
+        });
+
+        function updateCart(productId, qty) {
+            $.ajax({
+                url: '/home/index/UpdateCart',
+                type: 'POST',
+                dataType: 'json',
+                showLoader: true,
+                data: {
+                    productId: productId,
+                    qty: qty
+                },
+                success: function(response) {
+                    reloadCart();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function reloadCart() {
+            var sections = ['cart'];
+            customerData.reload(sections, true);
+        }
+    });
+</script>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+
+</script>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+ <head>
+ <css src="MedizinhubCore_Lab::css/styles.css" />
+<title>Book Lab</title>
+</head>
+    <body>
+        <referenceContainer name="content">
+                <block class="MedizinhubCore\Lab\Block\Booking" name="book.form" template="MedizinhubCore_Lab::booklab.phtml">
+                </block>
+        </referenceContainer>
+    </body>
+</page>

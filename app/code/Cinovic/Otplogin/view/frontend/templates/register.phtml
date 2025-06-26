@@ -1,0 +1,89 @@
+<?php
+
+/** @var \Cinovic\Otplogin\Block\Form\Register $block */
+?>
+<?php if (!$block->customerIsAlreadyLoggedIn() && $block->getRegistration()->isAllowed()) : ?>
+    <div style="margin-top:30px" id="customer-popup-register" class="customer-popup-register row">
+        <div class="col-md-7 otp_image">
+            <img class="otp-log-image" src="<?php echo $this->getViewFileUrl('Cinovic_Otplogin::images/mobile.png'); ?>">
+        </div>
+        <div class="col-md-5">
+            <form class="form-create-account" action="<?php echo $block->getUrl('otplogin/account/otploginpost') ?>" method="post" id="customer-popup-form-register" enctype="multipart/form-data" autocomplete="off" data-mage-init='{"validation":{}}'>
+                <?php echo $block->getBlockHtml('formkey'); ?>
+                <input type="hidden" name="redirect_url" value="<?php echo $this->getUrl('otplogin/account/otp'); ?>" />
+                <div class="messages"></div>
+                <fieldset class="fieldset create account" data-hasrequired="<?php /* @escapeNotVerified */ //echo __('*All Fields Required')
+                                                                            ?>">
+                    <div class="field required">
+                        <div class="control">
+                            <input style="display: none;" type="text" placeholder="First Name" name="firstname" value="  " class="input-text">
+                        </div>
+                    </div>
+                    <div class="field required">
+                        <div class="control">
+                            <input style="display: none;" type="text" placeholder="Last Name" name="lastname" value="  " class="input-text">
+                        </div>
+                    </div>
+                    <div class="login-withmobile">
+                        <p class="otp-register-title">Sign In / Sign Up</p>
+                    </div>
+                    <div class="field required">
+                        <div class="control">
+                            <input style="display: none;" type="text" name="email" placeholder="Email Address" autocomplete="email" id="popup-email_address" class="input-text">
+                        </div>
+                    </div>
+                    <div class="field required">
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-md-12">
+                                <div class="control">
+                                    <input onfocus="this.style.boxShadow = '0 0 0 0 #fff';" type="tel" name="mobile_number" placeholder="Enter Mobile Number" id="phone" pattern="[0-9]{10,10}" minlength="10" maxlength="10" required aria-required="true" class="input-text" data-validate="{required:true}">
+                                    <div class="policy-otp">
+                                        <p class="otp-information">OTP will be sent to this number</p>
+                                    </div>
+                                </div>
+                                <div class="otp-submit">
+                                    <button class="btn btn-success" type="submit" id="otp-create-account">Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="otp-agree">By signing up, I agree to the <a href="/privacy-policy" target="_blank" class="otp-privacy">Privacy policy</a><br> and <a href="/terms-and-conditions" target="_blank" class="otp-terms">Terms and Condition</a></p>
+                        <div style="display: none;" class="field password required" data-mage-init='{"passwordStrengthIndicator": {}}'>
+                            <div class="control">
+                                <input style="display: none;" type="password" placeholder="Password" name="password" id="password" title="<?php /* @escapeNotVerified */ echo __('Password') ?>" class="input-text" data-password-min-length="<?php echo $block->escapeHtml($block->getMinimumPasswordLength()) ?>" data-password-min-character-sets="<?php echo $block->escapeHtml($block->getRequiredCharacterClassesNumber()) ?>" autocomplete="off">
+                                <div id="password-strength-meter-container" data-role="password-strength-meter">
+                                    <div style="display: none;" id="password-strength-meter" class="password-strength-meter">
+                                        <?php /* @escapeNotVerified */ echo __('Password Strength'); ?>:
+                                        <span id="password-strength-meter-label" data-role="password-strength-meter-label">
+                                            <?php /* @escapeNotVerified */ echo __('No Password'); ?>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="phone-error" class="mage-error">Mobile Number is Required</div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+<script type="text/x-magento-init">
+{
+        "#customer-popup-register": {
+            "Cinovic_Otplogin/js/action/customer-authentication-popup": {
+                "popupTitle": "<?php /* @escapeNotVerified */ echo __(''); ?>",
+                "innerWidth": "300"
+            }
+        }
+    }
+</script>
+<?php endif; ?>
+<script type="application/javascript">
+    require([
+        'jquery',
+        'intlTelInput'
+    ], function($) {
+        $("#phone").intlTelInput(<?php echo $block->getPhoneconfig(); ?>)
+        $("#phone1").intlTelInput(<?php echo $block->getPhoneconfig(); ?>)
+
+    });
+</script>

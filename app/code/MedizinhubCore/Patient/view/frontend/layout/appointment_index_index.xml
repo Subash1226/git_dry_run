@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+		<css src="MedizinhubCore_Patient::css/appointment.css" />
+        <script src="https://checkout.razorpay.com/v1/checkout.js" src_type="url"/>
+		<script src="MedizinhubCore_Patient::js/appointment.js" />
+	</head>
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="customer_account_navigation" remove="false" />
+        <referenceContainer name="content">
+            <block class="MedizinhubCore\Patient\Block\GetAppointmentDate" name="appointment.content" template="MedizinhubCore_Patient::appointment_content.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

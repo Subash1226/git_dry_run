@@ -1,0 +1,84 @@
+<?php
+$_product = $block->getProduct();
+if ($_product !== null) {
+    $category_check = $_product->getData('category_check');
+    $special_price = $_product->getData('special_price');
+    $price = $_product->getData('price');
+    $price = (float) $price;
+    $price = rtrim(rtrim($price, '0'), '.');
+    $special_price = (float) $special_price;
+    $special_price = rtrim(rtrim($special_price, '0'), '.');
+    if ($special_price < $price) {
+        $percentage = round((($price - $special_price) / $price) * 100);
+    } else {
+        $percentage = 0;
+    }
+    ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <div id="sticky-cart" style="padding:20px 100px;background: #D9F0FC;position: fixed;z-index: 999;width: calc(100% - 34px); display: none;" class="ajax-sticky-cart">
+    <div class="container">
+        <div class="row">
+            <div style="padding: 0 54px;" class="col-md-3 col-xs-3 col-sm-3">
+                <div class="row">
+                    <div style="width:100%;text-align:center;" class="col-md-4 col-xs-4 col-sm-4">
+                        <?php echo $block->getImage($_product, 'product_base_image', ['id' => 'product_image'])->toHtml(); ?>
+                    </div>
+                    <div class="col-md-8 col-xs-8 col-sm-8">
+                        <p style="color: #313739;font-family:Source Sans Pro;font-size: 18px;font-weight: 600;"><?php echo $_product->getName(); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 0 10px;" class="col-md-2 col-xs-2 col-sm-2"></div>
+            <div class="col-md-6 col-xs-6 col-sm-6">
+                <div class="row">
+                    <div style="padding: 0 20px 0 0;margin-top:12px;" class="col-md-1 col-xs-1 col-sm-1">
+                        <p style="color:#049B7E;font-family:Source Sans Pro;font-size: 17.894px;font-style: normal;font-weight: 600;"><?php echo $percentage; ?>% OFF</p>
+                    </div>
+                    <div style="padding: 0 20px 0 0;margin-top:16px;text-decoration:line-through;" class="col-md-1 col-xs-1 col-sm-1">
+                        <p style="color:#818D91;">₹<?php echo $price; ?></p>
+                    </div>
+                    <div class="col-md-3 col-xs-3 col-sm-3">
+                        <p style="color: #313739;font-family:Source Sans Pro;font-size: 33.627px;font-weight: 700;">₹<?php echo $special_price; ?></p>
+                    </div>
+                    <div class="col-md-4 col-xs-4 col-sm-4">
+                        <button id="sticky-cart-btn" data-product-id="<?php echo $_product->getId(); ?>" style="border-radius: 4px;background: linear-gradient(94deg, #03C777 3.95%, #01A462 88.34%);width: 306px;height: 54px;margin-left:30px;color: #FFF;font-family: Source Sans Pro;font-size: 26px;font-weight: 600;" class="sticky-cart-btn btn btn-secondary" onclick="StickyCart()">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <style> #product_image{  width: 100%;}#sticky-cart .product-image-container{width: 47px !important;height: 75px;} </style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    showStickyCart();
+});
+window.addEventListener('scroll', showStickyCart);
+window.addEventListener('resize', showStickyCart);
+function showStickyCart() {
+    var stickyCart = document.getElementById("sticky-cart");
+    var screenHeight = window.innerHeight;
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var cartHeight = stickyCart.offsetHeight;
+    if (scrollTop > 400 || screenHeight - scrollTop < cartHeight) {
+        stickyCart.style.display = "block";
+    } else {
+        stickyCart.style.display = "none";
+    }
+    if (screenHeight - scrollTop < cartHeight) {
+        stickyCart.style.top = "auto";
+        stickyCart.style.bottom = "0";
+    } else {
+        stickyCart.style.top = "0";
+        stickyCart.style.bottom = "auto";
+    }
+}
+function StickyCart() {
+    var addToCartButton = document.getElementById('product-addtocart-button');
+    if (addToCartButton) {
+        addToCartButton.click();
+    }
+}
+</script>
+<?php }
+?>

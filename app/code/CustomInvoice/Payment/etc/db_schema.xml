@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="custom_invoice_payment" resource="default" engine="innodb" comment="Custom Invoice Payment Table">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="customer_name" nullable="true" length="255" comment="Customer Name"/>
+        <column xsi:type="varchar" name="customer_phone" nullable="true" length="20" comment="Customer Phone"/>
+        <column xsi:type="varchar" name="customer_email" nullable="true" length="255" comment="Customer Email"/>
+        <column xsi:type="text" name="customer_address" nullable="true" comment="Customer Address"/>
+        <column xsi:type="text" name="payment_description" nullable="true" comment="Payment Description"/>
+        <column xsi:type="text" name="payment_type" nullable="true" comment="Payment Type"/>
+        <column xsi:type="int" name="total_amount" padding="10" nullable="true" comment="Total Amount"/>
+        <column xsi:type="int" name="cash_amount" padding="10" nullable="true" comment="Cash Amount"/>
+        <column xsi:type="int" name="online_amount" padding="10" nullable="true" comment="Online Amount"/>
+        <column xsi:type="varchar" name="razorpay_transaction_id" nullable="true" length="255" comment="Razorpay Transaction ID"/>
+        <column xsi:type="timestamp" name="created_at" nullable="true" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CUSTOM_INVOICE_PAYMENT_RAZORPAY_TRANSACTION_ID">
+            <column name="razorpay_transaction_id"/>
+        </constraint>
+    </table>
+</schema>

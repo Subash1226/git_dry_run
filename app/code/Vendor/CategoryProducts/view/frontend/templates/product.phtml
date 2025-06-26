@@ -1,0 +1,311 @@
+
+<?php
+/**
+ * This block retrieves a category and displays its name along with product details.
+ * Adjust the code based on your specific requirements.
+ */
+
+ $categoryID = $this->getRequest()->getParam('id');
+ $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+ $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+ $mediaBaseUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+ $categoryName = '';
+ $category = $objectManager->create('Magento\Catalog\Model\Category')->load($categoryID);
+ if ($category->getId()) {
+     $categoryName = $category->getName();
+ }
+ if ($categoryID == '34') {
+     $homeandtoday = [$categoryID, 25];
+     $categoryCollection = $block->getProductCollectionByCategories($homeandtoday);
+ } else {
+     $categoryCollection = $block->getProductCollectionByCategories($categoryID);
+ }
+ $pageSize = 25;
+ $pager = $block->getLayout()->createBlock('\Magento\Theme\Block\Html\Pager', 'custom.pager');
+ $pager->setAvailableLimit([$pageSize => $pageSize])
+     ->setShowPerPage(true)
+     ->setCollection($categoryCollection);
+ ?>
+ <div style="margin-top: -30px;" class="product-list-cat">
+     <div class="container">
+         <div style="margin-top: 40px;" class="row">
+             <p style="color: #063851; font-family: Source Sans Pro, Sans-serif; font-size: 24px; font-weight: 600;"><?php echo $categoryName; ?></p>
+             <?php
+             function formatProductName($name)
+             {
+                 if ($name === null) {
+                     return null;
+                 }
+                 $name = strtolower($name);
+                 $name = ucwords($name);
+                 return $name;
+             }
+             ?>
+             <?php foreach ($categoryCollection as $product) : ?>
+                <?php
+                $productName = $product->getName();
+                if ($productName !== null) {
+                    $productName = formatProductName($productName);
+                    $productName = strlen($productName) > 40 ? substr($productName, 0, 40) . '...' : $productName;
+                }
+                $productUrl = $product->getProductUrl();
+                $productImage = $product->getImage();
+                $Marketer = $product->getData('manufacturer');
+                if ($Marketer !== null) {
+                    $Marketer = strlen($Marketer) > 20 ? substr($Marketer, 0, 20) . '...' : $Marketer;
+                }
+                $productImageUrl = $mediaBaseUrl . 'catalog/product' . $productImage;
+                $regularPrice = round((float) $product->getPrice());
+                $finalPrice = round((float) $product->getData('special_price'));
+                $categoryIds = $product->getCategoryIds();
+                $categoryId = reset($categoryIds);
+                $category = $objectManager->create('Magento\Catalog\Model\Category')->load($categoryId);
+                $categoryName = $category->getName();
+                $discountPercentage = 0;
+                if (is_numeric($regularPrice) && is_numeric($finalPrice) && $regularPrice > 0) {
+                    $discountPercentage = (($regularPrice - $product->getData('special_price')) / $regularPrice) * 100;
+                }
+                $discountPercentage = (int) round($discountPercentage, 2);
+                ?>
+                <div class="col-6 col-md-6 col-lg-3 productlist">
+                <div class="product-slide">
+                                <div class="deals-discount-percentage">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="55" height="27" viewBox="0 0 55 27" fill="none">
+                                        <path d="M0 0H54.1993L45.9681 13.4631L54.1993 26.9261H0V0Z" fill="url(#paint0_linear_5394_11052)" />
+                                        <defs>
+                                            <linearGradient id="paint0_linear_5394_11052" x1="1.75418e-06" y1="2.3414" x2="92.1607" y2="35.3466" gradientUnits="userSpaceOnUse">
+                                                <stop stop-color="#24FEA5" />
+                                                <stop offset="1" stop-color="#01DA82" />
+                                            </linearGradient>
+                                        </defs>
+                                        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#000" font-family="Source Sans Pro" font-size="12px" font-weight="600" stroke-width="0.5" stroke="#000000" dy=".3em" style="color: #00151C;font-family:Source Sans Pro;font-size: 16px;font-style: normal;font-weight: 600;">
+                                            <?php echo $discountPercentage; ?>%
+                                        </text>
+                                    </svg>
+                                </div>
+                                <div class="product-image-container"><a href="<?= $productUrl ?>"><img style="object-fit:contain;height:133px;" class="grow" src="<?= $productImageUrl ?>" alt="<?= $productName ?>"></a></div>
+                                <div class="deals-product-details">
+                                    <p style="height:41px;margin-bottom: 15px;"><a style="text-decoration:none;color:#000;" href="<?= $productUrl ?>"><span class="deals-product-name">
+                                                <?= $productName ?></span></a></p>
+                                    <!-- <p style="margin-bottom: 15px;margin-top: 5px;color: var(--Input-Text, #797979); font-family: Source Sans Pro; font-size: 13px; font-style: normal; font-weight: 400; line-height: normal;">Mkt:&nbsp;<?php // echo $Marketer;                                                                                                                                                                                                             ?></p> -->
+                                    <p class="deals-old-price"><a  href="<?= $productUrl ?>">MRP &nbsp;<span  class="deals-regular-price">₹<?= $regularPrice ?></span></a></p>
+                                    <a class="deals-final-price-link" href="">*Offer Price &nbsp;<span class="deals-final-price">₹<?= $finalPrice ?></span></a>
+                                    <button class="add-to-cart-btn grow" id="add-to-cart-btn" data-product-sku="<?= $product->getSku() ?>" data-product-id="<?= $product->getId() ?>">Add to Cart</button>
+                                    <div class="quantity-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" class="decrement-btn" viewBox="0 0 27 27" fill="none">
+                                            <circle cx="13.082" cy="13.3408" r="13.082" fill="#03C777" />
+                                            <path d="M9.18457 13.2588H16.8158" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                        </svg>
+                                        <div class="quantity-value">1</div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="27" class="increment-btn" height="27" viewBox="0 0 27 27" fill="none">
+                                            <circle cx="13.082" cy="13.3408" r="13.082" fill="#03C777" />
+                                            <path d="M9.2666 13.3408H16.8978" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                            <path d="M13.082 17.1562V9.52506" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                        </svg>
+                                    </div>
+                                    </span>
+                                </div>
+                            </div>
+                </div>
+            <?php endforeach; ?>
+            <div class="col-md-12">
+                <div class="productlist-pagination">
+                    <?= $pager->toHtml(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+.productlist-pagination {width: 100%;text-align: center;margin-top: 30px;}.productlist{margin-top: 20px!important;width:20%!important;}.page-title-wrapper{display: none;}.toolbar-amount {display: none !important;}.pages .action.previous {height: 34px;width: 34px;margin-left: 0;margin-right: 0;transition: all 0.2s ease-in-out;-moz-transition: all 0.2s ease-in-out;-webkit-transition: all 0.2s ease-in-out;box-sizing: border-box;border: 1px solid #fff;color: #ffffff;background: #ffffff;border-radius: 0;-webkit-border-radius: 0;-moz-border-radius: 0;box-shadow: none;-moz-box-shadow: none;-webkit-box-shadow: none;}.pages strong.page {border: 1px solid #049B7E;box-sizing: border-box;color: #ffffff;font-weight: 600;height: 34px;line-height: 32px;min-width: 15px;padding: 0;text-align: center;width: 34px;border-radius: 50%;background: #049B7E;}.pages .action.next {height: 34px;width: 34px;margin-left: 0;margin-right: 0;transition: all 0.3s ease 0s;-moz-transition: all 0.3s ease 0s;-webkit-transition: all 0.3s ease 0s;box-sizing: border-box;border: 1px solid #fff !important;color: #333333;background: #ffffff;border-radius: 0;-webkit-border-radius: 0;-moz-border-radius: 0;box-shadow: none;-moz-box-shadow: none;-webkit-box-shadow: none;}.pages .action.previous:hover {background: #049B7E;border-radius: 50%;color: #fff;border: 1px solid #049B7E;}.pages .action.next:hover {background: #049B7E;border-radius: 50%;color: #fff;border: 1px solid #049B7E;}.pages a.page:hover {background: #049B7E;border-radius: 50%;color: #fff !important;border: 1px solid #049B7E; }.pages .items {background: #F7F9FF;box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.20);padding: 3px 30px;border-radius: 26px;}.pages a.page {border: 1px solid #fff;box-sizing: border-box;color: #333333;background: #ffffff;display: inline-block;height: 34px;line-height: 32px;min-width: 15px;padding: 0;text-align: center;vertical-align: top;width: 34px;transition: all 0.3s ease 0s;-moz-transition: all 0.3s ease 0s;-webkit-transition: all 0.3s ease 0s;border-radius: 0;-webkit-border-radius: 0;-moz-border-radius: 0;color: #000 !important}.product-index-index .minicart-items-wrapper {padding: 10px 25px !important;}
+.home-today-deals{color:#063851;font-family:Source Sans Pro,Sans-serif;font-size:24px;font-weight:600}.section-title{color:#063851;font-family:Source Sans Pro,Sans-serif;font-size:24px;font-weight:600}.test-package-name,.test-package-off{color:#5a5507;font-family:Reem Kufi,Sans-serif;font-size:22px;line-height:34px;font-weight:600}.cms-deals-sub,.section-sub-title{color:#859ca8;font-family:Ubuntu,Sans-serif;font-size:18px;font-weight:400}.product-li-link,.today-deals-view{font-weight:600;font-family:Source Sans Pro;text-decoration:none}.product-li-link{font-size:16px;color:#000 !important;}.today-deals-view{float:right;color:#00739b!important;font-size:14px}.product-card,.product-slide{border-radius:8px;border:1px solid #03c777;box-shadow:rgba(0,0,0,.05) 0 0 0 1px,#d1d5db 0 0 0 1px inset;background:#fff;height:336px!important;padding:10px}.deals-discount-percentage,.discount-percentage{position:relative;display:inline-block;margin-left:-11px}.deals-product-details,.product-details{margin-top:5px;padding:0 10px}.deals-product-name{font-size:16px!important;font-weight:500!important;font-family:Source Sans Pro!important;text-decoration:none;text-transform:capitalize !important}.deals-final-price,.deals-final-price-link,.deals-old-price a,.deals-regular-price{font-family:Source Sans Pro}.deals-old-price,.product-price{margin-bottom:-6px}.deals-old-price a{text-decoration:none;color:#797979;font-size:16px}.deals-regular-price{color:#797979;font-size:16px;font-style:normal;font-weight:400;line-height:normal;text-decoration:line-through}.deals-final-price{color:#313739;font-size:24px;font-style:normal;font-weight:600;line-height:normal;text-decoration:none}.deals-final-price-link{text-decoration:none;color:#000!important;font-size:16px;font-weight:600}.add-to-cart-btn,.add-to-cart-btn:hover{margin-top:10px;width:100%;height:44px;padding:10px 18px;border-radius:8px;background:linear-gradient(94deg,#03c777 56.99%,#01a462 99.73%);color:#fff;font-family:Source Sans Pro;font-size:16px;font-style:normal;font-weight:600}.care-device{margin-top:40px}.deal-title,.today-deals-title{color:#063851;font-family:'Source Sans Pro',sans-serif;font-size:24px;font-weight:600}.deal-description,.today-deals-discount{color:#859ca8;font-family:Ubuntu,sans-serif;font-size:18px;font-weight:400}.deal-info{padding:20px 88px 10px 20px;color:#fff;font-family:'Reem Kufi',sans-serif;font-size:16px;font-weight:600;line-height:24px}.body-view-btn,.bp-view-btn,.breath-view-btn,.fever-view-btn,.preg-view-btn,.view-health-btn{font-family:'Reem Kufi',sans-serif;font-weight:600;line-height:24px;padding:10px 20px;border:none;cursor:pointer}@media screen and (max-width:768px){.swiper-container{width:100%}.swiper-slide{width:calc(50% - 20px);margin-right:10px}.container.today-deals .row{flex-wrap:wrap}.quantity-container{display:flex;justify-content:center;align-items:center}}@media screen and (min-width:769px) and (max-width:1024px){.swiper-slide{width:calc(33.33% - 20px);margin-right:10px}}@media screen and (min-width:1025px){.swiper-slide{width:calc(16.66% - 20px);margin-right:10px}}.order-prescription{background-color:#fbe7d0;padding:20px;border-radius:8px}.routine-btn,.routine-btn:hover{background:#062b37;color:#fff}.fever-book-btn,.men-book-btn,.routine-btn,.senior-book-btn,.women-book-btn{height:40px;border-radius:4.347px;font-family:Montserrat!important;font-size:14px;font-style:normal;width:107px;margin-top:15px;font-weight:600}.women-book-btn,.women-book-btn:hover{background:#3f0e36;color:#fff}.men-book-btn,.men-book-btn:hover{background:#6b0007;color:#fff}.senior-book-btn,.senior-book-btn:hover{background:#2c1254;color:#fff}.fever-book-btn,.fever-book-btn:hover{background:#054146;color:#fff}.add-to-cart-btn,.offer-price,.quantity-value,.regular-price,.view-all-link{font-family:'Source Sans Pro',sans-serif}.body-view-btn,.bp-view-btn,.breath-view-btn,.fever-view-btn,.preg-view-btn,.view-health-btn{margin-left:20px;margin-bottom:20px;text-shadow:0 0 10px rgba(0,0,0,.3);background-color:#fff;font-size:16px;border-radius:8px}.bp-view-btn,.view-health-btn{color:#e76f51}.preg-view-btn{color:#f4a261}.breath-view-btn{color:#e5b84c}.fever-view-btn{color:#2a9d8f}.body-view-btn{color:#287271}.add-to-cart-btn{background:linear-gradient(94deg,#03c777 56.99%,#01a462 99.73%)}.view-all-link{text-decoration:none;float:right;font-weight:600;color:#00739b!important;font-size:14px}.product-image-container{width:100%;text-align:center;height:133px;margin:-10px 0 0}.product-image{object-fit:contain;height:133px}.product-name{height:41px;margin-bottom:15px}.regular-price{color:#797979;font-size:16px}.offer-price{text-decoration:none;color:#000;font-size:16px;font-weight:600}.add-to-cart-btn{margin-top:10px;width:100%;height:44px;padding:10px 18px;border-radius:8px;color:#fff;font-size:16px;font-weight:600}.quantity-container{display:none;margin-top:10px;border-radius:8px;border:1px solid #01a964;padding:6px 33px}.decrement-btn,.increment-btn{fill:white;cursor:pointer}.quantity-value{padding:0 15px;font-size:16px;font-weight:600}.increment-btn{margin-left:10px}.diabetics-btn,.diabetics-btn:hover{background:#934606;color:#fff}.diabetics-btn,.fullbody-btn,.thyroid-btn{height:40px;border-radius:4.347px;font-family:Montserrat!important;font-size:14px;font-style:normal;width:107px;margin-top:15px;font-weight:600}.thyroid-btn,.thyroid-btn:hover{background:#0a264d;color:#fff}.fullbody-btn,.fullbody-btn:hover{background:#5a5507;color:#fff}.grow{cursor:pointer;transition:.3s ease-in-out}.grow:hover{transform:scale(1.1)}.home-index-index #maincontent{display:none!important}.scroll-inner{width:100%;text-align:center}.order-doctor{background-color:#ccfff0;padding:20px;border-radius:8px}.order-prescription-content{color:#003827;font-family:Source Sans Pro,Sans-serif;font-size:24px;font-weight:600}.order-offer-prescription{color:#004d36;font-family:Source Sans Pro,Sans-serif;font-size:16px;font-weight:400;margin-top:-10px}.book-my-btn,.book-my-btn:hover{background-color:#03c777;color:#fff}.book-my-btn{border-radius:8px;font-size:16px;font-weight:600;height:44px}.swiper-wrapper{margin:10px 0}.Senior-pack,.diabetics-pack,.fever-pack,.fullbody,.mens-pack,.routine-pack,.thyroid-pack,.womens-pack{padding:26px 0 27px 20px;margin:0 15px}.Senior-pack,.body-bg,.bp-bg,.breathing-bg,.diabetics-bg,.diabetics-pack,.fever-bg,.fever-pack,.fullbody,.mens-pack,.preganacy-bg,.routine-pack,.thyroid-pack,.womens-pack{background-repeat:no-repeat;background-size:cover;border-radius:8px}.fullbody{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_Pics1.png'); ?>)}.womens-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_5.png'); ?>)}.mens-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_6.png'); ?>)}.Senior-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_3.png'); ?>)}.fever-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_10.png'); ?>)}.diabetics-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_2.png'); ?>)}.thyroid-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_8.png'); ?>)}.routine-pack{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/lab_4.png'); ?>)}.diabetics-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic.png'); ?>)}.preganacy-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic1.png'); ?>)}.breathing-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic3.png'); ?>)}.fever-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic4.png'); ?>)}.body-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic5.png'); ?>)}.bp-bg{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/bg_pic6.png'); ?>)}.test-package-name-diabetics,.test-package-name-fever,.test-package-name-full,.test-package-name-men,.test-package-name-routine,.test-package-name-senior,.test-package-name-thyroid,.test-package-name-women,.test-package-off-diabetics,.test-package-off-fever,.test-package-off-full,.test-package-off-men,.test-package-off-routine,.test-package-off-senior,.test-package-off-thyroid,.test-package-off-women{font-family:Reem Kufi,Sans-serif;font-size:22px;line-height:34px;font-weight:600}.test-package-name-diabetics,.test-package-off-diabetics{color:#934606}.test-package-name-full,.test-package-off-full{color:#5a5507}.test-package-name-thyroid,.test-package-off-thyroid{color:#0a264d}.test-package-name-routine,.test-package-off-routine{color:#062b37}.test-package-name-women,.test-package-off-women{color:#3f0e36}.test-package-name-men,.test-package-off-men{color:#6b0007}.test-package-name-senior,.test-package-off-senior{color:#2c1254}.test-package-name-fever,.test-package-off-fever{color:#054146}@media (max-width:768px){.productlist{width:50%!important;}}
+</style>
+<script>
+    require(['jquery', 'Magento_Customer/js/customer-data'], function($, customerData) {
+        $(document).on('click', '.add-to-cart-btn', function(e) {
+            e.preventDefault();
+            var $addToCartBtn = $(this);
+            var productId = $addToCartBtn.data('product-id');
+            var Sku = $addToCartBtn.data('product-sku');
+            var qty = 1;
+            checkSalableQuantity(Sku, qty).then(function(isAvailable) {
+                if (isAvailable) {
+                    var formKey = $('input[name="form_key"]').val();
+                    $.ajax({
+                        url: '/home/index/AddToCart',
+                        method: 'POST',
+                        showLoader: true,
+                        dataType: 'json',
+                        data: {
+                            product_id: productId,
+                            form_key: formKey,
+                            qty: qty
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                reloadCart();
+                                setTimeout(function() {
+                                    $('.showcart').click();
+                                }, 7000);
+                                $addToCartBtn.hide();
+                                $addToCartBtn.siblings('.quantity-container').css('display', 'flex');
+                            } else {
+                                alert(response.message); // Show an alert if the addition to cart fails
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("AJAX Error:", error);
+                        }
+                    });
+                } else {
+                    alert("Insufficient stock for this product.");
+                }
+            }).catch(function(error) {
+                console.error("Error checking salable quantity:", error);
+            });
+        });
+
+        $(document).ready(function() {
+            $('.add-to-cart-btn').each(function() {
+                var productId = $(this).data('product-id');
+                if (isProductInCart(productId)) {
+                    $(this).siblings('.quantity-container').css('display', 'flex');
+                }
+            });
+        });
+
+        function isProductInCart(productId) {
+            return false;
+        }
+
+        function checkSalableQuantity(sku, qty) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: '/ajaxshoppingcartupdate/product/getsalablequantity',
+                    type: 'GET',
+                    data: { sku: sku },
+                    success: function(response) {
+                        if (response.success) {
+                            resolve(qty <= response.salable_quantity);
+                        } else {
+                            console.error(response.message);
+                            reject(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error($t("AJAX Error:") + ' ' + status + ' ' + error);
+                        console.log(xhr.responseText);
+                        reject(error);
+                    }
+                });
+            });
+        }
+
+        $(document).on('click', '.increment-btn', function(e) {
+            e.preventDefault();
+            var $quantityContainer = $(this).closest('.quantity-container');
+            var quantity = parseInt($quantityContainer.find('.quantity-value').text());
+            quantity += 1; // Increment quantity by 1
+            var productId = $quantityContainer.siblings('.add-to-cart-btn').data('product-id');
+            var Sku = $quantityContainer.siblings('.add-to-cart-btn').data('product-sku');
+            checkSalableQuantity(Sku, quantity).then(function(isAvailable) {
+                if (isAvailable) {
+                    $quantityContainer.find('.quantity-value').text(quantity);
+                    updateQuantity(productId, quantity);
+                } else {
+                    alert("Insufficient stock to increase quantity.");
+                }
+            }).catch(function(error) {
+                console.error("Error checking salable quantity:", error);
+            });
+        });
+
+        $(document).on('click', '.decrement-btn', function(e) {
+            e.preventDefault();
+            var $quantityContainer = $(this).closest('.quantity-container');
+            var quantity = parseInt($quantityContainer.find('.quantity-value').text());
+            if (quantity > 1) {
+                quantity -= 1; // Decrement quantity by 1
+                var productId = $quantityContainer.siblings('.add-to-cart-btn').data('product-id');
+                var Sku = $quantityContainer.siblings('.add-to-cart-btn').data('product-sku');
+                checkSalableQuantity(Sku, quantity).then(function(isAvailable) {
+                    if (isAvailable) {
+                        $quantityContainer.find('.quantity-value').text(quantity);
+                        updateQuantity(productId, quantity);
+                    } else {
+                        alert("Insufficient stock to decrease quantity.");
+                    }
+                }).catch(function(error) {
+                    console.error("Error checking salable quantity:", error);
+                });
+            } else {
+                // If quantity becomes 0, remove the product from cart
+                var productId = $quantityContainer.siblings('.add-to-cart-btn').data('product-id');
+                removeFromCart(productId);
+            }
+        });
+
+        function removeFromCart(productId) {
+            var formKey = $('input[name="form_key"]').val();
+            $.ajax({
+                url: '/home/index/RemoveFromCart',
+                method: 'POST',
+                showLoader: true,
+                dataType: 'json',
+                data: {
+                    product_id: productId,
+                    form_key: formKey
+                },
+                success: function(response) {
+                    reloadCart();
+                    $('.add-to-cart-btn[data-product-id="' + productId + '"]').show();
+                    $('.add-to-cart-btn[data-product-id="' + productId + '"]').siblings('.quantity-container').css('display', 'none');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error removing product from cart:", error);
+                }
+            });
+        }
+
+        $(document).on('change', '.quantity-value', function(e) {
+            var quantity = parseInt($(this).text());
+            if (quantity <= 0 || isNaN(quantity)) {
+                $(this).text('1'); // Reset quantity to 1 if invalid or zero
+                quantity = 1;
+            }
+            var $quantityContainer = $(this).closest('.quantity-container');
+            var productId = $quantityContainer.siblings('.add-to-cart-btn').data('product-id');
+            updateQuantity(productId, quantity);
+        });
+
+        function updateQuantity(productId, quantity) {
+            var formKey = $('input[name="form_key"]').val();
+            $.ajax({
+                url: '/home/index/UpdatedCart',
+                method: 'POST',
+                showLoader: true,
+                dataType: 'json',
+                data: {
+                    product_id: productId,
+                    form_key: formKey,
+                    qty: quantity
+                },
+                success: function(response) {
+                    reloadCart();
+                    $('.showcart').click();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating quantity:", error);
+                }
+            });
+        }
+
+        function reloadCart() {
+            var sections = ['cart'];
+            customerData.reload(sections, true);
+        }
+    });
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+

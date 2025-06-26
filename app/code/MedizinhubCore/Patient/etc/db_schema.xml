@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="patient_appointment" resource="default" engine="innodb" comment="Patient Appointments Table">
+		<column xsi:type="int" name="appointment_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Appointments Id" />
+		<column xsi:type="int" name="patient_id" padding="10" unsigned="true" nullable="false" comment="Patient Id" />
+    	<column xsi:type="int" name="customer_id" unsigned="true" nullable="false" comment="Customer ID"/>
+		<column xsi:type="int" name="practitioner_id" padding="10" unsigned="true" nullable="false" comment="Practitioner ID" />
+		<column xsi:type="int" name="hospital_id" padding="10" unsigned="true" nullable="false" comment="Hospital ID" />
+		<column xsi:type="text" name="date" nullable="false" comment="Appointment Date" />
+		<column xsi:type="smallint" name="time_slot" unsigned="true" nullable="false" comment="Time Slot" />
+		<column xsi:type="text" name="patient_issue" nullable="true" comment="Patient Issue Description" />
+		<column xsi:type="text" name="report_doc" nullable="true" comment="Report Document File Path" />
+		<column xsi:type="int" name="appointment_status" nullable="false" comment="Appointment Status" />
+		<column xsi:type="varchar" name="order_id" length="255" nullable="true" comment="Order ID" />
+		<column xsi:type="varchar" name="payment_status" length="50" nullable="false" default="pending" comment="Payment Status" />
+		<column xsi:type="text" name="cancellation_reason" nullable="true" comment="Reason for Appointment Cancellation" />
+		<column xsi:type="tinyint" name="is_rescheduled" nullable="false" default="0" comment="Whether Appointment is Rescheduled (0 = No, 1 = Yes)" />
+		<column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+		<column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="appointment_id" />
+		</constraint>
+		<constraint xsi:type="foreign" referenceId="PATIENT_APPOINTMENTS_PATIENT_ID_PATIENT_ID" table="patient_appointments" column="patient_id" referenceTable="patient" referenceColumn="id" onDelete="CASCADE" />
+		<index referenceId="PATIENT_APPOINTMENTS_PATIENT_ID" indexType="btree">
+			<column name="patient_id" />
+		</index>
+		<index referenceId="PATIENT_APPOINTMENTS_PRACTITIONER_ID" indexType="btree">
+			<column name="practitioner_id" />
+		</index>
+		<index referenceId="PATIENT_APPOINTMENTS_HOSPITAL_ID" indexType="btree">
+			<column name="hospital_id" />
+		</index>
+	</table>
+	<table name="doctor_comment" resource="default" engine="innodb" comment="Doctor Comments Table">
+		<column name="id" xsi:type="int" nullable="false" identity="true" unsigned="true" comment="ID" />
+		<column name="appointment_id" xsi:type="int" nullable="false" unsigned="true" comment="Appointment ID" />
+		<column name="doctor_prescription" xsi:type="varchar" length="255" nullable="true" comment="Doctor Prescription" />
+		<column name="comment" xsi:type="text" nullable="true" comment="Comments" />
+		<column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+		<column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="id" />
+		</constraint>
+		<constraint xsi:type="foreign" referenceId="DOCTOR_COMMENT_APPOINTMENT_ID" table="doctor_comment" column="appointment_id" referenceTable="patient_appointment" referenceColumn="appointment_id" onDelete="CASCADE" />
+		<index referenceId="DOCTOR_COMMENT_APPOINTMENT_ID">
+			<column name="appointment_id" />
+		</index>
+	</table>
+
+    <table name="practitioners" resource="default" engine="innodb" comment="Practitioners Table">
+        <column xsi:type="int" name="id" nullable="false" identity="true" unsigned="true" comment="ID" />
+        <column xsi:type="varchar" name="name" length="255" nullable="false" comment="Practitioner Name" />
+        <column xsi:type="tinyint" name="status" nullable="false" default="1" comment="Status" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id" />
+        </constraint>
+    </table>
+
+    <table name="hospitals" resource="default" engine="innodb" comment="Hospitals Table">
+        <column xsi:type="int" name="id" nullable="false" identity="true" unsigned="true" comment="ID" />
+        <column xsi:type="varchar" name="name" length="255" nullable="false" comment="Hospital Name" />
+        <column xsi:type="tinyint" name="status" nullable="false" default="1" comment="Status" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id" />
+        </constraint>
+    </table>
+	
+    <table name="time_slots" resource="default" engine="innodb" comment="Time Slots Table">
+        <column xsi:type="int" name="id" nullable="false" identity="true" unsigned="true" comment="ID" />
+        <column xsi:type="varchar" name="slot_time" length="255" nullable="false" comment="Slot Time" />
+        <column xsi:type="tinyint" name="status" nullable="false" default="1" comment="Status" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id" />
+        </constraint>
+    </table>
+</schema>

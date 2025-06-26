@@ -1,0 +1,229 @@
+<div class="slider-wrapper">
+    <div id="home-slider-container" class="content-main">
+        <div id="home-slider" class="slides owl-carousel owl-theme">
+        <?php
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $connection = $objectManager->get('\Magento\Framework\App\ResourceConnection');
+            $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+            $mediaBaseUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+
+            $conn = $connection->getConnection();
+            $tableName = $connection->getTableName('mageplaza_bannerslider_banner');
+
+            $sql = "SELECT * FROM " . $tableName . " WHERE status = 1 AND category = 0";
+            $banners = $conn->fetchAll($sql);
+
+            usort($banners, function($a, $b) {
+                return $a['title'] - $b['title'];
+            });
+
+            if (!empty($banners)):
+                $firstBanner = true;
+                foreach ($banners as $banner):
+                    $bannerImageUrl = $mediaBaseUrl . 'mageplaza/bannerslider/banner/image/' . $banner['image'];
+                    $lazyLoad = $firstBanner ? '' : 'loading="lazy"';
+
+                    if (empty($banner['url_banner'])):
+                        ?>
+                    <div class="item<?php echo $firstBanner ? ' first-slide' : ''; ?>" style="position: relative; width: 100%;">
+                        <img class="slide-img" src="<?php echo $bannerImageUrl;?>"
+                             title="<?php echo $banner['name']; ?>"
+                             alt="<?php echo $banner['name']; ?>"
+                             <?php echo $lazyLoad; ?>
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <?php else: ?>
+                    <div class="item<?php echo $firstBanner ? ' first-slide' : ''; ?>" style="position: relative; width: 100%;">
+                        <a class="banner-link" href="<?php echo $banner['url_banner'];?>"
+                           title="<?php echo $banner['name']; ?>"
+                           style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                            <img class="slide-img" src="<?php echo $bannerImageUrl;?>"
+                                 alt="<?php echo $banner['name']; ?>"
+                                 <?php echo $lazyLoad; ?>
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        </a>
+                    </div>
+                    <?php endif;
+                    $firstBanner = false;
+                endforeach;
+            endif; ?>
+        </div>
+        <div class="owl-dots-placeholder"></div>
+    </div>
+</div>
+
+<style>
+.slider-wrapper {
+    width: 100%;
+    padding-bottom: 20px;
+    overflow: hidden; /* Prevent horizontal scrollbars */
+}
+
+#home-slider-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Force owl carousel to be visible immediately */
+#home-slider.owl-carousel {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Remove fixed height and use aspect-ratio or padding technique */
+#home-slider .owl-stage-outer,
+#home-slider .owl-stage,
+#home-slider .owl-item {
+    height: auto;
+}
+
+#home-slider .item {
+    position: relative;
+    width: 100%;
+    padding-bottom: 23%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#home-slider .item.first-slide,
+#home-slider .owl-item.active .item {
+    opacity: 1 !important;
+}
+
+/* Position image absolutely inside the padded container */
+#home-slider img.slide-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Reserve space for dots */
+.owl-dots-placeholder {
+    height: 30px;
+    width: 100%;
+}
+
+/* Style dots container to prevent layout shift */
+#home-slider .owl-dots {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Add loading placeholder styling */
+#home-slider .item:not(.first-slide) {
+    background-color: #f0f0f0; /* Light gray placeholder */
+}
+
+/* Fix for transitions causing flicker issues */
+#home-slider .owl-item {
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+    will-change: opacity;
+}
+</style>
+
+<script type="text/javascript">
+require(['jquery'], function($) {
+    $(document).ready(function() {
+        // Check if owlCarousel is available, if not wait for it
+        function waitForOwlCarousel() {
+            if (typeof $.fn.owlCarousel !== 'undefined') {
+                initializeSlider();
+            } else {
+                // Wait and try again
+                setTimeout(waitForOwlCarousel, 100);
+            }
+        }
+
+        waitForOwlCarousel();
+    });
+
+
+    function initializeSlider() {
+        var container = document.getElementById('home-slider-container');
+
+        if ($("#home-slider").length && typeof $.fn.owlCarousel === 'function') {
+            $("#home-slider").owlCarousel({
+                items: 1,
+                loop: true,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                autoplayHoverPause: true,
+                nav: false,
+                dots: true,
+                smartSpeed: 500,
+                lazyLoad: 'progressive',
+                onInitialize: function() {
+                    $("#home-slider .item.first-slide").css('opacity', '1');
+                },
+                onInitialized: function() {
+                    setTimeout(function() {
+                        $("#home-slider .owl-item.active .item").css('opacity', '1');
+
+                        if ($("#home-slider .owl-item.active .item").css('opacity') !== '1') {
+                            $("#home-slider .owl-item.active .item").css('opacity', '1');
+                        }
+                    }, 100);
+
+                },
+                onTranslate: function() {
+                    setTimeout(function() {
+                        $("#home-slider .owl-item.active .item").css('opacity', '1');
+                    }, 100);
+                }
+            });
+
+            var preloadNextSlides = function(count) {
+                var activeIndex = $("#home-slider .owl-item.active").index();
+                var totalSlides = $("#home-slider .owl-item").length;
+
+                for (var i = 1; i <= count; i++) {
+                    var nextIndex = (activeIndex + i) % totalSlides;
+                    var nextSlide = $("#home-slider .owl-item").eq(nextIndex);
+                    var nextImg = nextSlide.find('img.slide-img');
+
+                    if (nextImg.length) {
+                        var img = new Image();
+                        img.src = nextImg.attr('src');
+                    }
+                }
+            };
+
+            var preloadFirstSlide = function() {
+                var firstImg = $("#home-slider .owl-item.active img.slide-img").first();
+                if (firstImg.length) {
+                    var img = new Image();
+                    img.src = firstImg.attr('src');
+                    img.onload = function() {
+                        firstImg.attr('src', this.src);
+                        $("#home-slider .owl-item.active .item").css('opacity', '1');
+                    };
+                }
+            };
+
+            setTimeout(function() {
+                preloadNextSlides(2);
+                preloadFirstSlide();
+                if ($("#home-slider .owl-item.active").length === 0 ||
+                    $("#home-slider .owl-item.active .item").css('opacity') !== '1') {
+                    $("#home-slider").trigger('refresh.owl.carousel');
+                    $("#home-slider .owl-item.active .item").css('opacity', '1');
+                }
+            }, 500);
+        } else {
+            console.warn('Owl Carousel not available or slider element not found');
+        }
+    }
+});
+</script>

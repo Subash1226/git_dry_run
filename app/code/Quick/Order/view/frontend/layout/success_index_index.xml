@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+	    <css src="Quick_Order::css/style.css" />
+	</head>
+    <body>
+        <referenceContainer name="columns.top">
+            <container name="success.message.wrapper" htmlTag="div" htmlClass="success-message-wrapper">
+                <block class="Quick\Order\Block\Success" name="success.block" template="Quick_Order::success.phtml" />
+            </container>
+        </referenceContainer>
+        <referenceContainer name="sidebar.main" remove="true"/>
+        <referenceContainer name="sidebar.additional" remove="true"/>
+        <referenceContainer name="page.wrapper">
+            <container name="content" as="content" label="Page Content" htmlTag="div" htmlClass="page-content"/>
+        </referenceContainer>
+    </body>
+</page>

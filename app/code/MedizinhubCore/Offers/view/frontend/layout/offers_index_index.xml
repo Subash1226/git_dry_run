@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="MedizinhubCore_Offers::css/custom-style.css" />
+		<script src="MedizinhubCore_Offers::js/custom-script.js" />
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="MedizinhubCore\Offers\Block\Offers" name="offers.page" template="MedizinhubCore_Offers::offers.phtml"></block>
+        </referenceContainer>
+    </body>
+</page>

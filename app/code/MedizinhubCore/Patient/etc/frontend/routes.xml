@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+	<router id="standard">
+		<route id="patient" frontName="online-consultation">
+			<module name="MedizinhubCore_Patient" />
+		</route>
+		<route id="appointment" frontName="appointment">
+            <module name="MedizinhubCore_Patient" />
+        </route>
+	</router>
+</config>

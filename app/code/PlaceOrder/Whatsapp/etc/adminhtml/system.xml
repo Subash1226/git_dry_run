@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="placeorder" translate="label" sortOrder="999">
+            <label>Place Order</label>
+        </tab>
+        <section id="whatsapp_settings" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>WhatsApp Settings</label>
+            <tab>placeorder</tab>
+            <resource>PlaceOrder_Whatsapp::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Module Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="api_key" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Aisensy API Key</label>
+                </field>
+                <field id="new_order_campaign_name" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>New Order Campaign Name</label>
+                    <comment>Campaign name for new order notifications</comment>
+                </field>
+                <field id="status_change_campaign_name" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Status Change Campaign Name</label>
+                    <comment>Campaign name for order status change notifications</comment>
+                </field>
+                <field id="staff_numbers" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Staff WhatsApp Numbers</label>
+                    <comment>Enter comma-separated WhatsApp numbers with country code (e.g., 911234567890,911234567891)</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,863 @@
+  *, 
+  .btn{
+    font-family: 'Source Sans Pro';
+  }
+  input[type="text"], input[type="password"], input[type="url"], input[type="tel"], input[type="search"], input[type="number"], input[type*="date"], input[type="email"]{
+    font-family: 'Source Sans Pro' !important;
+  }
+  .prescription-head {
+      font-family: Source Sans Pro;
+      font-size: 24px;
+      font-weight: 600;
+      text-align: left;
+      color: #063851;
+  }
+
+  .prescription-address {
+      padding: 10px 0;
+  }
+
+  .prescription-address-label {
+      font-weight: 500;
+  }
+
+  .upload-button {
+      margin-top: 0px !important;
+  }
+
+  .preview-image {
+      height: 0 !important;
+  }
+
+  #add-more-prescription {
+      cursor: pointer;
+      margin: 0px 0 0 0;
+  }
+  #add-more-prescription img{
+    padding: 0 14px;
+  }
+  .Supported {
+      font-family: 'Source Sans Pro';
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      letter-spacing: 0.01em;
+      text-align: left;
+      margin-top: -9px;
+  }
+
+  .Supported span {
+      color: #049B7E;
+  }
+
+  .delete-button:hover,
+  .remove-button:hover {
+      color: #ffffff;
+      background-color: red;
+  }
+
+  .image-container {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      border: 1px solid #ccc;
+  }
+
+  .remove-button {
+    position: absolute;
+    cursor: hand;
+    margin: 19px 0 0 65px !important;
+    background: #ffffff !important;
+    color: #c40000 !important;
+    border: 2px solid #c40000 !important;
+    border-radius: 50%;
+    font-size: 12px;
+    width: 21px !important; 
+    height: 21px !important;
+    text-align: center;
+    padding: 0 5px;
+    font-weight: 600;
+    font-family: sans-serif;
+}
+.remove-button:hover{
+    color: #fff !important;
+    border: 2px solid #c40000 !important;
+    background-color: #c40000 !important;
+    font-weight: 600;
+}
+
+  .message.warning {
+      margin: 0 0 10px;
+      padding: 12px 20px 12px 25px;
+      display: block;
+      font-size: 6px !important;
+      background: rgb(218, 245, 255);
+      color: #000;
+      padding-left: 45px;
+      position: relative;
+      border-radius: 8px;
+      font-family: 'Source Sans Pro' !important;
+  }
+
+  #image-preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 500px;
+  }
+
+  .prescription-column img {
+      height: 343px;
+      width: 2px;
+  }
+
+  .prescription-subhead {
+      font-family: 'Source Sans Pro' !important;
+      font-size: 18px;
+      font-weight: 400;
+      color: #859CA8;
+      letter-spacing: 0em;
+      text-align: left;
+      margin-bottom: 10px !important;
+  }
+
+  #prescription-label {
+      cursor: pointer;
+  }
+
+  #prescription-format {
+      font-family: 'Source Sans Pro';
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      letter-spacing: 0.01em;
+      text-align: left;
+      font-style: italic;
+  }
+
+  #prescription-format span {
+      color: #049B7E;
+  }
+
+  .single-col {
+      padding: 20px 0 0 103px !important;
+
+  }
+
+  .upload-now-addr {
+      padding: 0px !important;
+      margin-right: 0px !important;
+  }
+
+  .upload-now {
+      background-color: #F1F9FE;
+      margin-top: 0px !important;
+      padding-top: 24px;
+  }
+
+  .prescription {
+      background-color: #F1F9FE;
+  }
+
+  .prescription-label-page {
+      width: 100%;
+      text-align: center;
+      padding: 0 0 30px 0;
+  }
+
+  .prescription-lable {
+      font-family: 'Source Sans Pro';
+      font-size: 24px;
+      font-weight: 600;
+      color: #063851;
+  }
+
+  #prescription-addr,
+  #prescription-payment {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 35px;
+      background-color: #E7F5FD !important;
+      border: 1px solid #E7F5FD;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+  }
+
+  #prescription-add-new-addr,
+  #edit-modal-content {
+      width: 56%;
+      max-width: 1200px;
+      margin: -75px auto;
+      padding: 30px 40px;
+      background-color: #F1F9FE !important;
+      border: 1px solid #F1F9FE !important;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .payment-method {
+      background: #E7F5FD;
+      font-family: 'Source Sans Pro';
+      font-size: 20px;
+      font-weight: 600;
+      margin-left: 0px;
+      margin-right: 0px;
+      border: none !important;
+  }
+
+  #pre-btn,
+  #next-step-btn,
+  #prev-btn {
+      border-radius: 8px !important;
+      background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%) !important;
+      width: 327px !important;
+      height: 52px !important;
+      border: #01A462 !important;
+      margin-top: -6px;
+      transition: transform 0.3s ease-in-out;
+    }
+    
+    #pre-btn:hover,
+    #next-step-btn:hover,
+    #prev-btn:hover,
+    .p-button-success:hover {
+    transform: scale(1.1);
+    }
+    #button-container #pre-btn {
+        width: 225px !important;
+    }
+
+  #address-submit-btn,
+  #address-edit-btn {
+      border-radius: 8px !important;
+      background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%) !important;
+      width: 285px !important;
+      height: 48px !important;
+      border: #01A462 !important;
+      margin: -11px 0 16px 10px;
+  }
+
+  #modal-btn {
+      border-radius: 8px !important;
+      background: linear-gradient(94deg, #E9F6FD 56.99%, #E9F6FD 99.73%) !important;
+      /* width: 272px !important; */
+      width: 245px !important;
+      height: 48px !important;
+      border: #E9F6FD !important;
+      color: #464B4D;
+      font-weight: 700;
+      font-size: 17px;
+      font-family: 'Source Sans Pro';
+      margin-top: -6px;
+      margin-left: 253px !important;
+  }
+
+  .prescription-continue {
+      width: 327px !important;
+      height: 52px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      margin-top: -20px;
+      background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);
+      border: 1px solid #03C777 !important;
+      text-transform: capitalize;
+      margin-left: 208px;
+      margin-top: 40px;
+  }
+
+  .note {
+      font-family: 'Source Sans Pro';
+      font-size: 16px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 12px !important;
+      letter-spacing: 0.01em;
+      text-align: left;
+  }
+
+  .vertical-line {
+      border-left: 1px solid #03C777;
+      height: 397px !important;
+  }
+
+  .address-container {
+      width: 100%;
+      background-color: rgb(233, 246, 253);
+      padding: 0px 40px 11px 40px;
+      margin-bottom: 20px;
+      border: 1px solid rgb(108, 82, 82);
+      border-radius: 8px;
+      margin-left: -25px;
+  }
+
+  .prescription-form-label {
+      font-family: 'Source Sans Pro';
+      font-weight: 600;
+      font-size: 16px;
+  }
+
+  .file-input-container {
+      margin: -2px 0 13px 0;
+  }
+
+  .address-input {
+      padding: 10px 0;
+  }
+
+  .address-input-text {
+      border: 2px solid #BCE9D6 !important;
+      border-radius: 4px !important;
+  }
+
+  .step-title:not(:last-child) {
+      /* margin-right: 10px; */
+  }
+
+  .step-line {
+      width: 77px;
+      border-top: 2px solid #ccc;
+      flex-grow: 0;
+      margin-top: 14px;
+  }
+
+  .step-titles {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      margin-top: 12px;
+      width: 88%;
+      margin-left: 67px;
+  }
+
+  .step-title {
+      font-family: Source Sans Pro;
+      position: relative;
+      flex-grow: 1;
+      text-align: center;
+      color: #999;
+      font-size: 18px;
+      padding-bottom: 5px;
+      cursor: pointer;
+  }
+
+  .step-title.active {
+      font-family: Source Sans Pro;
+      color: #333;
+  }
+
+  .step-title::before {
+      content: '';
+      position: absolute;
+      top: 42%;
+      left: 57px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      transform: translateY(-50%);
+  }
+
+  .step-title.active::before,
+  .step-title.complete::before {
+      content: '✔';
+      color: #fff;
+      background-color: #5ABB7C;
+      font-size: 10px;
+      line-height: 20px;
+      text-align: center;
+      border-radius: 50%;
+  }
+
+  .address-break-line {
+      margin-bottom: 6px !important;
+      border: 0 !important;
+      border-top: 1px solid #000000 !important;
+      margin-top: 20px !important;
+  }
+
+  .address-preview,
+  .address-preview a{
+      margin-top: -21px;
+      font-size: 16px;
+  }
+
+  .customform-index-index .page-title {
+      display: none !important;
+  }
+
+  .upload-now-addr {
+      padding: 0 280px;
+      margin-right: 68px;
+  }
+
+  .prescription-address {
+      padding: 10px 0;
+  }
+
+  .prescription-address-label {
+      font-weight: 500;
+  }
+
+  #prescription-addr {
+      padding-bottom: 30px !important;
+  }
+
+  .prescription-label-page {
+      width: 100%;
+      text-align: center;
+      padding: 0 100px 30px 0px;
+  }
+
+  .upload-button {
+      margin-top: 0px !important;
+  }
+
+  .prescription-lable {
+      font-family: 'Source Sans Pro';
+      font-size: 24px;
+      font-weight: 600;
+      color: #063851;
+  }
+  .note{
+    margin-top: 16px;
+  }
+
+  .preview-image {
+      height: 0 !important;
+  }
+
+  #prescription-label {
+      cursor: pointer;
+  }
+
+  #add-more-prescription {
+      cursor: pointer;
+      margin: 0px 0 0 0;
+      padding: 14px 0;
+  }
+  #street-input{
+    margin: 0 13px 0 0;
+  }
+
+  #prescription-format {
+      font-family: Source Sans Pro;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      letter-spacing: 0.01em;
+      text-align: left;
+  }
+
+  #prescription-format span {
+      color: #049B7E;
+  }
+
+  #existing-addresses-container {
+      margin: 0px 0px 0 193px;
+      width: 100%;
+      max-width: 856px;
+  }
+
+  .prescription-payment-label-page {
+      text-align: center;
+  }
+
+  .upload-now-payment {
+      padding: 0px 327px;
+      margin-right: -7px;
+      margin-top: 23px;
+  }
+
+  .add-prescription-label-page {
+      margin: 0 0 20px 0px;
+      text-align: center;
+  }
+
+  .edit-prescription-label-page {
+    text-align: center;
+    margin: -9px 0 20px 0;
+  }
+  .cancel-btn{
+    border: 2px solid #BCE9D6;
+    color: #063851 !important;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 10px 74px;
+    margin: 0 25px 15px 25px;
+  }
+  
+  .cancel-btn:hover,
+  .go-back-btn:hover,
+  #go-back:hover {
+	border: 2px solid #C5ECDC6E;
+	color: #333;
+	background: #C5ECDC6E;
+   }
+  .add-prescription-button{
+    border-radius: 12px; 
+    border: 1.5px dashed #7A7A7A !important; 
+    background: var(--Color, #FFF) !important;
+    font-size: 16px;
+    color: #063851;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal; 
+    width: 304px;  
+    height: 50px; 
+    margin-top: 10px !important;
+  }
+  .add-prescription-button:hover,
+  .add-prescription-button.active,
+  button.active{
+    background-color: #fff !important;
+    border: 1.5px dashed #7A7A7A !important; 
+  }
+  .prescription-ref p{
+    font-family: "Source Sans Pro";
+    font-size: 13px;
+  }
+  #prescription-label img{
+    border: 1.5px dashed gray;
+    margin: 10px auto;
+    padding: 25px 75px;
+    border-radius: 15px;
+  }
+  .edit-address,
+  .delete-address{
+    color: #007195;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    padding: 0 5px;
+  }
+  .reference-prescription{
+    padding-bottom: 20px;
+  }
+  .preview-item{
+        border: 2px solid #03C777;
+        border-radius: 8px;
+        padding: 3px;
+    }
+    .note-text{
+        font-weight: 700;
+    }
+    .prescription-header{
+        font-family: Source Sans Pro;
+        font-size: 24px;
+        font-weight: 600;
+        text-align: left;
+        color: #063851;
+        padding: 0 30px;
+    }
+
+    .add-prescription-label-page{
+        text-align: center;
+        position: relative;
+    }
+    .edit-prescription-label-page{
+        text-align: center;
+        position: relative;
+    }
+    #go-back{
+        margin-top: -25px;
+    }
+    /* #next-step-btn{
+        margin: 0 auto !important;
+    } */
+    #error-message {
+        margin: 11px 63px;
+    }
+    .cod-payment{
+        text-align: center;
+    }
+    .go-back-btn{
+        border: 2px solid #BCE9D6;
+        border-radius: 8px;
+        background: transparent;
+        font-size: 15px;
+        font-weight: 600;
+        margin: -4px 0 0 50px;
+        padding: 12px 74px;
+    }
+    #editregion_id {
+        font-size: 14px;
+    }
+    .required-asterisk {
+        color: #CA1A1A;
+        padding: 0 2px;
+    }
+    .control{
+        font-size: 14px;
+    }
+    .control .radio-option {
+        font-size: 20px;
+    }
+    .quick-order {
+        margin: 0 auto;
+        padding: 20px 0px !important;
+    }
+
+    a {
+        text-decoration: none !important;
+    }
+
+    input[type="radio"] {
+        margin: 14px 0;
+        width: 19px;
+        height: 19px;
+    }
+
+    #update-address-list input[type="radio"] {
+        margin: 2px 5px 0 0;
+        float: right;
+        width: 24px;
+        height: 24px;
+    }
+
+    .container {
+        background-color: #F1F9FE00 !important;
+        border: 1px solid #F1F9FE00 !important;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0);
+    }
+
+    .address-form-error-message {
+        color: red;
+        margin-top: 5px;
+    }
+
+    .upload-pre-btn {
+        padding: 0 0 0 100px;
+    }
+
+    .prescription-columns {
+        padding: 0 0 0 134px !important;
+    }
+
+    #prescription-refer p {
+        margin-left: 10px;
+    }
+
+    #addregion_id {
+        font-size: 14px;
+    }
+
+    #next-step-btn span,
+    #pre-btn span {
+        font-family: Source Sans Pro;
+        text-transform: none;
+        font-weight: 600;
+        font-size: 18px;
+    }
+    .fieldset .step{
+        margin: 0 0 25px !important;
+    }
+    #default-billing-address {
+        margin: 20px auto;
+    }
+
+    .billing-address label {
+        font-size: 14px;
+    }
+    .p-btn-success {
+        text-decoration: none;
+        color: #fff !important;
+        font-weight: 600;
+        transition: transform 0.3s ease-in-out;
+    }
+    .p-btn-success:hover {
+        transform: scale(1.1);
+    }
+    #prescription-add-new-addr,
+    #edit-modal-content {
+        margin-bottom: 10px;
+    }
+
+    #error-message {
+        font-size: 13px;
+        /* margin: 16px 0 -8px 0; */
+    }
+
+    .preview-item img {
+        border-radius: 4px;
+        border: 1px solid #c2c5c4;
+        object-fit: cover;
+    }
+
+    @media only screen and (min-width: 360px) and (max-width: 767px) {
+
+        .vertical-line {
+            display: none;
+        }
+
+        .upload-pre-btn {
+            padding: 0 0 0 21px;
+        }
+
+        .quick-order {
+            margin-bottom: 250px;
+        }
+
+        .step-title:not(:last-child) {
+            margin-right: 10px;
+        }
+
+        .step-line {
+            width: 38px;
+            border-top: 2px solid #ccc;
+            flex-grow: 0;
+            margin-top: 20px;
+            margin-right: 15px;
+        }
+
+        .step-titles {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            width: 88%;
+            margin-left: 18px;
+        }
+
+        .step-title {
+            font-family: Source Sans Pro;
+            position: relative;
+            flex-grow: 1;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            padding-bottom: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .step-title.active {
+            font-family: Source Sans Pro;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .step-title::before {
+            content: '';
+            position: absolute;
+            top: -27%;
+            left: 18px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        .step-title.active::before,
+        .step-title.complete::before {
+            content: '✔';
+            color: #fff;
+            background-color: #5ABB7C;
+            font-size: 10px;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 50%;
+        }
+
+        .upload-now {
+            margin-top: 20px;
+        }
+
+        #prescription-format {
+            font-size: 14px;
+        }
+
+        .note {
+            font-size: 14px;
+        }
+
+        .upload-now-addr {
+            padding: 0px 0px 0 47px;
+            margin-right: 0px;
+        }
+
+        #modal-btn {
+            margin-left: -93px !important;
+        }
+
+        .prescription-label-page {
+            padding: 0 50px 30px 0px;
+            margin: 0 0px 0 -95px;
+        }
+
+        #existing-addresses-container {
+            margin: 0px 0px 0 115px;
+            width: 100%;
+            max-width: 856px;
+        }
+
+        #prescription-payment {
+            padding: 14px 22px !important;
+        }
+
+        .prescription-payment-label-page {
+            margin: 0 0 40px 0px;
+        }
+
+        .address-container {
+            padding: 0px 23px 20px 23px;
+            margin-left: -115px;
+        }
+
+        .upload-now-payment {
+            padding: 0px 23px;
+            margin-right: 0px;
+            margin-top: 23px;
+        }
+
+        .payment-method {
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+        }
+
+        #edit-modal-content,
+        #prescription-add-new-addr {
+            width: 100%;
+            margin-bottom: 200px;
+            margin-top: -316px;
+        }
+
+        .edit-prescription-label-page {
+            margin: -5px 0 20px 0px;
+        }
+
+        #edit-prescription-addr1 {
+            height: 750px;
+        }
+
+        #address-edit-btn {
+            margin: -25px 0px 5px 20px;
+        }
+
+        .add-prescription-label-page {
+            margin: 0 0 20px 0px;
+        }
+
+        .add-prescription-label-page .prescription-lable {
+            font-size: 22px;
+        }
+
+        #address-submit-btn {
+            margin-left: 20px;
+        }
+
+        #prescription-add-new-addr,
+        #edit-modal-content {
+            padding: 25px 16px;
+        }
+
+        #image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            padding: 0 110px 0 0;
+        }
+
+    }

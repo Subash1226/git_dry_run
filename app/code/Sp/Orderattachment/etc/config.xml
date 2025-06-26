@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <orderattachments>
+            <general>
+                <enabled>0</enabled>
+                <attachment_title>Order Attachments</attachment_title>
+                <attachment_information></attachment_information>
+                <display_attachment>after-shipping-methods</display_attachment>
+                <count>3</count>
+                <size>500</size>
+                <extension>jpg,jpeg,png,gif</extension>
+            </general>
+        </orderattachments>
+    </default>
+</config>

@@ -1,0 +1,1859 @@
+<style> #link-login{font-size:17px;font-weight:600;color:#049b7e;font-family:"Source Sans Pro";margin-top:12px}.collection-container{ margin-top:-10px !important}.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.5);z-index:999}.we-support,.we-support-edit{display:flex;margin-bottom:20px;width:276px;height:36px}.booking-form,.popup{top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000}.we-support{flex:0 0 auto;margin-left:-42px;margin-top:-32px}.we-support-edit{flex:0 0 auto;margin-left:-82px;margin-top:-73px}#bookingForm h2,.lab-thanks-success,.lab-thanks-success p button{width:100%;text-align:center}.lab-btn-redirect{font-size:21px;font-family:Source Sans Pro;color:#fff!important}.lab-order-confirmed{font-size:24px;font-family:Source Sans Pro;font-weight:700;margin:20px 0 10px}.lab-shipping-order{font-size:16px;font-family:Source Sans Pro;font-weight:400;margin:0 0 15px}.lab-button-success,.lab-button-success:hover{background:#03c777;color:#fff;font-family:Source Sans Pro;font-size:21px;font-weight:600;border-radius:8px;padding:8px 40px}#bookingForm h2,.form-check-label,.form-select{font-family:Source Sans Pro!important}.popup{position:fixed;background-color:#fff;border-radius:8px;padding:20px;box-shadow:0 4px 8px rgba(0,0,0,.1);width:768px;height:410px}.home-consult,.online-consult{background-repeat:no-repeat;background-position:center}.home-consult{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Sample::images/home_sample.png');?>)}.online-consult{background-image:url(<?= $block->getViewFileUrl('MedizinhubCore_Sample::images/hospital_sample.png');?>)}.home-consult p,.online-consult p{color:#0a2916;font-family:"Source Sans Pro";font-size:20px;font-style:normal;font-weight:600;padding:70px 68px 61px 62px;line-height:normal}.home-consult button,.online-consult button{color:#fff;font-family:Montserrat;font-size:12.176px;font-style:normal;border-radius:4.87px;padding:5px 16px;margin-top:-110px;margin-left:60px;height:32px;width:100px;font-weight:600;background:#063851}.page-title-wrapper{display:none}.online-consult button{background:#124f2a}.form-check-input{font-size:16px;margin-top:5px!important}.form-check{margin:5px auto!important}.booking-form{display:none;position:fixed;background:#fff;padding:30px;box-shadow:0 0 10px rgba(0,0,0,.1);width:383px;box-shadow:rgba(100,100,111,.2) 0 7px 29px 0}.form-check-label{font-size:16px}.form-select{font-size:16px!important}#bookingForm h2{font-size:24px;font-weight:600;color:#063851!important;padding:5px 0}.form-label{font-size:16px;font-family:Source Sans Pro;font-weight:600}.book-btn-now{background:#03c777!important;color:#fff!important;border-radius:8px!important;padding:8px 113px!important;margin-top:12px!important;font-size:21px!important;font-weight:600!important;border:1px solid #03c777!important;font-family:Source Sans Pro!important}.patient-error,.timing-error{font-size:12px;font-family:Source Sans Pro}.test-item-image{width:100%;height:92px;object-fit:contain}.pricing-details{background:#e7f5fd;font-family:Source Sans Pro;font-size:20px;font-weight:600;margin-left:1px;padding:20px;border:none!important;border-radius:8px}.payment-label,.payment-method{font-family:'Source Sans Pro';font-weight:600}.pricing-details h4{padding:5px 0}.pricing-line{border:1px solid #01b46b}.home-visit-fee{float:right}.discount-offer{font-size:16px;font-weight:700;color:#03c777}.pricing-details .total-fee{font-size:20px;font-weight:600;color:#00739b}.payment-method{background:#e7f5fd;font-size:20px;border:none!important;padding:10px;border-radius:8px;margin-left:0!important;margin-right:0!important}.payment-method ul{list-style:none}.payment-label{font-size:24px;color:#063851;padding:0 0 25px}</style>
+<?php
+/** @var \MedizinhubCore\Lab\Block\Booking $block */
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->create('Magento\Customer\Model\Session');
+$customerId = $customerSession->isLoggedIn() ? $customerSession->getCustomerId() : "0";
+$resourceConnection = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$connection = $resourceConnection->getConnection();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$customerRepository = $objectManager->get(\Magento\Customer\Api\CustomerRepositoryInterface::class);
+$customerDetails = null;
+if ($customerSession->isLoggedIn()) {
+    try {
+        $customerId = $customerSession->getCustomerId();
+        $customer = $customerRepository->getById($customerId);
+
+        $customerDetails = [
+            'name' => $customer->getFirstname() . ' ' . $customer->getLastname(),
+            'email' => $customer->getEmail(),
+            'mobile' => $customer->getCustomAttribute('mobile_number')
+                ? $customer->getCustomAttribute('mobile_number')->getValue()
+                : 'Not Provided',
+        ];
+    } catch (\Exception $e) {
+        $customerDetails = null;
+    }
+}
+$jsonCustomerDetails = $customerDetails ? json_encode($customerDetails) : '{}';
+function getMobileNumberByCustomerId($customerId)
+{
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $resourceConnection = $objectManager->get('Magento\Framework\App\ResourceConnection');
+    $connection = $resourceConnection->getConnection();
+    $eavAttributeTable = $connection->getTableName('eav_attribute');
+    $customerEntityVarcharTable = $connection->getTableName('customer_entity_varchar');
+    $selectAttributeId = $connection->select()
+        ->from($eavAttributeTable, ['attribute_id'])
+        ->where('attribute_code = ?', 'mobile_number')
+        ->where('entity_type_id = ?', 1);
+    $attributeId = $connection->fetchOne($selectAttributeId);
+    if (!$attributeId) {
+        throw new \Exception('Attribute ID for mobile_number not found.');
+    }
+    $selectMobileNumber = $connection->select()
+        ->from($customerEntityVarcharTable, ['value'])
+        ->where('attribute_id = ?', $attributeId)
+        ->where('entity_id = ?', $customerId);
+
+    return $connection->fetchOne($selectMobileNumber);
+}
+$mobileNumber = getMobileNumberByCustomerId($customerId);
+$sql = "SELECT * FROM patient WHERE customer_id = :customer_id ORDER BY id DESC";
+$binds = ['customer_id' => $customerId];
+$result = $connection->fetchAll($sql, $binds);
+$formattedAddresses = '';
+$firstAddress = true;
+
+foreach ($result as $patient) {
+    $checked = $firstAddress ? 'checked' : '';
+    $formattedAddresses .= '<div class="address-preview" data-address-id="' . htmlspecialchars($patient['id'], ENT_QUOTES, 'UTF-8') . '">';
+    $formattedAddresses .= '<hr class="address-break-line"><br>';
+    $formattedAddresses .= '<input type="radio" name="address_entity" value="' . htmlspecialchars($patient['id'], ENT_QUOTES, 'UTF-8') . '" data-address-id="' . htmlspecialchars($patient['id'], ENT_QUOTES, 'UTF-8') . '" ' . $checked . '>';
+    $formattedAddresses .= '<b>' . htmlspecialchars($patient['name'], ENT_QUOTES, 'UTF-8') . ' (' . htmlspecialchars($patient['age'], ENT_QUOTES, 'UTF-8') . ')</b>';
+    $formattedAddresses .= htmlspecialchars($patient['category'], ENT_QUOTES, 'UTF-8') . ",<br>";
+    $formattedAddresses .= htmlspecialchars($patient['street'], ENT_QUOTES, 'UTF-8') . ",<br>";
+    $formattedAddresses .= htmlspecialchars($patient['gender'], ENT_QUOTES, 'UTF-8') . ",<br>";
+    $formattedAddresses .= htmlspecialchars($patient['postcode'], ENT_QUOTES, 'UTF-8') . ".<br>";
+    $formattedAddresses .= 'Phone No - ' . htmlspecialchars($patient['phone'], ENT_QUOTES, 'UTF-8');
+    $formattedAddresses .= '<a href="#" class="edit-address"
+    data-address-id="' . htmlspecialchars($patient['id'], ENT_QUOTES, 'UTF-8') . '"
+    data-customer-name="' . htmlspecialchars($patient['name'], ENT_QUOTES, 'UTF-8') . '"
+    data-age="' . htmlspecialchars($patient['age'], ENT_QUOTES, 'UTF-8') . '"
+    data-house-no="' . htmlspecialchars($patient['house_no'], ENT_QUOTES, 'UTF-8') . '"
+    data-street="' . htmlspecialchars($patient['street'], ENT_QUOTES, 'UTF-8') . '"
+    data-city="' . htmlspecialchars($patient['city'], ENT_QUOTES, 'UTF-8') . '"
+    data-area="' . htmlspecialchars($patient['area'], ENT_QUOTES, 'UTF-8') . '"
+    data-region-id="' . htmlspecialchars($patient['region_id'], ENT_QUOTES, 'UTF-8') . '"
+    data-postcode="' . htmlspecialchars($patient['postcode'], ENT_QUOTES, 'UTF-8') . '"
+    data-telephone="' . htmlspecialchars($patient['phone'], ENT_QUOTES, 'UTF-8') . '"
+    data-email="' . htmlspecialchars($patient['email'], ENT_QUOTES, 'UTF-8') . '"
+    data-gender="' . htmlspecialchars($patient['gender'], ENT_QUOTES, 'UTF-8') . '"
+    data-whatsapp="' . htmlspecialchars($patient['whatsapp'], ENT_QUOTES, 'UTF-8') . '">
+    Edit</a>';
+    $formattedAddresses .= ' | ';
+    $formattedAddresses .= '<a href="#" class="delete-address" data-address-id="' . htmlspecialchars($patient['id'], ENT_QUOTES, 'UTF-8') . '" onclick="addressChecker()">Delete</a><br><br>';
+    $formattedAddresses .= '</div>';
+    $firstAddress = false;
+}
+
+$addNewAddress = '<a href="#" class="action submit primary" id="modal-btn" style="margin: 0 137px"><span>+ Add New Home Visit Address</span></a>';
+$newAddress = '<a href="#" class="action submit primary" id="new-address"><span>+ Add New Home Visit Address</span></a>';
+?>
+<div class="container quick-order collection-container">
+    <form class="form customform" id="quick-order-form" method="post" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>" enctype="multipart/form-data" data-mage-init='{"validation":{}}'>
+        <div class="progress" style="display: none;">
+            <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div style="visibility: hidden;" class="step-titles">
+            <div class="step-title active" data-step="1"></div>
+            <div class="step-line"></div>
+            <div class="step-title" data-step="2"></div>
+            <div class="step-line"></div>
+            <div class="step-title" data-step="3"></div>
+        </div>
+        <div class="display_address">
+            <fieldset class="fieldset step" data-step="1">
+            <div class="collection-sample">
+                <div class="container">
+                    <div class="row">
+                        <p style="color: #063851;font-family: Source Sans Pro,Sans-serif;font-size: 24px;font-weight: 600;">Select option for Sample Collection</p>
+                        <p style="color: #859ca8;font-family: Ubuntu,Sans-serif;font-size: 18px;font-weight: 400;">we offer a quality test to you</p>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div class="home-consult">
+                                <p>Home Sample <br> Collection</p>
+                                <button type="button" class="lab-booknow-btn" onclick="openBookingForm(this)" data-labtest-name="Home Sample Collection">Book Now</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="online-consult">
+                                <p>Hospital Sample <br> Collection</p>
+                                <button type="button" class="lab-booknow-btn" onclick="openBookingForm(this)" data-labtest-name="Hospital Sample Collection">Book Now</button>
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="booking-form" id="bookingForm" style="display: none;">
+            <div class="close-btn" style="position: absolute; top: -1px; right: 14px; cursor: pointer; font-size: 20px;" onclick="closeBookingForm()">x</div>
+    <h2>Enter Details</h2>
+    <div style="display: none;" class="mb-3">
+        <label class="form-label">No. of Patients:</label>
+        <select  class="form-select required" name="patient" required>
+            <option value="">Select</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+        </select>
+        <span id="patient-error" style="color: red;"></span>
+    </div>
+    <div class="mb-3">
+    <label class="form-label">Select Date:</label>
+        <input type="date" class="form-select required" id="appointment_date" name="appointment_date" required>
+        <span id="date-error" style="color: red;"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Select Time Slot:</label><br>
+        <select class="form-select required" name="appointment_time" required>
+            <option value="">Select</option>
+            <option value="06:00-07:00 AM">06:00-07:00 AM</option>
+            <option value="07:00-08:00 AM">07:00-08:00 AM</option>
+            <option value="08:00-09:00 AM">08:00-09:00 AM</option>
+            <option value="09:00-10:00 AM">09:00-10:00 AM</option>
+            <option value="10:00-11:00 AM">10:00-11:00 AM</option>
+            <option value="11:00-12:00 AM">11:00-12:00 AM</option>
+            <option value="12:00-1:00 PM">12:00-1:00 PM</option>
+            <option value="1:00-2:00 PM">1:00-2:00 PM</option>
+            <option value="2:00-3:00 PM">2:00-3:00 PM</option>
+            <option value="3:00-4:00 PM">3:00-4:00 PM</option>
+            <option value="4:00-5:00 PM">4:00-5:00 PM</option>
+            <option value="5:00-6:00 PM">5:00-6:00 PM</option>
+            <option value="6:00-7:00 PM">6:00-7:00 PM</option>
+            <option value="7:00-8:00 PM">7:00-8:00 PM</option>
+            <option value="8:00-9:00 PM">8:00-9:00 PM</option>
+            <option value="9:00-10:00 PM">9:00-10:00 PM</option>
+        </select>
+        <span id="timing-error" style="color: red;"></span>
+    </div>
+    <div class="mb-3">
+        <button type="button" class="btn btn-primary book-btn-now" onclick="AddPatientDetails()">Book Now</button>
+    </div>
+</div>
+
+
+            </fieldset>
+            <fieldset class="fieldset step" data-step="2">
+                <div class="upload-now-addr" id="address-page">
+                    <p style="font-size:24px;font-weight:600;font-family:Source Sans Pro;color:#063851;width: 100%;text-align: center;padding: 0 0 15px 0;display:none;">Sample Collection Location</p>
+                    <?php if (!empty($formattedAddresses)) { ?>
+                        <div id="existing-addresses-container">
+                            <div id="edit-address-form">
+                                <div class="address-container" id="update-address-list">
+                                    <?php echo $formattedAddresses; ?>
+                                    <div id="address-error-message" style="color: red;"></div>
+                                </div>
+                                <?php echo $addNewAddress; ?>
+                            </div>
+                        </div>
+
+                    <?php } else { ?>
+                        <div style="display: none;">
+                            <?php echo $newAddress; ?>
+                        </div>
+                        <div id="existing-addresses-container" style="display: none;">
+                            <div id="edit-address-form">
+                                <div class="prescription-label-page">
+                                    <label class="prescription-lable"><?= $block->escapeHtml(__('Home Sample Collection Location')) ?></label>
+                                </div>
+                                <div class="address-container" id="update-address-list">
+                                    <?php echo $formattedAddresses; ?>
+                                    <div id="address-error-message" style="color: red;"></div>
+                                </div>
+                                <?php echo $addNewAddress; ?>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+            </fieldset>
+
+            <fieldset class="fieldset step" data-step="3">
+            <div class="container">
+                    <div class="add-patient-label-page">
+                        <label class="payment-label"><?= $block->escapeHtml(__('Select Your Payment Method')) ?></label>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="payment-method">
+                                <ul>
+                                    <li>
+                                        <input type="radio" id="razorpay" name="payment_method" value="razorpay" checked>
+                                        <label for="razorpay">Pay Online<span class="razorpay-helper-text">(Card, Online Transactions)</span></label>
+
+                                    </li>
+                                    <!-- <li>
+                                        <input type="radio" id="cashondelivery" name="payment_method" value="cod">
+                                        <label for="cod">Cash On Delivery</label>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                        <div class="pricing-details">
+                    <p class="price-header">Pricing Details</p>
+                    <h4 class="fee-text">Total MRP <span class="home-visit-fee" id="doctor-fee"></span></h4>
+                    <h4 class="fee-text">Discount on MRP<span class="home-visit-fee" id="discount"></span></h4>
+                    <hr class="pricing-line">
+                    <h4 class="total-fee">Total Amount to Pay <span class="home-visit-fee" id="total-amount"></span></h4>
+                </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="customer-details" data-user-details='<?= htmlspecialchars($jsonCustomerDetails, ENT_QUOTES, 'UTF-8') ?>'></div>
+                </fieldset>
+            <div class="actions-toolbars upload-button" style="width:100%; text-align:center;">
+                <div class="primary" id="button-container">
+                    <button type="button" class="action submit primary btn-navigate-form-step" style="display: none;" id="next-step-btn">
+                        <span>Continue</span>
+                    </button>
+                    <button id="pre-btn" type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="action submit primary pre-btn">
+                        <span><?= $block->escapeHtml(__('Place Order')) ?></span>
+                    </button>
+                    <button class="cancel-btn" onclick="OrderCancel()" id="cancel-btn">
+                        <a href="/sample-collection">Cancel</a>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="modal-content" style="display: none;">
+    <div class="container prescription-addr" id="prescription-add-new-addr">
+        <div class="add-prescription-label-page">
+            <img class="we-support" src="<?= $block->getViewFileUrl('MedizinhubCore_Sample::images/we_support.png');?>" alt="We Support">
+            <label class="prescription-lable"><?= $block->escapeHtml(__(' Sample Collection Location')) ?></label>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field customer_name required">
+                    <label class="label customer_name prescription-form-label" for="customer_name">
+                        <span><?= $block->escapeHtml(__('Full Name')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="customer_name" id="customer_name" title="<?= $block->escapeHtmlAttr(__('Full Name')) ?>" class="address-input-text" type="text" pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$" required aria-required="true"/>
+                        <div class="address-form-error-message" id="name-address-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field age required">
+                    <label class="label age prescription-form-label" for="age">
+                        <span><?= $block->escapeHtml(__('Age')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="age" id="age" title="<?= $block->escapeHtmlAttr(__('Age')) ?>" class="address-input-text" type="number" max="3" min="1" pattern="^[0-9]+$" required aria-required="true"/>
+                        <div class="address-form-error-message" id="age-address-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field email required">
+                    <label class="label email prescription-form-label" for="email">
+                        <span><?= $block->escapeHtml(__('Email ID')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="email" id="emailvalidator" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="address-input-text" type="email" placeholder="Email" required aria-required="true"/>
+                        <div class="address-form-error-message" id="email-address-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field gender required">
+                    <label class="label gender prescription-form-label" for="gender">
+                        <span><?= $block->escapeHtml(__('Gender')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <select name="gender" id="gender" title="<?= $block->escapeHtmlAttr(__('Gender')) ?>" class="address-input-text" required aria-required="true">
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div id="gender-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field telephone required">
+                    <label class="label telephone prescription-form-label" for="telephone">
+                        <span><?= $block->escapeHtml(__('Phone Number')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="telephone" id="telephone" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="address-input-text" type="tel" pattern="[0-9]{10}"  maxlength="10" required aria-required="true"/>
+                        <div id="telephone-address-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field whatsapp required">
+                    <label class="label whatsapp prescription-form-label" for="whatsapp">
+                        <span><?= $block->escapeHtml(__('Whatsapp Number')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="whatsapp" id="whatsapp" title="<?= $block->escapeHtmlAttr(__('Whatsapp Number')) ?>" class="address-input-text" type="tel" pattern="[0-9]{10}" maxlength="10" required aria-required="true"/>
+                        <div id="whatsapp-address-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+    <label>
+        <input type="checkbox" id="sync-checkbox" /> <span class="sync-checkbox-label">Use Phone Number as WhatsApp Number</span>
+    </label>
+</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field house_no required">
+                    <label class="label house_no prescription-form-label" for="house_no">
+                        <span><?= $block->escapeHtml(__('Flat, House No')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="house_no" id="house_no" title="<?= $block->escapeHtmlAttr(__('Flat, House No')) ?>" class="address-input-text" type="text" pattern="^[a-zA-Z0-9\s]+$" required aria-required="true"/>
+                        <div id="house-no-address-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field street required">
+                    <label class="label street prescription-form-label" for="street">
+                        <span><?= $block->escapeHtml(__('Street')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="street" id="street" title="<?= $block->escapeHtmlAttr(__('Street')) ?>" class="address-input-text" type="text" pattern="^[a-zA-Z0-9\s]+$" required aria-required="true"/>
+                        <div id="street-address-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field area required">
+                    <label class="label area prescription-form-label" for="area">
+                        <span><?= $block->escapeHtml(__('Area')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input style="margin-left:0px !important;margin-top: 0px !important;" name="area" id="areavalue" title="<?= $block->escapeHtmlAttr(__('Area')) ?>" class="address-input-text" type="text" pattern="^[a-zA-Z0-9\s]+$" required aria-required="true"/>
+                        <div id="area-address-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field city required">
+                    <label class="label city prescription-form-label" for="city">
+                        <span><?= $block->escapeHtml(__('City')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="city" id="city" title="<?= $block->escapeHtmlAttr(__('City')) ?>" class="address-input-text" type="text" pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$" required aria-required="true"/>
+                        <div id="city-address-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field region required">
+                    <label class="label region prescription-form-label" for="region_id">
+                        <span><?= $block->escapeHtml(__('State')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <select name="region_id" id="region_id" class="address-input-text" required aria-required="true">
+                            <option value="" disabled selected>Select State</option>
+                            <option value="533">Andaman and Nicobar Islands</option>
+                            <option value="534">Andhra Pradesh</option>
+                            <option value="535">Arunachal Pradesh</option>
+                            <option value="536">Assam</option>
+                            <option value="537">Bihar</option>
+                            <option value="538">Chandigarh</option>
+                            <option value="539">Chhattisgarh</option>
+                            <option value="540">Dadra and Nagar Haveli</option>
+                            <option value="541">Daman and Diu</option>
+                            <option value="542">Delhi</option>
+                            <option value="543">Goa</option>
+                            <option value="544">Gujarat</option>
+                            <option value="545">Haryana</option>
+                            <option value="546">Himachal Pradesh</option>
+                            <option value="547">Jammu and Kashmir</option>
+                            <option value="548">Jharkhand</option>
+                            <option value="549">Karnataka</option>
+                            <option value="550">Kerala</option>
+                            <option value="551">Lakshadweep</option>
+                            <option value="552">Madhya Pradesh</option>
+                            <option value="553">Maharashtra</option>
+                            <option value="554">Manipur</option>
+                            <option value="555">Meghalaya</option>
+                            <option value="556">Mizoram</option>
+                            <option value="557">Nagaland</option>
+                            <option value="558">Odisha</option>
+                            <option value="559">Puducherry</option>
+                            <option value="560">Punjab</option>
+                            <option value="561">Rajasthan</option>
+                            <option value="562">Sikkim</option>
+                            <option value="563" selected>Tamil Nadu</option>
+                            <option value="564">Telangana</option>
+                            <option value="565">Tripura</option>
+                            <option value="566">Uttar Pradesh</option>
+                            <option value="567">Uttarakhand</option>
+                            <option value="568">West Bengal</option>
+                        </select>
+                        <input name="region" id="region" class="input-text" type="text" title="State" style="display: none;" required />
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var regionSelect = document.getElementById('region_id');
+                                var regionInput = document.getElementById('region');
+                                regionSelect.addEventListener('change', function() {
+                                    var selectedRegionName = regionSelect.options[regionSelect.selectedIndex].text;
+                                    regionInput.value = selectedRegionName;
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field postcode required">
+                    <label class="label postcode prescription-form-label" for="postcode">
+                        <span><?= $block->escapeHtml(__('Pincode')) ?></span>
+                        <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="postcode" maxlength="6" id="postcode" title="<?= $block->escapeHtmlAttr(__('Pincode')) ?>" class="address-input-text" type="text" pattern="[0-9]{6}" required aria-required="true"/>
+                        <div id="postcode-address-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field country_id required" style="display: none;">
+            <label class="label country_id prescription-form-label" for="country_id"></label>
+            <div class="control address-input">
+                <input name="country_id" id="country_id" value="IN" class="address-input-text" type="text" required />
+            </div>
+        </div>
+        <!-- <div class="text-center" style="margin-top: 10px;">
+            <button type="submit" class="action submit primary" id="address-submit-btn">Add Location</button>
+        </div> -->
+        <div style="margin-top:15px;" class="row">
+            <div class="col-md-8">
+            <button type="submit" class="action submit primary SaveDetails" id="address-submit-btn">Save Details</button>
+            </div>
+            <div class="col-md-4">
+            <button class="go-back-btn" style="margin: 0;" id="go-back" onclick="CancelPopup()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Edit address input fields -->
+<div id="edit-modal-content" style="display: none;">
+    <div class="container prescription-addr" id="edit-prescription-addr1">
+        <div class="edit-prescription-label-page">
+            <img class="we-support-edit" src="<?= $block->getViewFileUrl('MedizinhubCore_Sample::images/we_support.png');?>" alt="">
+            <label class="prescription-lable"><?= $block->escapeHtml(__('Update Home Sample Collection Location')) ?></label>
+        </div>
+
+        <div class="field edit_address_id required" style="display:none">
+            <label class="label edit_address_id prescription-form-label" for="customer_name"><span><?= $block->escapeHtml(__('Full Name*')) ?></span></label>
+            <div class="control address-input">
+                <input name="address_id" class="input-text" type="hidden" required />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field customer_name required">
+                    <label class="label customer_name prescription-form-label" for="customer_name">
+                        <span><?= $block->escapeHtml(__('Full Name')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="customer_name" id="edit-name" title="<?= $block->escapeHtmlAttr(__('Full Name')) ?>" class="address-input-text" type="text" pattern="^.* .*$" required />
+                        <div class="address-form-error-message" id="edit-name-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field last_name required">
+                    <label class="label last_name prescription-form-label" for="last_name">
+                        <span><?= $block->escapeHtml(__('Age')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="age" id="edit_age" title="<?= $block->escapeHtmlAttr(__('Age')) ?>" class="address-input-text" type="text" pattern="^.* .*$" required />
+                        <div class="address-form-error-message" id="edit-last-name-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field email required">
+                    <label class="label email prescription-form-label" for="email">
+                        <span><?= $block->escapeHtml(__('Email')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="email" id="editemailvalidator" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="address-input-text" type="email" placeholder="Email" required aria-required="true"/>
+                        <div class="address-form-error-message" id="email-address-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field gender required">
+                    <label class="label gender prescription-form-label" for="gender">
+                        <span><?= $block->escapeHtml(__('Gender')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <select name="gender" id="editgender" title="<?= $block->escapeHtmlAttr(__('Gender')) ?>" class="address-input-text" required aria-required="true">
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div id="gender-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field telephone required">
+                    <label class="label telephone prescription-form-label" for="telephone">
+                        <span><?= $block->escapeHtml(__('Phone Number')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="telephone" maxlength="10" id="edit-telephone" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="address-input-text" type="tel" required />
+                        <div id="edit-telephone-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field whatsapp required">
+                    <label class="label whatsapp prescription-form-label" for="whatsapp">
+                        <span><?= $block->escapeHtml(__('Whatsapp Number')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="whatsapp" id="editwhatsapp" title="<?= $block->escapeHtmlAttr(__('Whatsapp Number')) ?>" class="address-input-text" type="tel" pattern="[0-9]{10}" placeholder="1234567890" maxlength="10" required aria-required="true"/>
+                        <div id="whatsapp-address-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        <div class="col-md-12">
+    <label>
+        <input type="checkbox" id="edit-sync-checkbox" /> <span class="sync-checkbox-label">Use Phone Number as WhatsApp Number</span>
+    </label>
+</div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field house_no required">
+                    <label class="label house_no prescription-form-label" for="house_no">
+                        <span><?= $block->escapeHtml(__('Flat, House No')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="house_no" id="edithouse_no" title="<?= $block->escapeHtmlAttr(__('Flat, House No')) ?>" class="address-input-text" type="text" pattern="^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$" required />
+                        <div id="edit-house-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field street required">
+                    <label class="label street prescription-form-label" for="street">
+                        <span><?= $block->escapeHtml(__('Street')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="street" id="edit-street" title="<?= $block->escapeHtmlAttr(__('Street Address')) ?>" class="address-input-text" type="text" required />
+                        <div id="edit-street-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field city required">
+                    <label class="label city prescription-form-label" for="city">
+                        <span><?= $block->escapeHtml(__('Area')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="area" id="edit-area" title="<?= $block->escapeHtmlAttr(__('Area')) ?>" class="address-input-text" type="text" pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$" required />
+                        <div id="edit-area-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field city required">
+                    <label class="label city prescription-form-label" for="city">
+                        <span><?= $block->escapeHtml(__('City')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="city" id="edit-city" title="<?= $block->escapeHtmlAttr(__('City')) ?>" class="address-input-text" type="text" pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$" required />
+                        <div id="edit-city-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field region required">
+                    <label class="label region prescription-form-label" for="region_id">
+                        <span><?= $block->escapeHtml(__('State')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <select name="region_id" id="editregion_id" class="address-input-text" required>
+                            <option value="533">Andaman and Nicobar Islands</option>
+                            <option value="534">Andhra Pradesh</option>
+                            <option value="535">Arunachal Pradesh</option>
+                            <option value="536">Assam</option>
+                            <option value="537">Bihar</option>
+                            <option value="538">Chandigarh</option>
+                            <option value="539">Chhattisgarh</option>
+                            <option value="540">Dadra and Nagar Haveli</option>
+                            <option value="541">Daman and Diu</option>
+                            <option value="542">Delhi</option>
+                            <option value="543">Goa</option>
+                            <option value="544">Gujarat</option>
+                            <option value="545">Haryana</option>
+                            <option value="546">Himachal Pradesh</option>
+                            <option value="547">Jammu and Kashmir</option>
+                            <option value="548">Jharkhand</option>
+                            <option value="549">Karnataka</option>
+                            <option value="550">Kerala</option>
+                            <option value="551">Lakshadweep</option>
+                            <option value="552">Madhya Pradesh</option>
+                            <option value="553">Maharashtra</option>
+                            <option value="554">Manipur</option>
+                            <option value="555">Meghalaya</option>
+                            <option value="556">Mizoram</option>
+                            <option value="557">Nagaland</option>
+                            <option value="558">Odisha</option>
+                            <option value="559">Puducherry</option>
+                            <option value="560">Punjab</option>
+                            <option value="561">Rajasthan</option>
+                            <option value="562">Sikkim</option>
+                            <option value="563" selected>Tamil Nadu</option>
+                            <option value="564">Telangana</option>
+                            <option value="565">Tripura</option>
+                            <option value="566">Uttar Pradesh</option>
+                            <option value="567">Uttarakhand</option>
+                            <option value="568">West Bengal</option>
+                        </select>
+                        <input name="region" value="" id="editregion" class="input-text" type="text" title="State" style="display: none;" required />
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var editRegionSelect = document.getElementById('editregion_id');
+                                var editRegionInput = document.getElementById('editregion');
+                                editRegionSelect.addEventListener('change', function() {
+                                    var editSelectedRegionName = editRegionSelect.options[editRegionSelect.selectedIndex].text;
+                                    editRegionInput.value = editSelectedRegionName;
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="field postcode required">
+                    <label class="label postcode prescription-form-label" for="postcode">
+                        <span><?= $block->escapeHtml(__('Pincode')) ?></span><span class="required-asterisk">*</span>
+                    </label>
+                    <div class="control address-input">
+                        <input name="postcode" maxlength="6" id="edit-postcode" title="<?= $block->escapeHtmlAttr(__('Pincode')) ?>" class="address-input-text" type="text" required />
+                        <div id="edit-postcode-error-message" class="address-form-error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field country_id required" style="display:none;">
+            <label class="label country_id prescription-form-label" for="country_id"></label>
+            <div class="control address-input">
+                <input name="country_id" value="IN" class="input-text" type="text" required />
+            </div>
+        </div>
+        <div style="margin-top:15px;" class="row">
+            <div class="col-md-8">
+            <button type="submit" style="margin: 0;" class="action submit Update primary" id="address-edit-btn">Update</button>
+            </div>
+            <div class="col-md-4">
+            <button class="go-back-btn" style="margin: 0;" id="go-back" onclick="CancelPopup()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="popupOverlay" class="overlay" style="display: none;"></div>
+<div id="successPopup" style="display: none;" class="popup">
+    <div class="lab-thanks-success">
+        <div class="lab-thanks-img">
+            <img class="lab-success-img" width="200px" src="<?= $block->getViewFileUrl('MedizinhubCore_Sample::images/order_confirmed.png');?>" alt="">
+        </div>
+        <p class="lab-order-confirmed">Appointment Booked Successfully!</p>
+        <p class="lab-shipping-order">Our healthcare team will contact you shortly to confirm the details of your appointment.</p>
+        <div class="primary">
+            <button class="lab-button-success">
+                <a class="lab-btn-redirect" href="/">Continue Shopping</a>
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('sync-checkbox').addEventListener('change', function() {
+        const phoneInput = document.getElementById('telephone');
+        const whatsappInput = document.getElementById('whatsapp');
+        if (this.checked) {
+            whatsappInput.value = phoneInput.value;
+            phoneInput.addEventListener('input', syncNumbers);
+        } else {
+            phoneInput.removeEventListener('input', syncNumbers);
+            whatsappInput.value = '';
+        }
+    });
+
+    function syncNumbers() {
+        document.getElementById('whatsapp').value = this.value;
+    }
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const editTelephoneInput = document.getElementById('edit-telephone');
+    const editWhatsappInput = document.getElementById('editwhatsapp');
+    const editSyncCheckbox = document.getElementById('edit-sync-checkbox');
+
+    function editSyncNumbers() {
+        if (editSyncCheckbox.checked) {
+            editWhatsappInput.value = editTelephoneInput.value;
+        }
+    }
+
+    editSyncCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            editWhatsappInput.value = editTelephoneInput.value;
+            editTelephoneInput.addEventListener('input', editSyncNumbers);
+        } else {
+            editTelephoneInput.removeEventListener('input', editSyncNumbers);
+        }
+    });
+});
+</script>
+<script>
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('appointment_date').setAttribute('min', today);
+    var addressList = 0;
+    require([
+        'jquery'
+    ], function($) {
+        $(document).ready(function() {
+            function addressChecker() {
+                $.ajax({
+                    url: '/sample-collection/index/getaddresses',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(addressResponse) {
+                        if (addressResponse === '') {
+                            sessionStorage.setItem("AddressPrescription", false);
+                            $('#existing-addresses-container').hide();
+                        } else {
+                            sessionStorage.setItem("AddressPrescription", true);
+                            $('#update-address-list').html(addressResponse);
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Failed to fetch addresses:', errorThrown);
+                    }
+                });
+            }
+            addressChecker();
+            $('#modal-btn').on('click', function(event) {
+                event.preventDefault();
+                $('#modal-content').show();
+                $('#addcustomer_name').val('');
+                $('#age').val('');
+                $('#addtelephone').val('');
+                $('#addhouse_no').val('');
+                $('#addstreet').val('');
+                $('#addcompany').val('');
+                $('#addcity').val('');
+                $('#addpostcode').val('');
+            });
+
+            $('#address-submit-btn').click(function(e) {
+    e.preventDefault();
+    var customerName = $('[name="customer_name"]').val().trim();
+    var age = $('#age').val().trim();
+    var houseNo = $('#house_no').val().trim();
+    var street = $('#street').val().trim();
+    var city = $('#city').val().trim();
+    var area = $('#areavalue').val().trim();
+    var telephone = $('#telephone').val().trim();
+    var whatsapp = $('#whatsapp').val().trim();
+    var postcode = $('#postcode').val().trim();
+    var email = $('#emailvalidator').val().trim();
+    var gender = $('#gender').val();
+    var regionId = $('#region_id').val();
+    var countryId = $('#country_id').val();
+   let isValid = true;
+
+const nameRegex = /^[a-zA-Z\s]+$/;
+if (!nameRegex.test(customerName)) {
+  $('#name-address-error-message').text('Please enter a valid full name.');
+  isValid = false;
+} else {
+  $('#name-address-error-message').text('');
+}
+
+const ageRegex = /^[0-9]+$/;
+if (!ageRegex.test(age)) {
+  $('#age-address-error-message').text('Please enter a valid age.');
+  isValid = false;
+} else {
+  $('#age-address-error-message').text('');
+}
+
+if (houseNo === '') {
+  $('#house-no-address-error-message').text('Please enter your house number.');
+  isValid = false;
+} else {
+  $('#house-no-address-error-message').text('');
+}
+
+if (street === '') {
+  $('#street-address-error-message').text('Please enter your street address.');
+  isValid = false;
+} else {
+  $('#street-address-error-message').text('');
+}
+
+// City validation - only check if empty
+if (city === '') {
+  $('#city-address-error-message').text('Please enter your city.');
+  isValid = false;
+} else {
+  $('#city-address-error-message').text('');
+}
+const indianPhoneRegex = /^(\+91[\-\s]?)?[6789]\d{9}$/;
+if (!indianPhoneRegex.test(telephone)) {
+  $('#telephone-address-error-message').text('Please enter a valid  phone number.');
+  isValid = false;
+} else {
+  $('#telephone-address-error-message').text('');
+}
+if (!indianPhoneRegex.test(whatsapp)) {
+  $('#whatsapp-address-error-message').text('Please enter a valid  WhatsApp number.');
+  isValid = false;
+} else {
+  $('#whatsapp-address-error-message').text('');
+}
+const postcodeRegex = /^[0-9]{6}$/;
+if (!postcodeRegex.test(postcode)) {
+  $('#postcode-address-error-message').text('Please enter a valid pincode.');
+  isValid = false;
+} else {
+  $('#postcode-address-error-message').text('');
+}
+const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+if (!emailRegex.test(email)) {
+  $('#email-address-error-message').text('Please enter a valid email address.');
+  isValid = false;
+} else {
+  $('#email-address-error-message').text('');
+}
+if (!gender || gender === '') {
+    $('#gender-error-message').text('Please select your gender.');
+    isValid = false;
+} else {
+    $('#gender-error-message').text('');
+}
+
+    if (!isValid) {
+        return;
+    }
+
+    var formData = {
+        customer_name: customerName,
+        age: age,
+        house_no: houseNo,
+        street: street,
+        city: city,
+        area: area,
+        telephone: telephone,
+        whatsapp: whatsapp,
+        postcode: postcode,
+        email: email,
+        gender: gender,
+        region_id: regionId,
+        country_id: countryId
+    };
+
+    if ($.fn.loader) {
+        $('body').loader('show');
+    }
+
+    $.ajax({
+        url: '/sample-collection/index/saveaddress',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                if ($.fn.loader) {
+                    $('body').loader('hide');
+                }
+                $('#modal-content').hide();
+                $('#next-step-btn').show().css('visibility', 'visible');
+                $('#existing-addresses-container').show();
+                addressList++;
+                addressChecker();
+            } else {
+                if ($.fn.loader) {
+                    $('body').loader('hide');
+                }
+                console.error('Failed to add address:', response.message);
+            }
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            if ($.fn.loader) {
+                $('body').loader('hide');
+            }
+            console.error('Failed to address:', errorThrown);
+        }
+    });
+});
+
+$(document).ready(function() {
+    $('#quick-order-form').on('submit', function(event) {
+        event.preventDefault();
+        $('body').loader().loader('show');
+        var customerId = <?php echo $customerId; ?>;
+        var mobile = <?php echo isset($mobileNumber) ? json_encode($mobileNumber) : 'null'; ?>;
+        if (!mobile) {
+        mobile = null;
+        }
+        const paymentMethods = document.getElementsByName('payment_method');
+        let selectedMethod = null;
+        paymentMethods.forEach(method => {
+            if (method.checked) {
+                selectedMethod = method.value;
+            }
+        });
+
+        if (!selectedMethod) {
+            showErrorMessage('No payment method selected.');
+            return;
+        }
+        const userDetailsElement = document.getElementById('customer-details');
+        const userDetails = userDetailsElement ?
+            JSON.parse(userDetailsElement.getAttribute('data-user-details')) :
+            {};
+        const $loader = $('body').loader();
+        $loader.loader('show');
+        var customerId = parseInt(<?php echo json_encode($customerId); ?>, 10) || null;
+        var mobile = <?php echo isset($mobileNumber) ? json_encode($mobileNumber) : 'null'; ?>;
+        const formData = new FormData(this);
+        let testNamesString = '';
+        try {
+            const testNames = JSON.parse(sessionStorage.getItem('Packages') || '[]');
+            if (Array.isArray(testNames) && testNames.length > 0) {
+                testNamesString = testNames.map(name =>
+                    name.replace(/[<>&"']/g, '')
+                ).join(',');
+            }
+        } catch (error) {
+            console.error('Error processing test names:', error);
+        }
+        formData.append('test_name', testNamesString);
+        formData.append('test_type', sessionStorage.getItem('BookTestType') || '');
+        formData.append('customer_id', customerId || '');
+        formData.append('total_price', sessionStorage.getItem('PackageAmount') || '0');
+        formData.append('mobile_number', mobile || '');
+        formData.append('transaction_id', '11111');
+        if (selectedMethod === 'cod') {
+            formData.append('payment_type', 'Cash on Delivery');
+                        saveAndSubmitSampleCollection(formData, $loader);
+        } else if (selectedMethod === 'razorpay') {
+            formData.append('payment_type', 'Razorpay');
+                        initiateRazorpayPayment(formData, userDetails, $loader);
+        } else {
+            showErrorMessage('Invalid payment method selected.');
+            $loader.loader('hide');
+        }
+    });
+
+    function initiateRazorpayPayment(formData, userDetails, $loader) {
+        const PaymentBtn = document.getElementById('pre-btn');
+        $.ajax({
+            url: '/lab-test/payment/razorpay',
+            method: 'POST',
+            data: {
+                order_id: 'order_9A33XWu170gUtm',
+                total_price: sessionStorage.getItem('PackageAmount')
+            },
+            dataType: 'json',
+            timeout: 10000,
+            success: function (response) {
+                $loader.loader('hide');
+                if (!response.success) {
+                    showErrorMessage('Unable to create payment order: ' + (response.message || 'Unknown error'));
+                    return;
+                }
+                const razorpayOptions = {
+                    amount: sessionStorage.getItem('PackageAmount'),
+                    currency: "INR",
+                    name: "Medizinhub",
+                    description: "Package Payment",
+                    order_id: response.razorpay_order_id,
+                    prefill: {
+                        "name": userDetails.name,
+                        "email": userDetails.email,
+                        "contact": userDetails.mobile
+                    },
+                    theme: {
+                        color: "#3399cc"
+                    },
+                    handler: function (paymentResponse) {
+                        verifyRazorpayPayment(paymentResponse, formData, $loader);
+                    },
+                    modal: {
+                        ondismiss: function () {
+                            PaymentBtn.disabled = false;
+                            $loader.loader('hide');
+                        }
+                    }
+                };
+                const rzp1 = new Razorpay(razorpayOptions);
+                rzp1.open();
+            },
+            error: function (xhr, status, error) {
+                $loader.loader('hide');
+                showErrorMessage('Failed to create Razorpay order: ' + error);
+            }
+        });
+    }
+
+    function verifyRazorpayPayment(paymentResponse, formData, $loader) {
+        $.ajax({
+            url: '/lab-test/payment/success',
+            method: 'POST',
+            data: {
+                razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                razorpay_order_id: paymentResponse.razorpay_order_id,
+                razorpay_signature: paymentResponse.razorpay_signature
+            },
+            dataType: 'json',
+            timeout: 10000,
+            success: function (successResponse) {
+                $loader.loader('hide');
+                if (!successResponse.success) {
+                    showErrorMessage('Payment verification failed: ' + (successResponse.message || 'Unknown error'));
+                    return;
+                }
+                saveAndSubmitSampleCollection(formData, $loader);
+            },
+            error: function (xhr, status, error) {
+                showErrorMessage('Failed to verify payment: ' + error);
+            }
+        });
+    }
+
+    function saveAndSubmitSampleCollection(formData, $loader) {
+        $.ajax({
+            url: '/sample-collection/index/save',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            timeout: 10000,
+            success: function(response) {
+                $loader.loader('hide');
+                if (response.success) {
+                    $('#popupOverlay').show();
+                    $('#successPopup').show();
+                    sessionStorage.removeItem('Packages');
+                    sessionStorage.removeItem('PackagePrice');
+                    sessionStorage.removeItem('PackageDiscount');
+                    sessionStorage.removeItem('PackageAmount');
+                $.ajax({
+                url: '/lab-test/index/update',
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        console.log(response.message);
+                        $loader.loader('hide');
+                    } else {
+                        console.log(response.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+                } else {
+                    showErrorMessage(response.message || 'Failed to save sample collection');
+                }
+            },
+            error: function(xhr, status, error) {
+                $loader.loader('hide');
+                showErrorMessage('Error saving sample collection: ' + error);
+            }
+        });
+    }
+    $('#closePopup').on('click', function() {
+        $('#popupOverlay').hide();
+        $('#successPopup').hide();
+    });
+    function showErrorMessage(message) {
+        alert('Error: ' + message);
+        console.error(message);
+    }
+    function showInfoMessage(message) {
+        console.info(message);
+        alert(message);
+    }
+});
+
+$(document).on('click', '.edit-address', function(e) {
+    e.preventDefault();
+    var addressId = $(this).data('address-id');
+    var customerName = $(this).data('customer-name');
+    var age = $(this).data('age');
+    var company = $(this).data('company');
+    var houseno = $(this).data('house-no');
+    var street = $(this).data('street');
+    var city = $(this).data('city');
+    var area = $(this).data('area');
+    var region = $(this).data('region');
+    var regionId = $(this).data('region-id');
+    var postcode = $(this).data('pincode');
+    var telephone = $(this).data('telephone');
+    var email = $(this).data('email');
+    var gender = $(this).data('gender');
+    var whatsapp = $(this).data('whatsapp');
+    document.getElementById('address-edit-btn').disabled = false;
+    var modalContent = $('#edit-modal-content');
+    modalContent.find('[name="address_id"]').val(addressId);
+    modalContent.find('[name="customer_name"]').val(customerName);
+    modalContent.find('[name="age"]').val(age);
+    modalContent.find('[name="company"]').val(company);
+    modalContent.find('[name="house_no"]').val(houseno);
+    modalContent.find('[name="street"]').val(street);
+    modalContent.find('[name="city"]').val(city);
+    modalContent.find('[name="area"]').val(area);
+    modalContent.find('[name="region"]').val(region);
+    modalContent.find('[name="region_id"]').val(regionId);
+    modalContent.find('[name="postcode"]').val(postcode);
+    modalContent.find('[name="telephone"]').val(telephone);
+    modalContent.find('[name="email"]').val(email);
+    modalContent.find('[name="gender"]').val(gender);
+    modalContent.find('[name="whatsapp"]').val(whatsapp);
+
+    $('#existing-addresses-container').hide();
+    $('#next-step-btn').hide();
+    modalContent.show();
+});
+function editValidationAdd() {
+    let isValid = true;
+    const modalContent = $('#edit-modal-content');
+    modalContent.find('.address-form-error-message').text('');
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    const ageRegex = /^[0-9]+$/;
+    const indianPhoneRegex = /^(\+91[\-\s]?)?[6789]\d{9}$/;
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const validateField = (selector, condition, errorMessageSelector, errorMessage) => {
+        const value = modalContent.find(selector).val().trim();
+        if (!condition(value)) {
+            isValid = false;
+            modalContent.find(errorMessageSelector).text(errorMessage);
+        }
+    };
+    validateField(
+        '[name="customer_name"]',
+        (value) => nameRegex.test(value),
+        '#edit-name-error-message',
+        'Please enter a valid full name.'
+    );
+    validateField(
+        '[name="age"]',
+        (value) => ageRegex.test(value) && value > 0,
+        '#edit-last-name-error-message',
+        'Please enter a valid age.'
+    );
+    validateField(
+        '[name="email"]',
+        (value) => emailRegex.test(value),
+        '#email-address-error-message',
+        'Please enter a valid email address.'
+    );
+    validateField(
+        '[name="gender"]',
+        (value) => value,
+        '#gender-error-message',
+        'Select a valid gender.'
+    );
+    validateField(
+        '[name="telephone"]',
+        (value) => indianPhoneRegex.test(value),
+        '#edit-telephone-error-message',
+        'Please enter a valid phone number.'
+    );
+    validateField(
+        '[name="whatsapp"]',
+        (value) => indianPhoneRegex.test(value),
+        '#whatsapp-address-error-message',
+        'Please enter a valid WhatsApp number.'
+    );
+    validateField(
+        '[name="house_no"]',
+        (value) => value,
+        '#edit-house-error-message',
+        'House number is required.'
+    );
+    validateField(
+        '[name="street"]',
+        (value) => value,
+        '#edit-street-error-message',
+        'Street is required.'
+    );
+    validateField(
+        '[name="city"]',
+        (value) => value !== '',
+        '#edit-city-error-message',
+        'City is required.'
+    );
+    validateField(
+        '[name="area"]',
+        (value) => value !== '',
+        '#edit-area-error-message',
+        'Area is required.'
+    );
+    validateField(
+        '[name="postcode"]',
+        (value) => value.match(/^\d{6}$/),
+        '#edit-pincode-error-message',
+        'Pincode must be 6 digits.'
+    );
+    return isValid;
+}
+
+$('#address-edit-btn').click(function (e) {
+    e.preventDefault();
+    if (!editValidationAdd()) {
+        return;
+    }
+    const modalContent = $('#edit-modal-content');
+    const formData = {
+        address_id: modalContent.find('[name="address_id"]').val(),
+        customer_name: modalContent.find('[name="customer_name"]').val(),
+        age: modalContent.find('[name="age"]').val(),
+        company: modalContent.find('[name="company"]').val(),
+        street: {
+            0: modalContent.find('[name="house_no"]').val(),
+            1: modalContent.find('[name="street"]').val()
+        },
+        city: modalContent.find('[name="city"]').val(),
+        area: modalContent.find('[name="area"]').val(),
+        region: modalContent.find('[name="region"]').val(),
+        region_id: modalContent.find('[name="region_id"]').val(),
+        postcode: modalContent.find('[name="postcode"]').val(),
+        telephone: modalContent.find('[name="telephone"]').val(),
+        email: modalContent.find('[name="email"]').val(),
+        gender: modalContent.find('[name="gender"]').val(),
+        whatsapp: modalContent.find('[name="whatsapp"]').val()
+    };
+    $('body').loader().loader('show');
+    $.ajax({
+        url: '/sample-collection/index/updateaddress',
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            $('body').loader().loader('hide');
+            if (response.success) {
+                modalContent.hide();
+                $('#next-step-btn').show();
+                $('#existing-addresses-container').show();
+                addressChecker();
+            } else {
+                alert('Error: ' + response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            $('body').loader().loader('hide');
+            alert('Failed to update address. Please try again later.');
+        }
+    });
+});
+
+            $(document).on('click', '.delete-address', function(e) {
+                e.preventDefault();
+                var deleteLink = $(this);
+                var addressList = $('.address-preview').length;
+                var addressId = deleteLink.data('address-id');
+                if (confirm('Are you sure you want to delete this address?')) {
+                    $('body').loader().loader('show');
+                    $.ajax({
+                        url: '/sample-collection/index/deleteaddress',
+                        type: 'POST',
+                        data: {
+                            id: addressId
+                        },
+                        success: function(response) {
+                            $('body').loader().loader('hide');
+                            console.log(response);
+                            if (response.success) {
+                                deleteLink.closest('.address-preview').remove();
+                                addressList--;
+                                if (addressList == 0) {
+                                    $('#modal-content').show();
+                                    $('#existing-addresses-container').hide();
+                                    $('#next-step-btn').hide();
+                                    sessionStorage.setItem("AddressPrescription", false);
+                                } else {
+                                    $('#modal-content').hide();
+                                    $('#existing-addresses-container').show();
+                                    $('#next-step-btn').show();
+                                }
+                                console.log('Address deleted successfully');
+                                console.log('Remaining addresses: ' + addressList);
+                            } else {
+                                $('body').loader().loader('hide');
+                                console.error('Response Failed to delete address');
+                            }
+                        },
+                        error: function() {
+                            $('body').loader().loader('hide');
+                            console.error('Failed to delete address');
+                        }
+                    });
+                }
+            });
+
+        });
+    });
+
+    function logFormValues() {
+        var form = document.getElementById('quick-order-form');
+        var formData = new FormData(form);
+        var values = {};
+        for (var pair of formData.entries()) {
+            values[pair[0]] = pair[1];
+        }
+    }
+
+    const modalContent = document.getElementById('modal-content');
+    const nextBtn = document.getElementById('next-step-btn');
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalBtn = document.getElementById('modal-btn');
+        const addressList = document.getElementById('existing-addresses-container');
+        const addressListNextBtn = document.getElementById('next-step-btn');
+        if (modalBtn) {
+            modalBtn.addEventListener('click', function() {
+                modalContent.style.display = 'block';
+                addressList.style.display = 'none';
+                addressListNextBtn.style.display = 'none';
+            });
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById('quick-order-form');
+    const steps = form.querySelectorAll('.step');
+    const stepTitles = document.querySelectorAll('.step-title');
+    const submitBtn = document.getElementById('pre-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const nextBtn = document.getElementById('next-step-btn');
+    let currentStep = 0;
+    let prevClicked = false;
+    nextBtn.style.display = 'none';
+
+    function showStep(stepIndex) {
+        const progressBar = document.querySelector('.progress-bar');
+        const progress = ((stepIndex + 1) / steps.length) * 100;
+        progressBar.style.width = progress + '%';
+        progressBar.setAttribute('aria-valuenow', progress);
+
+        stepTitles.forEach((stepTitle, index) => {
+            if (index === stepIndex) {
+                stepTitle.classList.add('active');
+            } else {
+                stepTitle.classList.remove('active');
+            }
+        });
+
+        steps.forEach((step, index) => {
+            if (index === stepIndex) {
+                step.style.display = 'block';
+            } else {
+                step.style.display = 'none';
+            }
+        });
+
+        if (stepIndex === steps.length - 1) {
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+            cancelBtn.style.display = 'inline-block';
+        } else if (stepIndex === 0) {
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+        } else {
+            nextBtn.style.display = 'inline-block';
+            submitBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+        }
+    }
+    function goToNextStep() {
+        const errorMessage = document.getElementById('error-message');
+        const addressErrorMessage = document.getElementById('address-error-message');
+        const requiredFields = document.querySelectorAll('.step.active .required input');
+
+        let isValid = true;
+        requiredFields.forEach(function(field) {
+            if (field.value.trim() === '') {
+                isValid = false;
+            }
+        });
+        if (currentStep === 0) {
+            const addressFalse = sessionStorage.getItem("AddressPrescription");
+            const addressLists = document.getElementById('edit-address-form');
+            const modalContent = document.getElementById('modal-content');
+            const newAddress = document.getElementById('new-address');
+            let addressContainer = document.getElementById('existing-addresses-container');
+           if (addressList === 0 && addressFalse === "false") {
+                    modalContent.style.display = 'flex';
+                    nextBtn.style.visibility = 'hidden';
+                    window.onload = function() {
+                        var newAddress = document.getElementById('new-address');
+                        if (newAddress) {
+                            newAddress.click();
+                        }
+                    };
+                    document.addEventListener('click', function(event) {
+                        var newAddress = document.getElementById('new-address');
+                        var modalContent = document.getElementById('modal-content');
+                        if (event.target === newAddress) {
+                            modalContent.style.display = 'flex';
+                        }
+                    });
+                } else {
+                    addressContainer.style.display = 'inline-block';
+                    modalContent.style.display = 'none';
+                    nextBtn.style.display = 'flex';
+                }
+        }
+
+        if (currentStep === 1) {
+            const addressErrorMessages = document.getElementById('address-error-message');
+            const selectedAddress = document.querySelector('input[name="address_entity"]:checked');
+            if (!selectedAddress) {
+                isValid = false;
+                addressErrorMessages.textContent = 'Please select an address.';
+                addressErrorMessages.style.display = 'inline-block';
+            }
+        }
+
+        if (isValid) {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+    }
+
+    function goToPrevStep() {
+        if (currentStep > 0) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+
+    function goToStep(stepIndex) {
+        let modalContent = document.getElementById('modal-content');
+        let editModalContent = document.getElementById('edit-modal-content');
+        if (stepIndex < currentStep) {
+            prevClicked = true;
+            currentStep = stepIndex;
+            if (currentStep === 0) {
+                modalContent.style.display = "none";
+                editModalContent.style.display = "none";
+                nextBtn.style.visibility = "hidden";
+            }
+            showStep(currentStep);
+        }
+    }
+
+    stepTitles.forEach((stepTitle, index) => {
+        stepTitle.addEventListener('click', () => {
+            if (!prevClicked) {
+                goToStep(index);
+            }
+            prevClicked = false;
+        });
+    });
+    nextBtn.addEventListener('click', goToNextStep);
+    document.getElementById("quick-order-form").addEventListener("submit", function(event) {
+        document.getElementById("pre-btn").setAttribute("disabled", "true");
+    });
+    showStep(currentStep);
+});
+
+    function validateAddress() {
+        var customerName = document.getElementById('addcustomer_name').value;
+        var namePattern = /^[A-Za-z ]+$/;
+        if (!namePattern.test(customerName)) {
+            document.getElementById('name-address-error-message').innerText = 'Please enter a valid First Name with alphabets and spaces only.';
+        } else {
+            document.getElementById('name-address-error-message').innerText = '';
+            checkAllFields();
+        }
+    }
+    function validateLastNameAddress() {
+        var customerName = document.getElementById('age').value;
+        var namePattern = /^[0-9A-Za-z\s,\/]+$/;
+
+        if (!namePattern.test(customerName)) {
+            document.getElementById('last-name-address-error-message').innerText = 'Please enter Valid Age.';
+        } else {
+            document.getElementById('last-name-address-error-message').innerText = '';
+            checkAllFields();
+        }
+    }
+    function validateHouseAddress() {
+        var houseNo = document.getElementById('addhouse_no').value;
+        var houseNoPattern = /^[0-9A-Za-z\s,\/]+$/;
+        if (!houseNoPattern.test(houseNo)) {
+            document.getElementById('house-address-error-message').innerText = 'Please enter a valid Flat, House No with alphanumeric characters and spaces are allowed.';
+        } else {
+            document.getElementById('house-address-error-message').innerText = '';
+            checkAllFields();
+        }
+    }
+    function validateStreetAddress() {
+        var street = document.getElementById('addstreet').value;
+        var streetPattern = /^[A-Za-z0-9\s,\/]+$/;
+
+
+        if (!streetPattern.test(street)) {
+            document.getElementById('street-address-error-message').innerText = 'Please enter a valid street address with alphanumeric characters and spaces only.';
+        } else {
+            document.getElementById('street-address-error-message').innerText = '';
+            checkAllFields();
+        }
+    }
+    function validateCityAddress() {
+        var city = document.getElementById('addcity').value;
+        var cityPattern = /^[A-Za-z\s]+$/;
+
+        if (!cityPattern.test(city)) {
+            document.getElementById('city-address-error-message').innerText = 'Please enter a valid city name with alphabets and spaces only.';
+        } else {
+            document.getElementById('city-address-error-message').innerText = '';
+            checkAllFields();
+        }
+    }
+    function validatePostAddress() {
+        var postcode = document.getElementById('addpostcode').value;
+        var postcodePattern = /^\d{6}$/;
+
+        if (!postcodePattern.test(postcode)) {
+            document.getElementById('pincode-address-error-message').innerText = 'Please enter a valid 6-digit pincode.';
+        } else {
+            document.getElementById('pincode-address-error-message').innerText = '';
+            checkAllFields();
+        }
+    }
+    function validatePhoneAddress() {
+        var telephone = document.getElementById('addtelephone').value;
+        var telephonePattern = /^\d{10}$/;
+
+        if (!telephonePattern.test(telephone)) {
+            document.getElementById('phone-address-error-message').innerText = 'Please enter a valid 10-digit phone number.';
+        } else {
+            document.getElementById('phone-address-error-message').innerText = '';
+            checkAllFields();
+        }
+    }
+    function checkAllFields() {
+        var customerName = document.getElementById('addcustomer_name').value;
+        var customerLastName = document.getElementById('age').value;
+        var houseNo = document.getElementById('addhouse_no').value;
+        var street = document.getElementById('addstreet').value;
+        var city = document.getElementById('addcity').value;
+        var postcode = document.getElementById('addpostcode').value;
+        var telephone = document.getElementById('addtelephone').value;
+
+        if (customerName.trim() !== '' && customerLastName.trim() !== '' && houseNo.trim() !== '' && street.trim() !== '' && city.trim() !== '' && postcode.trim() !== '' && telephone.trim() !== '') {
+            document.getElementById('address-submit-btn').disabled = false;
+        } else {
+            document.getElementById('address-submit-btn').disabled = true;
+        }
+    }
+    document.getElementById('address-submit-btn').disabled = false;
+    document.getElementById('addcustomer_name').addEventListener('input', validateAddress);
+    document.getElementById('age').addEventListener('input', validateLastNameAddress);
+    document.getElementById('addhouse_no').addEventListener('input', validateHouseAddress);
+    document.getElementById('addstreet').addEventListener('input', validateStreetAddress);
+    document.getElementById('addcity').addEventListener('input', validateCityAddress);
+    document.getElementById('addpostcode').addEventListener('input', validatePostAddress);
+    document.getElementById('addtelephone').addEventListener('input', validatePhoneAddress);
+
+    function validateEditNameAddress() {
+        var customerName = document.getElementById('edit-name').value;
+        var namePattern = /^[A-Za-z ]+$/;
+
+        if (!namePattern.test(customerName)) {
+            document.getElementById('edit-name-error-message').innerText = 'Please enter a valid First Name with alphabets and spaces only.';
+        } else {
+            document.getElementById('edit-name-error-message').innerText = '';
+        }
+        checkAllEditFields();
+    }
+
+    function validateEditLastNameAddress() {
+        var customerLastName = document.getElementById('edit_age').value;
+        var lastNamePattern = /^\d{10}$/;
+
+        if (!lastNamePattern.test(customerLastName)) {
+            document.getElementById('edit-last-name-error-message').innerText = 'Please enter a valid Age.';
+        } else {
+            document.getElementById('edit-last-name-error-message').innerText = '';
+        }
+        checkAllEditFields();
+    }
+
+    function validateEditStreetAddress() {
+        var street = document.getElementById('edit-street').value;
+        var streetPattern = /^[A-Za-z0-9\s,\/]+$/;
+
+        if (!streetPattern.test(street)) {
+            document.getElementById('edit-street-error-message').innerText = 'Please enter a valid street address with alphanumeric characters and spaces only.';
+        } else {
+            document.getElementById('edit-street-error-message').innerText = '';
+        }
+        checkAllEditFields();
+    }
+
+    function validateEditCityAddress() {
+        var city = document.getElementById('edit-city').value;
+        var cityPattern = /^[A-Za-z\s]+$/;
+
+        if (!cityPattern.test(city)) {
+            document.getElementById('edit-city-error-message').innerText = 'Please enter a valid city name with alphabets and spaces only.';
+        } else {
+            document.getElementById('edit-city-error-message').innerText = '';
+        }
+        checkAllEditFields();
+    }
+
+    function validateEditPostAddress() {
+        var postcode = document.getElementById('edit-postcode').value;
+        var postcodePattern = /^\d{6}$/;
+
+        if (!postcodePattern.test(postcode)) {
+            document.getElementById('edit-postcode-error-message').innerText = 'Please enter a valid 6-digit pincode.';
+        } else {
+            document.getElementById('edit-postcode-error-message').innerText = '';
+        }
+        checkAllEditFields();
+    }
+
+    function validateEditPhoneAddress() {
+        var telephone = document.getElementById('edit-telephone').value;
+        var telephonePattern = /^\d{10}$/;
+
+        if (!telephonePattern.test(telephone)) {
+            document.getElementById('edit-telephone-error-message').innerText = 'Please enter a valid 10-digit phone number.';
+        } else {
+            document.getElementById('edit-telephone-error-message').innerText = '';
+        }
+        checkAllEditFields();
+    }
+
+    function checkAllEditFields() {
+        var customerName = document.getElementById('edit-name').value;
+        var customerLastName = document.getElementById('edit_age').value;
+        var street = document.getElementById('edit-street').value;
+        var city = document.getElementById('edit-city').value;
+        var postcode = document.getElementById('edit-postcode').value;
+        var telephone = document.getElementById('edit-telephone').value;
+
+        if (customerName.trim() !== '' && customerLastName.trim() !== '' && street.trim() !== '' && city.trim() !== '' && postcode.trim() !== '' && telephone.trim() !== '') {
+            document.getElementById('address-edit-btn').disabled = false;
+        } else {
+            document.getElementById('address-edit-btn').disabled = true;
+        }
+    }
+
+    document.getElementById('address-edit-btn').disabled = false;
+    document.getElementById('edit-name').addEventListener('input', validateEditNameAddress);
+    document.getElementById('edit_age').addEventListener('input', validateEditLastNameAddress);
+    document.getElementById('edit-street').addEventListener('input', validateEditStreetAddress);
+    document.getElementById('edit-city').addEventListener('input', validateEditCityAddress);
+    document.getElementById('edit-postcode').addEventListener('input', validateEditPostAddress);
+    document.getElementById('edit-telephone').addEventListener('input', validateEditPhoneAddress);
+
+         function CancelPopup() {
+                document.getElementById('edit-modal-content').style.display = 'none';
+                document.getElementById('next-step-btn').style.display = 'block';
+                document.getElementById('existing-addresses-container').style.display = 'block';
+                document.getElementById('modal-content').style.display = 'none';
+            };
+
+            function OrderCancel(){
+                window.location.href = "/sample-collection";
+            }
+
+            function AddPatientDetails() {
+    const bookingForm = document.getElementById('bookingForm');
+    const patientSelect = '1';
+    const appointmentDateInput = bookingForm.querySelector('[name="appointment_date"]');
+    const appointmentTimeSelect = bookingForm.querySelector('[name="appointment_time"]');
+    if (patientSelect.value === "") {
+        document.getElementById('patient-error').textContent = 'Please select the number of patients';
+        return;
+    } else {
+        document.getElementById('patient-error').textContent = '';
+    }
+    if (appointmentDateInput.value === "") {
+        document.getElementById('date-error').textContent = 'Please select a date';
+        return;
+    } else {
+        document.getElementById('date-error').textContent = '';
+    }
+    if (appointmentTimeSelect.value === "") {
+        document.getElementById('timing-error').textContent = 'Please select a preferred timing';
+        return;
+    } else {
+        document.getElementById('timing-error').textContent = '';
+    }
+    bookingForm.style.display = "none";
+    const nextStepBtn = document.getElementById('next-step-btn');
+    if (nextStepBtn) {
+        nextStepBtn.click();
+    } else {
+        console.error('Next step button not found');
+    }
+}
+function openBookingForm(buttonElement) {
+    const isLoggedIn = <?php echo $objectManager->create('Magento\Customer\Model\Session')->isLoggedIn() ? 'true' : 'false'; ?>;
+    if (isLoggedIn) {
+        const packageFee = sessionStorage.getItem('PackagePrice');
+        const packages = sessionStorage.getItem('Packages');
+        const discount = sessionStorage.getItem('PackageDiscount');
+        const totalAmount = sessionStorage.getItem('PackageAmount');
+        const packagesArray = packages ? JSON.parse(packages) : [];
+if (
+    packagesArray.length === 0 ||
+    packageFee === "0.00" || !packageFee ||
+    discount === "0.00" || !discount ||
+    totalAmount === "0.00" || !totalAmount
+) {
+    alert("Please add valid package details before proceeding.");
+    return;
+}
+        document.getElementById("bookingForm").style.display = "block";
+        const labtestName = buttonElement.getAttribute('data-labtest-name');
+        sessionStorage.setItem("BookTestType", labtestName);
+        document.querySelector('.home-consult').classList.remove('customer-register-link');
+        document.querySelector('.online-consult').classList.remove('customer-register-link');
+    } else {
+        document.querySelector('.home-consult').classList.add('customer-register-link');
+        document.querySelector('.online-consult').classList.add('customer-register-link');
+        BooklabPageRedirect();
+    }
+}
+
+
+    function closeBookingForm() {
+        document.getElementById("bookingForm").style.display = "none";
+    }
+
+    function restrictPastDates(inputId) {
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementById(inputId).setAttribute("min", today);
+    }
+    restrictPastDates("appointment_date")
+</script>
+<script>
+    const packageFee = sessionStorage.getItem('PackagePrice') || 0;
+    const discount = sessionStorage.getItem('PackageDiscount') || 0;
+    const totalAmount = sessionStorage.getItem('PackageAmount') || 0;
+    const doctorFeeElement = document.getElementById('doctor-fee');
+    const discountElement = document.getElementById('discount');
+    const totalAmountElement = document.getElementById('total-amount');
+    if (doctorFeeElement) {
+        doctorFeeElement.textContent = `₹ ${packageFee}`;
+    }
+    if (discountElement) {
+        discountElement.textContent = `- ₹ ${discount}`;
+    }
+    if (totalAmountElement) {
+        totalAmountElement.textContent = `₹ ${totalAmount}`;
+    }
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add id="Quick_Order::menu" title="Prescription" module="Quick_Order"
+			sortOrder="9999" resource="Quick_Order::menu" />
+		<add id="Quick_Order::manage" title="Manage Prescription"
+			module="Quick_Order" sortOrder="9999"
+			resource="Quick_Order::manage" parent="Quick_Order::menu"
+			action="mladmincustomform/customform" />
+	</menu>
+</config>

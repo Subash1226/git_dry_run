@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="MedizinhubCore_Sample::home" title="Lab Management" sortOrder="10">
+                    <resource id="MedizinhubCore_Sample::manage" title="Manage Entries" sortOrder="20" />
+                    <resource id="MedizinhubCore_Sample::add" title="Add Entries" sortOrder="20" />
+                    <resource id="MedizinhubCore_Sample::edit" title="Edit Entries" sortOrder="20" />
+                    <resource id="MedizinhubCore_Sample::save" title="Save Entries" sortOrder="20" />
+                    <resource id="MedizinhubCore_Sample::delete" title="Delete Entries" sortOrder="20" />
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

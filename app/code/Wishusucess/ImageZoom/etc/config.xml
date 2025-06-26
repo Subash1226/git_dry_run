@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <wishusucess_imagezoom>
+            <general>
+                <enable>1</enable>
+                <mini_hidden>575</mini_hidden>
+                <magnification_degree>3</magnification_degree>
+            </general>
+            <zoom_container>
+                <width>500px</width>
+                <height>500px</height>
+                <position_top>0</position_top>
+                <position_right>-300px</position_right>
+            </zoom_container>
+            <magnification>
+                <width>100px</width>
+                <height>100px</height>
+            </magnification>
+        </wishusucess_imagezoom>
+    </default>
+</config>

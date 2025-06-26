@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+ <head>
+ <css src="MedizinhubCore_Sample::css/style.css" />
+ <css src="MedizinhubCore_Sample::css/bootstrap.min.css" />
+<title>Sample Collection</title>
+</head>
+    <body>
+        <referenceContainer name="content">
+                <block class="MedizinhubCore\Sample\Block\Sample" name="sample.form" template="MedizinhubCore_Sample::sample-collection.phtml">
+                </block>
+        </referenceContainer>
+    </body>
+</page>
+
+

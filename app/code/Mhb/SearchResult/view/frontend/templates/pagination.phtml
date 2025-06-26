@@ -1,0 +1,99 @@
+<?php
+// Get pagination parameters from block or params
+$currentPage = $block->getData('current_page') ?: 1;
+$totalPages = $block->getData('total_pages') ?: 1;
+
+// Only show pagination if there's more than one page
+if ($totalPages > 1):
+
+    // Parse the current URL to determine how to add parameters
+    $urlParts = parse_url($block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]));
+    $baseUrl = isset($urlParts['path']) ? $urlParts['path'] : '';
+
+    // Build the query parameters
+    $queryParams = [];
+    if (isset($urlParts['query'])) {
+        parse_str($urlParts['query'], $queryParams);
+    }
+?>
+
+<div class="cusrp-pagination">
+    <div class="cusrp-pagination-container">
+        <?php if ($currentPage > 1): ?>
+            <?php 
+            $prevParams = $queryParams;
+            $prevParams['page'] = $currentPage - 1;
+            $prevUrl = $baseUrl . '?' . http_build_query($prevParams);
+            ?>
+            <a href="<?= $block->escapeUrl($prevUrl) ?>" class="cusrp-pagination-btn prev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                    <path d="M9.83067 13.2799C9.97161 13.1389 10.0508 12.9477 10.0508 12.7484C10.0508 12.549 9.97161 12.3578 9.83067 12.2168L6.10928 8.49546L9.83066 4.77408C9.96761 4.63229 10.0434 4.44238 10.0417 4.24526C10.04 4.04814 9.9609 3.85958 9.82151 3.72019C9.68212 3.58081 9.49356 3.50174 9.29644 3.50003C9.09932 3.49832 8.90942 3.57409 8.76763 3.71104L4.51472 7.96394C4.37378 8.10493 4.29461 8.29611 4.29461 8.49546C4.29461 8.69481 4.37378 8.886 4.51472 9.02698L8.76763 13.2799C8.90861 13.4208 9.0998 13.5 9.29915 13.5C9.4985 13.5 9.68968 13.4208 9.83067 13.2799Z" fill="white"/>
+                </svg>Previous
+            </a>
+        <?php else: ?>
+            <span class="cusrp-pagination-btn prev disabled">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                    <path d="M9.83067 13.2799C9.97161 13.1389 10.0508 12.9477 10.0508 12.7484C10.0508 12.549 9.97161 12.3578 9.83067 12.2168L6.10928 8.49546L9.83066 4.77408C9.96761 4.63229 10.0434 4.44238 10.0417 4.24526C10.04 4.04814 9.9609 3.85958 9.82151 3.72019C9.68212 3.58081 9.49356 3.50174 9.29644 3.50003C9.09932 3.49832 8.90942 3.57409 8.76763 3.71104L4.51472 7.96394C4.37378 8.10493 4.29461 8.29611 4.29461 8.49546C4.29461 8.69481 4.37378 8.886 4.51472 9.02698L8.76763 13.2799C8.90861 13.4208 9.0998 13.5 9.29915 13.5C9.4985 13.5 9.68968 13.4208 9.83067 13.2799Z" fill="white"/>
+                </svg>Previous
+            </span>
+        <?php endif; ?>
+
+        <div class="cusrp-pagination-numbers">
+            <?php
+            $startPage = max(1, $currentPage - 2);
+            $endPage = min($totalPages, $currentPage + 2);
+            
+            if ($startPage > 1) {
+                $firstParams = $queryParams;
+                $firstParams['page'] = 1;
+                $firstUrl = $baseUrl . '?' . http_build_query($firstParams);
+                echo '<a href="' . $block->escapeUrl($firstUrl) . '" class="cusrp-pagination-number">1</a>';
+                if ($startPage > 2) {
+                    echo '<span class="cusrp-pagination-ellipsis">...</span>';
+                }
+            }
+            
+            for ($i = $startPage; $i <= $endPage; $i++) {
+                if ($i == $currentPage) {
+                    echo '<span class="cusrp-pagination-number active">' . $i . '</span>';
+                } else {
+                    $pageParams = $queryParams;
+                    $pageParams['page'] = $i;
+                    $pageUrl = $baseUrl . '?' . http_build_query($pageParams);
+                    echo '<a href="' . $block->escapeUrl($pageUrl) . '" class="cusrp-pagination-number">' . $i . '</a>';
+                }
+            }
+        
+            if ($endPage < $totalPages) {
+                if ($endPage < $totalPages - 1) {
+                    echo '<span class="cusrp-pagination-ellipsis">...</span>';
+                }
+                $lastParams = $queryParams;
+                $lastParams['page'] = $totalPages;
+                $lastUrl = $baseUrl . '?' . http_build_query($lastParams);
+                echo '<a href="' . $block->escapeUrl($lastUrl) . '" class="cusrp-pagination-number">' . $totalPages . '</a>';
+            }
+            ?>
+        </div>
+
+        <?php if ($currentPage < $totalPages): ?>
+            <?php 
+            $nextParams = $queryParams;
+            $nextParams['page'] = $currentPage + 1;
+            $nextUrl = $baseUrl . '?' . http_build_query($nextParams);
+            ?>
+            <a href="<?= $block->escapeUrl($nextUrl) ?>" class="cusrp-pagination-btn next">Next
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <path d="M6.66933 3.72012C6.52839 3.8611 6.44922 4.05229 6.44922 4.25163C6.44922 4.45098 6.52839 4.64217 6.66933 4.78315L10.3907 8.50454L6.66933 12.2259C6.53239 12.3677 6.45661 12.5576 6.45832 12.7547C6.46004 12.9519 6.5391 13.1404 6.67849 13.2798C6.81788 13.4192 7.00644 13.4983 7.20356 13.5C7.40068 13.5017 7.59058 13.4259 7.73237 13.289L11.9853 9.03606C12.1262 8.89508 12.2054 8.70389 12.2054 8.50454C12.2054 8.30519 12.1262 8.114 11.9853 7.97302L7.73237 3.72012C7.59139 3.57918 7.4002 3.5 7.20085 3.5C7.0015 3.5 6.81032 3.57918 6.66933 3.72012Z" fill="white"/>
+                </svg>
+            </a>
+        <?php else: ?>
+            <span class="cusrp-pagination-btn next disabled">Next
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <path d="M6.66933 3.72012C6.52839 3.8611 6.44922 4.05229 6.44922 4.25163C6.44922 4.45098 6.52839 4.64217 6.66933 4.78315L10.3907 8.50454L6.66933 12.2259C6.53239 12.3677 6.45661 12.5576 6.45832 12.7547C6.46004 12.9519 6.5391 13.1404 6.67849 13.2798C6.81788 13.4192 7.00644 13.4983 7.20356 13.5C7.40068 13.5017 7.59058 13.4259 7.73237 13.289L11.9853 9.03606C12.1262 8.89508 12.2054 8.70389 12.2054 8.50454C12.2054 8.30519 12.1262 8.114 11.9853 7.97302L7.73237 3.72012C7.59139 3.57918 7.4002 3.5 7.20085 3.5C7.0015 3.5 6.81032 3.57918 6.66933 3.72012Z" fill="white"/>
+                </svg>
+            </span>
+        <?php endif; ?>
+    </div>
+</div>
+<?php endif; // End of check for total pages > 1 ?>

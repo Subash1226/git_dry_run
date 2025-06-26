@@ -1,0 +1,592 @@
+<?php
+$baseHelper = $this->helper('ET\Base\Helper\Data');
+$baseUrl = $this->getBaseUrl();
+$headerStaticBlock = $baseHelper->getConfigValue('header_section/general/header_static_block');
+$arrow = $baseUrl . '/media/wysiwyg/down-arrow.png';
+$editLocat = $baseUrl . '/static/frontend/ET/base_lite/en_US/MedizinhubCore_Home/images/edit.png';
+$line = $baseUrl . '/media/wysiwyg/Line.png';
+$edit = $baseUrl . '/static/frontend/ET/base_lite/en_US/MedizinhubCore_Home/images/edit.png';
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->create('Magento\Customer\Model\Session');
+$isLoggedIn = $customerSession->isLoggedIn();
+?>
+<?php echo $this->getChildHtml("et.top.promotion"); ?>
+
+<!-- Resource Optimization: Preconnect and preload critical resources -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+<link rel="preload" as="font" href="/static/frontend/ET/base_lite/en_US/fonts/sans/regular/sourcesanspro-regular-webfont.woff2" type="font/woff2" crossorigin>
+
+<!-- Deferred Google Analytics -->
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        var script = document.createElement('script');
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LMCJ58QHK';
+        script.async = true;
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8LMCJ58QHK');
+    }, 3000); // Delay analytics to prioritize page load
+});
+</script>
+
+<style>
+    .page-wrapper .page-header.type1 .header.content .minicart-wrapper .action.showcart::before {
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 30 30' fill='none'%3E%3Cpath d='M1.79906 3.45605H5.86082L7.01878 5.9323L25.6174 5.95012L25.8668 6.00356L26.0805 6.09263L26.2943 6.23515L26.4368 6.37767L26.5615 6.55582L26.6506 6.73396L26.7219 6.96556L26.7397 7.19715L26.7041 7.48218L26.615 7.7494L22.0544 16.0154L21.8406 16.3005L21.6803 16.4786L21.4843 16.639L21.2884 16.7815L21.0746 16.9062L20.7183 17.0487L20.3798 17.1378L20.0057 17.1734H10.6352L9.54847 19.1865L9.51284 19.2755V19.4537L9.60191 19.5962L9.74443 19.6496L24.2278 19.6675L24.2456 22.1259L24.1922 22.1615H9.19218L8.80025 22.1259L8.46177 22.0368L8.12329 21.8943L7.83826 21.7162L7.55322 21.4846L7.39289 21.3242L7.21474 21.0926L7.07222 20.861L6.94752 20.5938L6.84063 20.2732L6.78719 19.9703L6.76937 19.81V19.5249L6.82282 19.1508L6.89408 18.8836L8.74681 15.4632L8.72899 15.3385L4.29313 5.96793L1.78125 5.95012V3.47387L1.79906 3.45605ZM8.19455 8.44418L11.1518 14.6793H20.4867L20.5402 14.6259L23.9606 8.44418H8.19455Z' fill='%23049B7E'/%3E%3Cpath d='M11.7617 25.8728C11.7617 27.2535 10.6424 28.3728 9.26172 28.3728C7.88101 28.3728 6.76172 27.2535 6.76172 25.8728C6.76172 24.4921 7.88101 23.3728 9.26172 23.3728C10.6424 23.3728 11.7617 24.4921 11.7617 25.8728ZM8.93672 25.8728C8.93672 26.0523 9.08223 26.1978 9.26172 26.1978C9.44121 26.1978 9.58672 26.0523 9.58672 25.8728C9.58672 25.6933 9.44121 25.5478 9.26172 25.5478C9.08223 25.5478 8.93672 25.6933 8.93672 25.8728Z' fill='%23049B7E'/%3E%3Cpath d='M24.2383 25.8762C24.2383 27.2569 23.119 28.3762 21.7383 28.3762C20.3576 28.3762 19.2383 27.2569 19.2383 25.8762C19.2383 24.4955 20.3576 23.3762 21.7383 23.3762C23.119 23.3762 24.2383 24.4955 24.2383 25.8762ZM21.4133 25.8762C21.4133 26.0557 21.5588 26.2012 21.7383 26.2012C21.9178 26.2012 22.0633 26.0557 22.0633 25.8762C22.0633 25.6967 21.9178 25.5512 21.7383 25.5512C21.5588 25.5512 21.4133 25.6967 21.4133 25.8762Z' fill='%23049B7E'/%3E%3Cpath d='M19.614 10.2559L18.3552 12.7811' stroke='%23049B7E' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E")!important;
+        background-repeat: no-repeat !important;
+        background-size: 25px 45px !important;
+    }
+</style>
+
+<header class="page-header type1">
+    <div class="panel wrapper">
+        <div class="panel header">
+            <?php echo $this->getChildHtml("skip_to_content"); ?>
+            <?php echo $this->getChildHtml("store_language"); ?>
+            <?php echo $this->getChildHtml("currency"); ?>
+            <?php echo $this->getChildHtml("header.links"); ?>
+        </div>
+    </div>
+    <div id="regular-header" class="header content">
+        <button class="res-menu-btn" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="res_sidebar">
+            <div class="res-menu-column">
+                <h2>Menu</h2>
+                <nav>
+                    <a href="<?php echo $baseUrl; ?>">Buy Medicine</a>
+                    <a href="/quick-order">Quick Order</a>
+                    <a href="/lab-test">Book Lab Tests</a>
+                    <a href="/doctors">Book Doctor Consultant</a>
+                    <a href="/home-care">Home Care Services</a>
+                    <a href="/home-visit">Home Visit Services</a>
+                    <a href="/offers">Offers</a>
+                </nav>
+            </div>
+            <div class="res-menu-column">
+                <h2>Account</h2>
+                <nav>
+                <?php if ($isLoggedIn): ?>
+                    <a href="/customer/account/">My Profile</a>
+                    <a href="/sales/order/history/">My Orders</a>
+                    <a href="/appointment">My Appointments</a>
+                    <a href="/customer/account/logout">Sign Out</a>
+                <?php else: ?>
+                    <a href="#" class="customer-register-link js-login-user">Sign In / Sign Up</a>
+                <?php endif; ?>
+                </nav>
+            </div>
+        </div>
+        <div class="res_overlay"></div>
+
+        <div class="header-logo">
+            <?php echo $this->getChildHtml("logo"); ?>
+            <img id="logo-line" src="<?php echo $line; ?>" alt="">
+        </div>
+
+        <div class="delivery" data-toggle="tooltip" data-placement="top" title="Delivery Location!">
+            <p id="location-text" class="location">Delivery Location</p>
+            <h1 style="cursor: pointer;" id="area">
+                <p id="openModalBtn">Enter your location <img id="edit-locat" src="<?php echo $edit; ?>" alt="Edit location"> </p>
+            </h1>
+            <div id="myModal" class="modals">
+                <div class="modal-content">
+                    <span id="closeModalBtn" class="close-modal-button">&times;</span>
+                    <p id="model-pincode" class="model-pincode">Enter Pincode</p>
+                    <input type="text" id="myInput" maxlength="6" pattern="[0-9]*" inputmode="numeric" placeholder="Enter Delivery Pincode" />
+                    <div id="error-message-pincode" class="error-message-pincode"></div>
+                    <button class="getlocatbtn">Get Location</button>
+                </div>
+            </div>
+        </div>
+
+        <?php
+        echo $this->getChildHtml("top.search");
+        echo $this->getChildHtml("minicart");
+
+        if ($headerStaticBlock != '') { ?>
+        <div class="header-contact-block">
+            <div class="item user-login" id="logged">
+                <?php if ($isLoggedIn) {
+                    $customerName = $customerSession->getCustomer()->getName();
+                    $nameLength = strlen($customerName);
+                    $limitedName = $nameLength > 12 ? substr($customerName, 0, 12) . '...' : $customerName;
+                    $padding = $nameLength > 12 ? '0px' : ($nameLength < 8 ? '0 20px 0 0px;' : '0 20px 0 0px;');
+                ?>
+                <span id="triggerElement" class="text-block myaccount">
+                    <a id="link-logout" href="<?php echo $baseUrl;?>customer/account/">
+                        <span id="customer_name" style="padding:<?php echo $padding;?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="profile-logout" width="29" height="29" viewBox="0 0 29 29" fill="none">
+                                <path d="M14.4915 6.61885C15.4507 6.61885 16.3707 6.99989 17.0489 7.67814C17.7272 8.3564 18.1082 9.27631 18.1082 10.2355C18.1082 11.1947 17.7272 12.1146 17.0489 12.7929C16.3707 13.4711 15.4507 13.8522 14.4915 13.8522C13.5323 13.8522 12.6124 13.4711 11.9342 12.7929C11.2559 12.1146 10.8749 11.1947 10.8749 10.2355C10.8749 9.27631 11.2559 8.3564 11.9342 7.67814C12.6124 6.99989 13.5323 6.61885 14.4915 6.61885ZM14.4915 18.2855C16.9423 18.2855 19.1082 18.784 20.6224 19.5411C22.1991 20.3295 22.7749 21.2247 22.7749 21.9022V23.1855H6.2082V21.9022C6.2082 21.2247 6.78394 20.3295 8.36069 19.5411C9.87492 18.784 12.0407 18.2855 14.4915 18.2855Z" stroke="#049B7E" stroke-width="2.1"/>
+                                <path d="M19.2285 15.6465C19.2285 15.6465 21.6513 15.6923 23.5628 17.7219" stroke="#049B7E" stroke-width="1.16667" stroke-linecap="round"/>
+                            </svg>
+                            <?php echo $limitedName;?>
+                        </span>
+                    </a>
+                </span>
+                <?php } else { ?>
+                <span class="text-block">
+                    <a id="link-login" class="customer-register-link js-login-user" href="<?php echo $baseUrl;?>customer/account/login/">
+                        <svg class="profile-login" xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
+                            <path d="M14.4915 6.61885C15.4507 6.61885 16.3707 6.99989 17.0489 7.67814C17.7272 8.3564 18.1082 9.27631 18.1082 10.2355C18.1082 11.1947 17.7272 12.1146 17.0489 12.7929C16.3707 13.4711 15.4507 13.8522 14.4915 13.8522C13.5323 13.8522 12.6124 13.4711 11.9342 12.7929C11.2559 12.1146 10.8749 11.1947 10.8749 10.2355C10.8749 9.27631 11.2559 8.3564 11.9342 7.67814C12.6124 6.99989 13.5323 6.61885 14.4915 6.61885ZM14.4915 18.2855C16.9423 18.2855 19.1082 18.784 20.6224 19.5411C22.1991 20.3295 22.7749 21.2247 22.7749 21.9022V23.1855H6.2082V21.9022C6.2082 21.2247 6.78394 20.3295 8.36069 19.5411C9.87492 18.784 12.0407 18.2855 14.4915 18.2855Z" stroke="#049B7E" stroke-width="2.1" />
+                            <path d="M19.2285 15.6465C19.2285 15.6465 21.6513 15.6923 23.5628 17.7219" stroke="#049B7E" stroke-width="1.16667" stroke-linecap="round" />
+                        </svg>
+                        Sign In / Sign Up
+                    </a>
+                    <img id="star" class="star" src="<?php echo $baseUrl;?>static/frontend/ET/base_lite/en_US/MedizinhubCore_Home/images/star.png" title="Star" alt="Star" />
+                </span>
+                <?php } ?>
+
+                <div id="hiddenDiv">
+                    <ul class="account-ul">
+                        <li class="account-li">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.935 9.8432C5.07807 10.7252 3 13.3885 3 16.5333C3 16.6571 3.04917 16.7758 3.13668 16.8633C3.2242 16.9508 3.3429 17 3.46667 17C3.59043 17 3.70913 16.9508 3.79665 16.8633C3.88417 16.7758 3.93333 16.6571 3.93333 16.5333C3.93333 13.185 6.65167 10.4667 10 10.4667C13.3483 10.4667 16.0667 13.185 16.0667 16.5333C16.0667 16.6571 16.1158 16.7758 16.2034 16.8633C16.2909 16.9508 16.4096 17 16.5333 17C16.6571 17 16.7758 16.9508 16.8633 16.8633C16.9508 16.7758 17 16.6571 17 16.5333C17 13.3885 14.9219 10.7252 12.065 9.8432C12.5782 9.5028 12.9991 9.04066 13.2902 8.49802C13.5813 7.95539 13.7335 7.34912 13.7333 6.73333C13.7333 4.673 12.0603 3 10 3C7.93967 3 6.26667 4.673 6.26667 6.73333C6.26648 7.34912 6.41873 7.95539 6.70984 8.49802C7.00094 9.04066 7.42185 9.5028 7.935 9.8432ZM10 3.93333C11.5451 3.93333 12.8 5.1882 12.8 6.73333C12.8 8.27847 11.5451 9.53333 10 9.53333C8.45487 9.53333 7.2 8.27847 7.2 6.73333C7.2 5.1882 8.45487 3.93333 10 3.93333Z" fill="#FC0A44" stroke="#FC0A44" stroke-width="0.5" />
+                            </svg>
+                            <a class="account-links" href="<?php echo $baseUrl;?>sales/order/history/">My Orders</a>
+                        </li>
+                        <li class="account-li">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.43416 6.07754C7.59041 6.02231 7.76221 6.0314 7.91177 6.10282C8.06132 6.17424 8.17638 6.30213 8.23166 6.45837C8.36088 6.82424 8.60038 7.14103 8.91715 7.36509C9.23393 7.58916 9.61239 7.70949 10.0004 7.70949C10.3884 7.70949 10.7669 7.58916 11.0837 7.36509C11.4004 7.14103 11.6399 6.82424 11.7692 6.45837C11.7955 6.37974 11.8373 6.30714 11.892 6.2448C11.9467 6.18246 12.0133 6.13164 12.0878 6.09529C12.1623 6.05893 12.2434 6.03778 12.3262 6.03306C12.409 6.02835 12.4919 6.04016 12.5701 6.06781C12.6483 6.09546 12.7202 6.13839 12.7816 6.19411C12.8431 6.24983 12.8928 6.31722 12.9279 6.39236C12.963 6.46749 12.9829 6.54886 12.9862 6.63173C12.9896 6.7146 12.9764 6.79731 12.9475 6.87504C12.732 7.48449 12.3329 8.01215 11.8051 8.38537C11.2773 8.75858 10.6468 8.95898 10.0004 8.95898C9.35399 8.95898 8.72347 8.75858 8.19568 8.38537C7.66789 8.01215 7.26878 7.48449 7.05332 6.87504C6.99809 6.71878 7.00719 6.54699 7.0786 6.39743C7.15002 6.24788 7.27791 6.13281 7.43416 6.07754ZM10.3008 4.58337H9.69916C8.34499 4.58337 7.44332 4.58587 6.75999 4.67004C6.11166 4.75004 5.81249 4.88921 5.60249 5.06337C5.39249 5.23837 5.20082 5.50587 5.00249 6.12837C4.79416 6.78421 4.62582 7.67004 4.37582 9.00171C4.02582 10.8684 3.79082 12.1359 3.74916 13.0909C3.70916 14.0117 3.86332 14.4034 4.07999 14.6642C4.29666 14.925 4.65249 15.1484 5.56499 15.2784C6.51082 15.4134 7.80082 15.4167 9.69999 15.4167H10.3C12.2 15.4167 13.4892 15.4134 14.435 15.2784C15.3475 15.1484 15.7033 14.925 15.92 14.6642C16.1367 14.4025 16.2908 14.0117 16.2508 13.0909C16.2092 12.1359 15.9742 10.8684 15.6242 9.00171C15.3742 7.67004 15.2067 6.78504 14.9975 6.12837C14.7992 5.50587 14.6075 5.23754 14.3975 5.06337C14.1875 4.88921 13.8892 4.75004 13.24 4.67004C12.5567 4.58587 11.655 4.58337 10.3008 4.58337ZM4.80416 4.10171C3.87916 4.87004 3.63499 6.17087 3.14749 8.77171C2.46166 12.4292 2.11832 14.2575 3.11832 15.4625C4.11832 16.6667 5.97832 16.6667 9.69916 16.6667H10.3008C14.0217 16.6667 15.8825 16.6667 16.8825 15.4625C17.8825 14.2575 17.5392 12.4292 16.8533 8.77087C16.3658 6.17087 16.1217 4.87004 15.1958 4.10171C14.2708 3.33337 12.9467 3.33337 10.3008 3.33337H9.69916C7.05332 3.33337 5.72999 3.33337 4.80416 4.10171Z" fill="#5C02EF" />
+                            </svg>
+                            <a class="account-links" href="<?php echo $baseUrl;?>customer/account/">My Profile</a>
+                        </li>
+                        <li class="account-li">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 1.875C6.89453 1.875 4.375 4.27305 4.375 7.22656C4.375 10.625 8.125 16.0105 9.50195 17.8707C9.55911 17.9492 9.63402 18.0131 9.72058 18.0572C9.80713 18.1012 9.90288 18.1242 10 18.1242C10.0971 18.1242 10.1929 18.1012 10.2794 18.0572C10.366 18.0131 10.4409 17.9492 10.498 17.8707C11.875 16.0113 15.625 10.6277 15.625 7.22656C15.625 4.27305 13.1055 1.875 10 1.875Z" stroke="#EEA600" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M10 9.375C11.0355 9.375 11.875 8.53553 11.875 7.5C11.875 6.46447 11.0355 5.625 10 5.625C8.96447 5.625 8.125 6.46447 8.125 7.5C8.125 8.53553 8.96447 9.375 10 9.375Z" stroke="#EEA600" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <a class="account-li" href="<?php echo $baseUrl;?>customer/address/">Delivery Location</a>
+                        </li>
+                        <li class="account-li">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <g clip-path="url(#clip0_1306_205)">
+                                <path d="M10.0001 18.7617C14.8391 18.7617 18.7619 14.8389 18.7619 9.99994C18.7619 5.16094 14.8391 1.23816 10.0001 1.23816C5.16107 1.23816 1.23828 5.16094 1.23828 9.99994C1.23828 14.8389 5.16107 18.7617 10.0001 18.7617Z" stroke="#00C3EE" stroke-width="1.31458" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M7.97803 7.97801C7.97803 7.5781 8.09661 7.18718 8.31879 6.85467C8.54096 6.52216 8.85675 6.263 9.22621 6.10997C9.59567 5.95693 10.0022 5.91689 10.3944 5.99491C10.7867 6.07292 11.1469 6.2655 11.4297 6.54827C11.7125 6.83105 11.9051 7.19132 11.9831 7.58354C12.0611 7.97576 12.0211 8.38231 11.868 8.75177C11.715 9.12124 11.4558 9.43702 11.1233 9.6592C10.7908 9.88137 10.3999 9.99996 9.99998 9.99996V11.3479" stroke="#00C3EE" stroke-width="1.31458" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M9.99975 13.3699C9.79979 13.3699 9.60433 13.4292 9.43808 13.5403C9.27182 13.6513 9.14224 13.8092 9.06573 13.994C8.98921 14.1787 8.96919 14.382 9.0082 14.5781C9.0472 14.7742 9.14349 14.9543 9.28488 15.0957C9.42627 15.2371 9.6064 15.3334 9.80251 15.3724C9.99862 15.4114 10.2019 15.3914 10.3866 15.3149C10.5714 15.2383 10.7293 15.1088 10.8403 14.9425C10.9514 14.7763 11.0107 14.5808 11.0107 14.3808C11.0072 14.1138 10.8996 13.8587 10.7108 13.6698C10.5219 13.481 10.2668 13.3734 9.99975 13.3699Z" fill="#00C3EE" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_1306_205">
+                                    <rect width="20" height="20" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <a class="account-links" href="/appointment/index/index/">My Appointments</a>
+                        </li>
+                        <li class="account-li">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10.0001 17.5C9.76397 17.5 9.56592 17.42 9.40592 17.26C9.24592 17.1 9.16619 16.9022 9.16675 16.6667C9.16675 16.4306 9.24675 16.2325 9.40675 16.0725C9.56675 15.9125 9.76453 15.8328 10.0001 15.8333H15.8334V9.91667C15.8334 9.11111 15.6806 8.35417 15.3751 7.64583C15.0695 6.9375 14.6529 6.31945 14.1251 5.79167C13.5973 5.26389 12.9793 4.84722 12.2709 4.54167C11.5626 4.23611 10.8056 4.08333 10.0001 4.08333C9.19453 4.08333 8.43758 4.23611 7.72925 4.54167C7.02092 4.84722 6.40286 5.26389 5.87508 5.79167C5.3473 6.31945 4.93064 6.9375 4.62508 7.64583C4.31953 8.35417 4.16675 9.11111 4.16675 9.91667V14.1667C4.16675 14.4028 4.08703 14.6008 3.92758 14.7608C3.76814 14.9208 3.57008 15.0006 3.33342 15C2.87508 15 2.48258 14.8367 2.15592 14.51C1.82925 14.1833 1.66619 13.7911 1.66675 13.3333V11.6667C1.66675 11.3472 1.74314 11.0661 1.89592 10.8233C2.04869 10.5806 2.25008 10.3825 2.50008 10.2292L2.56258 9.125C2.68758 8.11111 2.97592 7.19445 3.42758 6.375C3.87925 5.55556 4.44175 4.86111 5.11508 4.29167C5.78842 3.72222 6.54536 3.28111 7.38592 2.96833C8.22647 2.65556 9.09786 2.49945 10.0001 2.5C10.9167 2.5 11.7954 2.65639 12.6359 2.96917C13.4765 3.28195 14.2298 3.72639 14.8959 4.3025C15.5626 4.87861 16.1217 5.57306 16.5734 6.38583C17.0251 7.19861 17.3131 8.10472 17.4376 9.10417L17.5001 10.1875C17.7501 10.3125 17.9515 10.4967 18.1042 10.74C18.257 10.9833 18.3334 11.2506 18.3334 11.5417V13.4583C18.3334 13.7639 18.257 14.0347 18.1042 14.2708C17.9515 14.5069 17.7501 14.6875 17.5001 14.8125V15.8333C17.5001 16.2917 17.3368 16.6842 17.0101 17.0108C16.6834 17.3375 16.2912 17.5006 15.8334 17.5H10.0001Z" fill="#01D09A" />
+                            </svg>
+                            <a class="account-links" href="/contactus">Contact Us</a>
+                        </li>
+                        <li class="account-li">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M9.16675 5.83333L8.00008 7L10.1667 9.16667H1.66675V10.8333H10.1667L8.00008 13L9.16675 14.1667L13.3334 10L9.16675 5.83333ZM16.6667 15.8333H10.0001V17.5H16.6667C17.5834 17.5 18.3334 16.75 18.3334 15.8333V4.16667C18.3334 3.25 17.5834 2.5 16.6667 2.5H10.0001V4.16667H16.6667V15.8333Z" fill="#0244EF" />
+                            </svg>
+                            <a class="account-links" href="<?php echo $baseUrl;?>customer/account/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+
+    <?php echo $this->getChildHtml("navigation.sections"); ?>
+
+    <nav id="navigation-menulist" class="navigation res-nav" data-action="navigation">
+        <div class="res-ul">
+            <div class="res-li">
+                <a class="res-a" data-toggle="tooltip" data-placement="top" title="Book Lab Test!" href="/lab-test">
+                    <?php echo __('Book Lab Test');?>
+                </a>
+            </div>
+            <div class="res-li">
+                <a class="res-a" data-toggle="tooltip" data-placement="top" title="Book Doctor Consultant" href="/doctors">
+                    <?php echo __('Book Doctor Consultant');?>
+                </a>
+            </div>
+            <div class="res-li">
+                <a class="res-a" data-toggle="tooltip" data-placement="top" title="Home Visit Services" href="/home-visit">
+                    <?php echo __('Home Visit Services');?>
+                </a>
+            </div>
+            <div class="res-li">
+                <a class="res-a" data-toggle="tooltip" data-placement="top" title="Home Care Services" href="/home-care">
+                    <?php echo __('Home Care Services');?>
+                </a>
+            </div>
+        </div>
+    </nav>
+<script type="text/javascript">
+function updateClickCount(key) {
+    var clickData = JSON.parse(sessionStorage.getItem(key)) || { count: 0, timestamp: 0 };
+    clickData.count++;
+    clickData.timestamp = Date.now();
+    sessionStorage.setItem(key, JSON.stringify(clickData));
+}
+
+function LoginUserLink() {
+    updateClickCount('loginuserlink');
+}
+
+function UserLogin() {
+    updateClickCount('checkout');
+    var Userlogin = sessionStorage.getItem('Userlogin');
+    if (Userlogin === 'true') {
+        window.location.href = '<?php echo $baseUrl; ?>checkout';
+    }
+}
+
+function UserLoginCart() {
+    updateClickCount('checkoutCart');
+    var Userlogin = sessionStorage.getItem('Userlogin');
+    if (Userlogin === 'true') {
+        window.location.href = '<?php echo $baseUrl; ?>checkout/cart';
+    }
+}
+
+function PatientRedirect() {
+    updateClickCount('patient');
+    var Userlogin = sessionStorage.getItem('Userlogin');
+    if (Userlogin === 'true') {
+        window.location.href = '<?php echo $baseUrl; ?>online-consultation';
+    }
+}
+
+function BooklabPageRedirect() {
+    updateClickCount('booklab');
+    var Userlogin = sessionStorage.getItem('Userlogin');
+    if (Userlogin === 'true') {
+        window.location.href = '<?php echo $baseUrl; ?>lab-test';
+    }
+}
+
+function BookdoctorPageRedirect() {
+    updateClickCount('bookdoctor');
+    var Userlogin = sessionStorage.getItem('Userlogin');
+    if (Userlogin === 'true') {
+        window.location.href = '<?php echo $baseUrl; ?>doctors';
+    }
+}
+
+function RedirectPrescription() {
+    updateClickCount('prescription');
+    var Userlogin = sessionStorage.getItem('Userlogin');
+    if (Userlogin === 'true') {
+        window.location.href = '<?php echo $baseUrl; ?>quick-order';
+    }
+}
+
+function getLastClickedFunction() {
+    var loginuserlinkTimestamp = JSON.parse(sessionStorage.getItem('loginuserlink'))?.timestamp || 0;
+    var checkoutTimestamp = JSON.parse(sessionStorage.getItem('checkout'))?.timestamp || 0;
+    var labTimestamp = JSON.parse(sessionStorage.getItem('booklab'))?.timestamp || 0;
+    var doctorTimestamp = JSON.parse(sessionStorage.getItem('bookdoctor'))?.timestamp || 0;
+    var checkoutCartTimestamp = JSON.parse(sessionStorage.getItem('checkoutCart'))?.timestamp || 0;
+    var prescriptionTimestamp = JSON.parse(sessionStorage.getItem('prescription'))?.timestamp || 0;
+    var patientTimestamp = JSON.parse(sessionStorage.getItem('patient'))?.timestamp || 0;
+
+    if (loginuserlinkTimestamp > checkoutTimestamp && loginuserlinkTimestamp > checkoutCartTimestamp && loginuserlinkTimestamp > prescriptionTimestamp && loginuserlinkTimestamp > labTimestamp && loginuserlinkTimestamp > doctorTimestamp) {
+        return 'Login';
+    } else if (checkoutTimestamp > checkoutCartTimestamp && checkoutTimestamp > prescriptionTimestamp && checkoutTimestamp > labTimestamp && checkoutTimestamp > doctorTimestamp) {
+        return 'Checkout';
+    } else if (checkoutCartTimestamp > prescriptionTimestamp && checkoutCartTimestamp > labTimestamp && checkoutCartTimestamp > doctorTimestamp) {
+        return 'Cart';
+    } else if (labTimestamp > doctorTimestamp && labTimestamp > prescriptionTimestamp) {
+        return 'Book Lab';
+    } else if (doctorTimestamp > prescriptionTimestamp) {
+        return 'Book Doctor';
+    } else if (prescriptionTimestamp > patientTimestamp) {
+        return 'Prescription';
+    } else {
+        return 'Patient';
+    }
+}
+
+function updateSessionStorage() {
+    var lastClickedFunction = getLastClickedFunction();
+    sessionStorage.setItem('loginlastclick', lastClickedFunction);
+}
+
+function showErrorMessage(message) {
+    const errorMessage = document.getElementById('error-message-pincode');
+    if (errorMessage) {
+        errorMessage.textContent = message;
+        errorMessage.classList.remove('error-message-pincode-hidden');
+    }
+}
+
+function hideErrorMessage() {
+    const errorMessage = document.getElementById('error-message-pincode');
+    if (errorMessage) {
+        errorMessage.textContent = '';
+        errorMessage.classList.add('error-message-pincode-hidden');
+    }
+}
+
+function limitString(string, limit) {
+    return string.length <= limit ? string : string.slice(0, limit) + '...';
+}
+
+function getValue(value) {
+    if (!value) return;
+
+    const apiUrl = 'https://api.postalpincode.in/pincode/' + value;
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data && data[0] && data[0].PostOffice && data[0].PostOffice[1]) {
+                var pincode = data[0].PostOffice[1].Name;
+                const pincodes = limitString(pincode, 15);
+                sessionStorage.setItem("pincode", pincodes);
+                var UserLocat = sessionStorage.getItem("pincode");
+
+                const h1Element = document.getElementById('area');
+                if (h1Element) {
+                    const validLocations = ['Chromepet', 'MEPZ Tambaram', 'Hasthinapuram', 'Nemilichery'];
+                    if (validLocations.includes(UserLocat)) {
+                        const modal = document.getElementById("myModal");
+                        if (modal) modal.style.display = "none";
+                        h1Element.innerHTML = UserLocat + '&nbsp;<img id="edit-locat" src="<?php echo $editLocat ?>" alt="">';
+                    } else {
+                        showErrorMessage('Sorry, We dont Ship to this Pincode.');
+                        h1Element.innerHTML = UserLocat + '&nbsp;<img id="edit-locat" src="<?php echo $editLocat ?>" alt=""> </br><p style="font-size: 12px;color:red;font-family:Source Sans Pro;padding:4px 0;">Sorry,We dont ship to this pincode</p>';
+                    }
+                }
+            } else {
+                showErrorMessage('Invalid response from pincode API');
+            }
+        })
+        .catch(error => {
+            showErrorMessage('Sorry, We dont Ship to this Pincode.');
+        });
+}
+
+// DOM Content Loaded Event Handler
+document.addEventListener('DOMContentLoaded', function() {
+    sessionStorage.setItem('Userlogin', '<?php echo $isLoggedIn ? 'true' : 'false'; ?>');
+
+    const modal = document.getElementById("myModal");
+    if (modal) modal.style.display = "none";
+
+    setInterval(updateSessionStorage, 3000);
+
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('js-login-user') || e.target.closest('.js-login-user')) {
+            e.preventDefault();
+            updateClickCount('loginuserlink');
+            window.location.href = '<?php echo $baseUrl; ?>customer/account/login/';
+        }
+
+        if (e.target.classList.contains('getlocatbtn')) {
+            const inputElement = document.getElementById("myInput");
+            if (inputElement) getValue(inputElement.value);
+        }
+
+        if (e.target.classList.contains('res-menu-btn') || e.target.closest('.res-menu-btn')) {
+            const menuBtn = document.querySelector('.res-menu-btn');
+            const sidebar = document.querySelector('.res_sidebar');
+            const overlay = document.querySelector('.res_overlay');
+
+            menuBtn.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        if (e.target.id === 'openModalBtn' || e.target.closest('#openModalBtn')) {
+            modal.style.display = "block";
+        }
+
+        if (e.target.id === 'closeModalBtn' || (e.target === modal)) {
+            modal.style.display = "none";
+        }
+    });
+
+    const triggerElement = document.getElementById('triggerElement');
+    const hiddenDiv = document.getElementById('hiddenDiv');
+    let hideTimer;
+
+    if (triggerElement && hiddenDiv) {
+        triggerElement.addEventListener('mouseover', () => {
+            hiddenDiv.style.display = 'block';
+            clearTimeout(hideTimer);
+        });
+
+        triggerElement.addEventListener('mouseout', () => {
+            hideTimer = setTimeout(() => {
+                hiddenDiv.style.display = 'none';
+            }, 1000);
+        });
+
+        hiddenDiv.addEventListener('mouseover', () => {
+            hiddenDiv.style.display = 'block';
+            clearTimeout(hideTimer);
+        });
+
+        hiddenDiv.addEventListener('mouseout', () => {
+            hideTimer = setTimeout(() => {
+                hiddenDiv.style.display = 'none';
+            }, 1000);
+        });
+    }
+
+    const pincodeInput = document.getElementById('myInput');
+    if (pincodeInput) {
+        pincodeInput.addEventListener('input', function(event) {
+            const input = event.target;
+            const value = input.value;
+
+            if (!/^\d*$/.test(value)) {
+                input.value = value.replace(/\D/g, '');
+                showErrorMessage('Please Enter a Valid Pincode.');
+            } else {
+                hideErrorMessage();
+            }
+
+            if (value.length > 6) {
+                input.value = value.slice(0, 6);
+                showErrorMessage('Pincode cannot be more than 6 digits.');
+            }
+        });
+    }
+
+    function toggleCartCounter() {
+        var counterElement = document.querySelector('.counter-number');
+        if (counterElement) {
+            var counterNumber = parseInt(counterElement.innerText.trim(), 10);
+            var cartCounter = document.querySelector('.page-wrapper .page-header.type1 .header.content .minicart-wrapper .action.showcart .counter.qty');
+            if (cartCounter) {
+                cartCounter.style.cssText = (!isNaN(counterNumber) && counterNumber > 0) ?
+                    "display: block !important" : "display: none !important";
+            }
+        }
+    }
+
+    toggleCartCounter();
+    setInterval(toggleCartCounter, 2000);
+
+    function loadStoredLocation() {
+        var storedPincode = sessionStorage.getItem("pincode");
+        const h1Element = document.getElementById('area');
+
+        if (h1Element && storedPincode && storedPincode.trim() !== '') {
+            const validLocations = ['Chromepet', 'MEPZ Tambaram', 'Hasthinapuram', 'Nemilichery'];
+            const isValidLocation = validLocations.includes(storedPincode);
+
+            h1Element.innerHTML = storedPincode + '&nbsp;<img id="edit-locat" src="<?php echo $editLocat ?>" alt="">' +
+                (!isValidLocation ? '<p style="font-size: 12px;color:red;font-family:Source Sans Pro;padding:4px 0;">Sorry,We dont ship to this pincode</p>' : '');
+        }
+    }
+
+    loadStoredLocation();
+
+    setTimeout(function() {
+        if (!sessionStorage.getItem('geolocation_processed')) {
+            navigator.geolocation && navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    try {
+                        const { latitude, longitude } = position.coords;
+                        const url = new URL('https://us1.locationiq.com/v1/reverse.php');
+                        url.searchParams.set('key', 'pk.da1ac1521af34d754ef6a3e08d6d0ada');
+                        url.searchParams.set('lat', latitude);
+                        url.searchParams.set('lon', longitude);
+                        url.searchParams.set('format', 'json');
+
+                        const response = await fetch(url.toString());
+                        const data = await response.json();
+                        const address = data.address || {};
+                        const city = address.city || address.town || address.village || 'Unknown';
+                        const pincode = address.postcode || 'Unknown';
+
+                        sessionStorage.setItem('pincode', city);
+                        sessionStorage.setItem('pincode_api', pincode);
+
+                        const h1Element = document.getElementById('area');
+                        if (h1Element) {
+                            h1Element.innerHTML = city + '&nbsp;<img id="edit-locat" src="<?php echo $editLocat ?>" alt="">';
+                        }
+
+                        sessionStorage.setItem('geolocation_processed', 'true');
+                    } catch (error) {
+                        console.error("Location fetch failed:", error.message);
+                    }
+                },
+                (error) => {
+                    console.error("Geolocation error:", error.message);
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        }
+    }, 2000);
+});
+require(['jquery', 'Magento_Ui/js/modal/modal'], function ($) {
+    $(document).ready(function () {
+        function closePincodePopup() {
+            var pincodePopup = $('#myModal');
+            if (pincodePopup.is(':visible')) {
+                pincodePopup.hide();
+            }
+        }
+
+        function closeSearchPopup() {
+            var searchPopup = $('#searchsuite-autocomplete, .search-autocomplete');
+            if (searchPopup.is(':visible')) {
+                searchPopup.hide();
+            }
+        }
+
+        function closeCartPopup() {
+            var cartPopup = $('.action.showcart');
+            if (cartPopup.hasClass('active')) {
+                cartPopup.removeClass('active');
+            }
+        }
+
+        $('#search').on('focus', function () {
+            closePincodePopup();
+            closeCartPopup();
+        });
+
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#search').length && !$(e.target).closest('#searchsuite-autocomplete').length) {
+                closeSearchPopup();
+            }
+        });
+
+        $('#myModal').on('click', function () {
+            closeSearchPopup();
+            closeCartPopup();
+        });
+
+        $('.action.showcart').on('click', function () {
+            closeSearchPopup();
+            closePincodePopup();
+        });
+
+        $('#closeModalBtn').on('click', function () {
+            $('#myModal').hide();
+        });
+    });
+});
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "MedizinHub",
+  "url": "https://medizinhub.com/"
+}
+</script>
+</header>

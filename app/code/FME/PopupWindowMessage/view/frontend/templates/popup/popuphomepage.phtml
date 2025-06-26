@@ -1,0 +1,246 @@
+<?php
+//echo "saddddddddddd";
+$popupContent = $block->getPopupCollectionCms();
+?>
+
+<?php
+if ($block->popupHelper->isJobModuleEnable()) :
+    $popupContent = $block->getPopupCollectionCms();
+    // $popupContent = $popupContent->getData();
+    $popups=$popupContent;
+    ?>
+    <?php if (!empty($popups)) : ?>
+    <?php
+   // $popups=$popupContent[0];
+    $popupContentWiswig = $popupContent['pwm_content'];
+    $objectManager = $this->getObjectManager();
+    $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+    $customerGp = $this->getCustomerGroup();
+    $objectManagerCms = $this->getObjectManager();
+    $cmsPage = $objectManagerCms->get('\Magento\Cms\Model\Page');
+    $cmsPage->getIdentifier(); //Current CMS Page Identifier
+    $pid = $cmsPage->getId(); //Current CMS Page ID
+    $design = $this->getObjectManager();
+?>
+<?php
+    $filterManager = $design->get('Magento\Cms\Model\Template\FilterProvider')->getPageFilter()->filter($popups['pwm_content']);
+      $categoryIds = explode(',', $popups['popup_categories']);
+      $popupLoadConditions = $popups['pwm_event'];
+      $popupTimeDelay = $popups['pwm_x_equals']*1000;
+      $popupScrollPage = $popups['pwm_x_equals'];
+      $popupEffects = $popups['pwm_annimation'];
+      $popupPosition = $popups['pwm_position'];
+      $popupStyle = $popups['pwm_design']; ?>
+
+<?php if (in_array($pid, explode(',', $popups['cmspage_ids']))) :?>
+<style type="text/css"><?php echo __($popupStyle)?>
+
+</style>
+<!-- Top Left -->
+<?php if ($popupPosition=='top-left') :?>
+        <style type="text/css">
+          .mfp-content {
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+            text-align: left;
+            left: -25%;
+            top: 2%; }
+      </style>
+<?php endif;?>
+<!-- Top Center -->
+<?php if ($popupPosition=='top-center') :?>
+        <style type="text/css">
+          .mfp-content {
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+            text-align: left;
+            left: 0%;
+            top: 2%; }
+      </style>
+<?php endif;?>
+<!-- Top Right -->
+<?php if ($popupPosition=='top-right') :?>
+        <style type="text/css">
+          .mfp-content {
+           position: relative;
+           display: inline-block;
+           vertical-align: top;
+           text-align: left;
+           right: -25%;
+           top: 2%; }
+      </style>
+<?php endif;?>
+<!-- Middle Left -->
+<?php if ($popupPosition=='middle-left') :?>
+        <style type="text/css">
+          .mfp-content {
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: left;
+            left: -25%;
+             }
+      </style>
+<?php endif;?>
+<!-- Middle Center -->
+<?php if ($popupPosition=='middle-center') :?>
+        <style type="text/css">
+          .mfp-content {
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: left;
+            left: 0%;
+             }
+      </style>
+<?php endif;?>
+<!-- Middle Right -->
+<?php if ($popupPosition=='middle-right') :?>
+        <style type="text/css">
+          .mfp-content {
+           position: relative;
+           display: inline-block;
+           vertical-align: middle;
+           text-align: left;
+           right: -25%;
+            }
+      </style>
+<?php endif;?>
+<!-- Bottom Left -->
+<?php if ($popupPosition=='bottom-left') :?>
+        <style type="text/css">
+          .mfp-content {
+            position: relative;
+            display: inline-block;
+            vertical-align: bottom;
+            text-align: left;
+            left: -25%;
+            bottom: 2%; }
+      </style>
+<?php endif;?>
+<!-- Bottom Center -->
+<?php if ($popupPosition=='bottom-center') :?>
+        <style type="text/css">
+          .mfp-content {
+            position: relative;
+            display: inline-block;
+            vertical-align: bottom;
+            text-align: left;
+            left: 0%;
+            bottom:2%; }
+      </style>
+<?php endif;?>
+<!-- Bottom Right -->
+<?php if ($popupPosition=='bottom-right') :?>
+        <style type="text/css">
+          .mfp-content {
+              position: relative;
+              display: inline-block;
+              vertical-align: bottom;
+              text-align: left;
+              right: -25%;
+              bottom: 2%; }
+      </style>
+<?php endif;?>
+<div id="popup-content" class="white-popup mfp-hide popup-content mfp-with-anim">
+
+    <?php echo __($filterManager)?>
+
+</div>
+
+<script type="text/javascript">
+  requirejs(['jquery', 'magnificPopup' ],
+
+    function ($, magnificPopup) {
+      if(<?php echo __($popups['pwm_event']) ?> == 1)
+      {
+        $(document).ready(function(){
+           setTimeout(function(){
+            displayFmePopup();
+           }, <?php echo __($popups['pwm_x_equals']*1000)?>);
+        });
+      }
+      if(<?php echo __($popups['pwm_event']) ?> == 2)
+      {
+        $(document).ready(function(){
+          $(window).scroll(function(){
+             if ($(document).scrollTop() / ($(document).height() - $(window).height())  * 100  >= <?php echo __($popups['pwm_x_equals'])?>) {
+            displayFmePopupStorage();
+             }
+          });//windwosize end
+        });
+      }
+      if(<?php echo __($popups['pwm_event']) ?> == 5)
+      {
+      $(document).ready(function(){
+          addEvent(document, "mouseout", function(e) {
+                            e = e ? e : window.event;
+                            var from = e.relatedTarget || e.toElement;
+                            if (!from || from.nodeName == "HTML") {
+            displayFmePopupStorage();
+
+             }
+          });//windwosize end
+        });
+      }//close if
+      if(<?php echo __($popups['pwm_event']) ?> == 0)
+      {
+      $(document).ready(function(){
+                            displayFmePopup();
+                        });
+      }
+
+  //
+  function addEvent(obj, evt, fn) {
+        if (obj.addEventListener) {
+            obj.addEventListener(evt, fn, false);
+        }
+        else if (obj.attachEvent) {
+            obj.attachEvent("on" + evt, fn);
+        }
+    }
+
+  function displayFmePopup(){
+
+    if(sessionStorage.scrollpopup !== "open"){
+        
+        $.magnificPopup.open({
+              items: {
+                src: '#popup-content'
+                },
+
+                type: 'inline',
+                removalDelay: 500,
+
+                mainClass:'<?php echo __($popupEffects)?>'
+              });//magnifipopup.open ends here
+              
+        sessionStorage.setItem("scrollpopup", "open");
+    }
+  }
+
+  function displayFmePopupStorage(){
+  
+    if(sessionStorage.scrollpopup !== "open"){
+        $.magnificPopup.open({
+              items: {
+                src: '#popup-content'
+                },
+
+                type: 'inline',
+                removalDelay: 500,
+
+                mainClass:'<?php echo __($popupEffects)?>'
+              });//magnifipopup.open ends here
+    
+        sessionStorage.setItem("scrollpopup", "open");
+    }
+  }
+});
+
+</script>
+<?php endif;//cmspage check ends here?>
+    <?php endif;//cmspage check ends here?>
+<?php endif;//enable module ends here?>

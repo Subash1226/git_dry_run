@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="MedizinhubCore\Sample\Controller\Adminhtml\Manage\Save">
+        <arguments>
+            <argument name="manageFactory" xsi:type="object">MedizinhubCore\Sample\Model\ManageFactory</argument>
+            <argument name="uploaderFactory" xsi:type="object">Magento\MediaStorage\Model\File\UploaderFactory</argument>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem</argument>
+            <argument name="directoryList" xsi:type="object">Magento\Framework\App\Filesystem\DirectoryList</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="products_manage_listing_data_source" xsi:type="string">ProductsManageCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="ProductsManageCollection" type="MedizinhubCore\Sample\Ui\DataProvider\Manage\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">customer_labtest</argument>
+            <argument name="resourceModel" xsi:type="string">MedizinhubCore\Sample\Model\ResourceModel\Manage</argument>
+        </arguments>
+    </virtualType>
+</config>

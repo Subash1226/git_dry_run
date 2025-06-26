@@ -1,0 +1,171 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$storeManager = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+$mediaUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+
+$medicineOffers = $block->getMedicineOffers();
+$labTestOffers = $block->getLabTestOffers();
+$doctorConsultOffers = $block->getDoctorConsultOffers();
+
+function truncateDescription($description, $maxLength = 75) {
+    if (strlen($description) <= $maxLength) {
+        return $description;
+    }
+    return substr($description, 0, $maxLength) . '...';
+}
+
+function getDescriptionMargin($description) {
+    $length = strlen($description);
+    if ($length <= 56) {
+        return 'mb-5';
+    } elseif ($length <= 105) {
+        return 'mb-1';
+    } else {
+        return 'mb-1';
+    }
+}
+?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<div class="container">
+    <div class="offer-page-title mb-4">Offers</div>
+    <div class="offer-page-content mb-5">
+        <span class="me-3">Get more discount by Applying coupon</span>
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <path d="M9.28703 10.481L9.15625 10.4515L9.52328 8.80615L13.2484 13.2527L19.0197 12.7043L15.9442 17.6191L18.2477 22.939L17.0833 22.6479L17.117 22.5044L14.9022 17.4419L17.2773 13.7632L12.5692 14.1977L9.28703 10.481Z" fill="#8F7FD3"/>
+                <path d="M17.2772 13.7624L14.902 17.4412L17.1169 22.5037L17.0831 22.6471L12.6239 21.5333L8.27437 25.3682L7.87359 19.5843L2.88281 16.6354L8.26172 14.4669L9.15609 10.4507L9.28687 10.4802L12.5691 14.1969L17.2772 13.7624Z" fill="#AE9AED"/>
+                <path d="M24.5233 18.0616C25.5997 18.0616 26.4723 17.0889 26.4723 15.889C26.4723 14.689 25.5997 13.7163 24.5233 13.7163C23.4468 13.7163 22.5742 14.689 22.5742 15.889C22.5742 17.0889 23.4468 18.0616 24.5233 18.0616Z" fill="white"/>
+                <path d="M23.2189 5.19006L21.1222 6.96615L21.3964 9.70412L19.0592 8.25709L16.5406 9.36662L17.1945 6.69615L15.3594 4.64584L18.1016 4.43912L19.4853 2.06396L20.5316 4.60787L23.2189 5.19006Z" fill="#F9DB03"/>
+                <path d="M5.97109 6.41311C5.45717 6.44218 4.97576 6.67394 4.63251 7.05753C4.28925 7.44112 4.11218 7.94521 4.14016 8.4592C4.16706 7.94408 3.98849 7.43933 3.64365 7.05573C3.2988 6.67213 2.81585 6.44101 2.30078 6.41311C2.81579 6.38392 3.2982 6.15169 3.64222 5.76733C3.98624 5.38297 4.16379 4.87787 4.13594 4.36279C4.10876 4.8777 4.28654 5.38243 4.63043 5.76664C4.97432 6.15084 5.45633 6.38327 5.97109 6.41311Z" fill="white"/>
+                <path d="M18.9813 12.2819L13.429 12.8093L9.84728 8.53566C9.7967 8.47538 9.73026 8.43045 9.65549 8.40595C9.58071 8.38145 9.50057 8.37835 9.42413 8.397C9.34768 8.41565 9.27797 8.45531 9.22288 8.5115C9.16779 8.56768 9.12951 8.63816 9.11237 8.71496L7.8978 14.1571L2.72477 16.2437C2.65179 16.2732 2.58851 16.3224 2.54207 16.386C2.49563 16.4495 2.46788 16.5247 2.46195 16.6032C2.45603 16.6817 2.47217 16.7602 2.50854 16.83C2.54492 16.8998 2.60009 16.958 2.66781 16.9981L7.46959 19.8335L7.85434 25.3976C7.85979 25.4761 7.88709 25.5515 7.93316 25.6154C7.97923 25.6792 8.04224 25.7288 8.11506 25.7587C8.18786 25.7886 8.26758 25.7975 8.34518 25.7845C8.42279 25.7714 8.4952 25.7369 8.55423 25.6849L12.7367 21.9947L18.1477 23.3481C18.2241 23.3672 18.3042 23.3646 18.3792 23.3404C18.4541 23.3163 18.5208 23.2717 18.5718 23.2117C18.6227 23.1516 18.6558 23.0785 18.6673 23.0007C18.6789 22.9228 18.6684 22.8432 18.637 22.771L16.4201 17.6549L19.3791 12.9299C19.421 12.8632 19.4434 12.786 19.4437 12.7072C19.444 12.6284 19.4222 12.551 19.3807 12.484C19.3393 12.4169 19.28 12.3628 19.2094 12.3277C19.1388 12.2927 19.0597 12.2781 18.9813 12.2857V12.2819ZM15.5869 17.3955C15.5506 17.4534 15.5289 17.5194 15.5238 17.5876C15.5187 17.6558 15.5302 17.7242 15.5574 17.787L17.5229 22.3225L12.7262 21.1244C12.6601 21.1081 12.591 21.108 12.5249 21.1242C12.4588 21.1404 12.3976 21.1723 12.3465 21.2172L8.63734 24.4884L8.29605 19.5559C8.29133 19.4876 8.27008 19.4216 8.23414 19.3633C8.1982 19.3051 8.14865 19.2565 8.08975 19.2218L3.83303 16.7065L8.41881 14.8579C8.4821 14.8322 8.5382 14.7915 8.58229 14.7393C8.62638 14.6871 8.65715 14.625 8.67194 14.5583L9.74856 9.73294L12.924 13.5226C12.9677 13.5754 13.0237 13.6165 13.087 13.6426C13.1504 13.6686 13.2191 13.6787 13.2872 13.672L18.2093 13.2046L15.5869 17.3955ZM23.4932 5.51039C23.5533 5.4595 23.5979 5.39283 23.622 5.31792C23.6462 5.243 23.6489 5.16283 23.6298 5.08647C23.6108 5.0101 23.5707 4.94058 23.5142 4.88578C23.4578 4.83097 23.3871 4.79306 23.3102 4.77633L20.8392 4.24097L19.8799 1.90378C19.85 1.83097 19.8004 1.76797 19.7365 1.72191C19.6727 1.67584 19.5973 1.64854 19.5188 1.6431C19.4403 1.63766 19.3618 1.65429 19.2922 1.69111C19.2227 1.72793 19.1648 1.78348 19.1252 1.85147L17.8524 4.03425L15.3321 4.2241C15.2536 4.23001 15.1783 4.25775 15.1148 4.3042C15.0513 4.35065 15.002 4.41394 14.9725 4.48692C14.9431 4.55991 14.9346 4.63968 14.9482 4.71721C14.9617 4.79475 14.9966 4.86695 15.049 4.92567L16.7331 6.81103L16.1349 9.26719C16.1163 9.34366 16.1195 9.4238 16.1441 9.49856C16.1687 9.57331 16.2137 9.63969 16.2741 9.6902C16.3344 9.74072 16.4077 9.77334 16.4856 9.7844C16.5635 9.79546 16.643 9.7845 16.715 9.75277L19.0277 8.73394L21.1793 10.062C21.2463 10.1035 21.3235 10.1253 21.4023 10.1251C21.4811 10.1249 21.5583 10.1027 21.6251 10.0609C21.6919 10.0191 21.7456 9.95938 21.7802 9.8886C21.8148 9.81782 21.8289 9.73876 21.8209 9.66038L21.5678 7.14558L23.4932 5.51039ZM20.8515 6.64566C20.7992 6.68986 20.7586 6.74609 20.7329 6.80952C20.7073 6.87295 20.6974 6.94166 20.7042 7.00974L20.8949 8.8951L19.2825 7.89947C19.2243 7.86352 19.1582 7.84227 19.0899 7.83757C19.0216 7.83287 18.9532 7.84484 18.8906 7.87247L17.1592 8.63607L17.6051 6.79753C17.6212 6.73129 17.6209 6.66214 17.6044 6.59602C17.5878 6.52989 17.5555 6.46876 17.5102 6.41785L16.248 5.00457L18.1371 4.85691C18.2053 4.85181 18.2712 4.83022 18.3292 4.79398C18.3872 4.75775 18.4355 4.70797 18.47 4.64892L19.4238 3.01332L20.141 4.76621C20.1669 4.82965 20.2077 4.88585 20.2601 4.92995C20.3125 4.97405 20.3749 5.00473 20.4418 5.01933L22.2939 5.42053L20.8515 6.64566ZM26.4738 15.4671C26.0398 15.4352 25.6359 15.2336 25.3498 14.9058C25.0636 14.578 24.9183 14.1506 24.9453 13.7163C24.9453 13.6044 24.9009 13.4971 24.8218 13.418C24.7427 13.3389 24.6354 13.2944 24.5235 13.2944C24.4116 13.2944 24.3043 13.3389 24.2252 13.418C24.146 13.4971 24.1016 13.6044 24.1016 13.7163C24.1289 14.1501 23.9841 14.5771 23.6986 14.9049C23.4131 15.2326 23.0099 15.4346 22.5765 15.4671C22.4646 15.4671 22.3573 15.5115 22.2782 15.5906C22.1991 15.6697 22.1546 15.7771 22.1546 15.8889C22.1546 16.0008 22.1991 16.1081 22.2782 16.1873C22.3573 16.2664 22.4646 16.3108 22.5765 16.3108C23.0104 16.3428 23.4142 16.5446 23.7004 16.8723C23.9866 17.2 24.1321 17.6273 24.1054 18.0616C24.1054 18.1735 24.1498 18.2808 24.229 18.3599C24.3081 18.439 24.4154 18.4835 24.5273 18.4835C24.6391 18.4835 24.7465 18.439 24.8256 18.3599C24.9047 18.2808 24.9491 18.1735 24.9491 18.0616C24.9217 17.6278 25.0664 17.2007 25.3518 16.8729C25.6372 16.545 26.0404 16.3429 26.4738 16.3104C26.5857 16.3104 26.693 16.2659 26.7721 16.1868C26.8512 16.1077 26.8957 16.0004 26.8957 15.8885C26.8957 15.7766 26.8512 15.6693 26.7721 15.5902C26.693 15.5111 26.5857 15.4666 26.4738 15.4666V15.4671ZM24.5268 16.585C24.355 16.3126 24.1322 16.0759 23.8708 15.8877C24.1309 15.6994 24.3526 15.4631 24.5239 15.1916C24.6955 15.4641 24.9181 15.7009 25.1795 15.8889C24.9193 16.077 24.6978 16.3133 24.5268 16.585ZM3.71702 8.45888C3.71702 8.57077 3.76146 8.67807 3.84058 8.75719C3.9197 8.83631 4.027 8.88075 4.13889 8.88075C4.25078 8.88075 4.35808 8.83631 4.4372 8.75719C4.51632 8.67807 4.56077 8.57077 4.56077 8.45888C4.53495 8.05677 4.66865 7.6607 4.93289 7.3565C5.19712 7.05231 5.5706 6.86451 5.97236 6.83382C6.08425 6.83382 6.19155 6.78937 6.27067 6.71025C6.34979 6.63113 6.39423 6.52383 6.39423 6.41194C6.39423 6.30005 6.34979 6.19275 6.27067 6.11363C6.19155 6.03451 6.08425 5.99007 5.97236 5.99007C5.57004 5.96 5.19581 5.77251 4.93084 5.46829C4.66586 5.16407 4.53153 4.76764 4.55697 4.365C4.55697 4.25311 4.51252 4.14581 4.4334 4.06669C4.35429 3.98758 4.24698 3.94313 4.13509 3.94313C4.02321 3.94313 3.9159 3.98758 3.83678 4.06669C3.75767 4.14581 3.71322 4.25311 3.71322 4.365C3.73891 4.76722 3.60506 5.16335 3.34066 5.46754C3.07627 5.77173 2.70265 5.95947 2.30078 5.99007C2.18889 5.99007 2.08159 6.03451 2.00247 6.11363C1.92335 6.19275 1.87891 6.30005 1.87891 6.41194C1.87891 6.52383 1.92335 6.63113 2.00247 6.71025C2.08159 6.78937 2.18889 6.83382 2.30078 6.83382C2.70321 6.86378 3.07759 7.0512 3.34272 7.35542C3.60785 7.65965 3.74234 8.05613 3.71702 8.45888ZM4.13552 5.80107C4.29057 6.03761 4.48641 6.24474 4.71391 6.41278C4.48827 6.58084 4.29417 6.78752 4.14058 7.02324C3.98605 6.7867 3.79079 6.57944 3.56387 6.4111C3.78888 6.24286 3.9824 6.03662 4.13552 5.80107Z" fill="#063851"/>
+            </svg>
+        </span>
+    </div>
+    <div class="offer-hover-title mb-5">
+        <a href="#medicine_offers" id="medicine_offers_active" class="medicine_offfers_title active me-4"><span>Medicine Offers</span></a>
+        <a href="#lab_test_offers" id="lab_test_offers_active" class="medicine_offfers_title me-4"><span>Lab Test Offers</span></a>
+        <a href="#doctor_consult_offers" id="doctor_consult_offers_active" class="medicine_offfers_title me-4"><span>Doctor Consultation Offers</span></a>
+    </div>
+    <h3 id="medicine_offers" class="mt-3 mb-4">Medicine Offers</h3>
+    <div class="row">
+        <?php 
+        $medicineOffers = $medicineOffers ?? [];
+        
+        if (empty($medicineOffers)): ?>
+            <div class="col-12">
+                <div class="offer-page-content mt-3 mb-4">
+                    No Medicine Offers Available
+                </div>
+            </div>
+        <?php else: ?>
+            <?php foreach ($medicineOffers as $offer): ?>
+                <?php
+                if (!empty($offer)): 
+                    include 'offer_template.phtml'; 
+                endif; 
+                ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+
+    <h3 id="lab_test_offers" class="mt-3 mb-4">Lab Test Offers</h3>
+    <div class="row">
+        <?php 
+        $labTestOffers = $labTestOffers ?? [];
+        
+        if (empty($labTestOffers)): ?>
+            <div class="col-12">
+                <div class="offer-page-content mt-3 mb-4">
+                    No Lab Test Offers Available
+                </div>
+            </div>
+        <?php else: ?>
+            <?php foreach ($labTestOffers as $offer): ?>
+                <?php 
+                if (!empty($offer)): 
+                    include 'offer_template.phtml'; 
+                endif; 
+                ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+
+    <h3 id="doctor_consult_offers" class="mt-3 mb-4">Doctor Consultation Offers</h3>
+    <div class="row">
+        <?php 
+        $doctorConsultOffers = $doctorConsultOffers ?? [];
+        
+        if (empty($doctorConsultOffers)): ?>
+            <div class="col-12">
+                <div class="offer-page-content mt-3 mb-4">
+                    No Doctor Consultation Offers Available
+                </div>
+            </div>
+        <?php else: ?>
+            <?php foreach ($doctorConsultOffers as $offer): ?>
+                <?php
+                if (!empty($offer)): 
+                    include 'offer_template.phtml'; 
+                endif; 
+                ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+<div id="offer-modal" class="offer-modal">
+    <div class="offer-modal-content">
+        <div class="offer-modal-header">
+            <span class="offer-modal-title">Coupon Details</span>
+            <span class="offer-modal-close-btn">x</span>
+        </div>
+        <div class="offer-modal-body">
+            <a href="/terms-and-conditions" class="coupon-terms"><span>Terms & Conditions</span></a>
+            <div class="offer-modal-list">                
+                <div class="copuon-side-header" id="couponModalTitle"></div>
+                <ul>
+                    <li id="couponModalDescription1"></li>
+                    <li id="couponModalDescription2"></li>
+                </ul>
+                <div class="copuon-side-header">Additional Terms : </div>
+                <ul>
+                    <li>The offers cannot be redeemed for cash or clubbed with any other offer or promotion.</li>
+                    <li>In case of any further query pertaining to the use of vouchers or regarding the sale/offers, please email our customer care at support@medizinhub.com.</li>
+                    <li>MedizinHub reserves its absolute right at any time to add, alter, withdraw, modify or change or vary any or all the terms and conditions of the offer at its sole discretion and the same shall be binding on the customer at all times.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+@media only screen and (min-width:768px) and (max-width:1024px) {
+}
+
+@media (max-width:768px) {
+    .medicine_offfers_title {
+    font-size: 10px;
+    display: inline-block;
+    text-decoration: none;
+    margin-bottom: 2rem;
+}
+.offer-img{
+    width:100px;
+    height:100px !important;
+}
+.offer-name{
+    font-size:12px;
+}
+.offer-expiry{
+    font-size:12px;
+}
+.offer-expdate{
+    font-size:12px;
+}
+.offer-btn{
+    width: 200px;
+    height:40px;
+}
+}
+</style>

@@ -1,0 +1,874 @@
+.customer-popup-login .modals-overlay {
+    z-index: 899 !important;
+}
+
+.customer-popup-login .customer-popup-login {
+    display: none;
+}
+
+.customer-popup-login .or-another-selection {
+    display: inline-block;
+    padding-right: 5px;
+}
+
+.btn-container {
+    margin-top: 30px !important;
+}
+
+.customer-popup-login .tabs {
+    display: flex;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.customer-popup-login .tabs label {
+    cursor: pointer;
+    display: block;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1em;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.customer-popup-login .modal-popup .modal-header {
+    padding-top: 0rem !important;
+}
+
+.customer-popup-login .tabs .tab {
+    width: 50%;
+}
+
+.customer-popup-otp {
+    display: none;
+}
+
+
+.modals-overlay {
+    z-index: 899 !important;
+}
+
+.modals-overlay {
+    z-index: 899 !important;
+}
+
+.customer-popup-register {
+    display: none;
+    margin-top: 30px
+}
+
+.otp-register-title {
+    color: #063851;
+    font-family: Source Sans Pro;
+    font-weight: 600;
+    font-size: 28px;
+    margin-top: 20px;
+}
+
+.iti__flag-container {
+    display: none !important;
+}
+
+.iti--allow-dropdown input[type="tel"] {
+    padding-left: 20px !important;
+}
+
+.modal-popup .modal-title {
+    border-bottom: none !important;
+}
+
+
+#otp-error {
+    margin-left: 18px;
+}
+
+.form-create-account fieldset,
+.customer-popup-otp fieldset,
+.customer-popup-login fieldset {
+    padding: 20px;
+}
+
+.form-create-account .actions-toolbar,
+.customer-popup-login .actions-toolbar,
+.customer-popup-otp .actions-toolbar {
+    text-align: center;
+    padding-left: 15px !important;
+}
+
+.form-create-account .actions-toolbar .primary,
+.customer-popup-otp .actions-toolbar .primary,
+.customer-popup-login .actions-toolbar .primary {
+    width: 100% !important;
+}
+
+.remind span {
+    float: left;
+    width: 100%;
+    font-size: 15px;
+    color: #012b72;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#customer-popup-forgot {
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* .modal-popup .action-close {
+    display: none;
+} */
+.modal-inner-wrap {
+    border-radius: 8px;
+}
+
+#otp-create-account {
+   padding: 12px 93px;
+    font-size: 16px;
+    color: #fff !important;
+    font-family: Source Sans Pro;
+    border-radius: 8px;
+    border: #03C777 !important;
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+}
+#otp-email-account{
+    padding: 12px 93px;
+    font-size: 16px;
+    color: #fff !important;
+    font-family: Source Sans Pro;
+    border-radius: 8px;
+    border: #03C777 !important;
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+
+}
+#otp-email-account:hover {
+    padding: 12px 93px;
+    font-size: 16px;
+    color: #fff !important;
+    font-family: Source Sans Pro;
+    border-radius: 8px;
+    border: #03C777 !important;
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+}
+#otp-create-account:hover {
+    padding: 12px 93px;
+    font-size: 16px;
+    color: #fff !important;
+    font-family: Source Sans Pro;
+    border-radius: 8px;
+    border: #03C777 !important;
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+}
+
+#otp-email-account {
+    padding: 12px 93px;
+    color: #fff !important;
+    font-size: 16px;
+    font-family: Source Sans Pro;
+    border-radius: 8px;
+    border: #03C777 !important;
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+}
+
+#otp-email-account:hover {
+padding: 12px 93px;
+    color: #fff !important;
+    font-size: 16px;
+    font-family: Source Sans Pro;
+    border-radius: 8px;
+    border: #03C777 !important;
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+}
+
+.otp-agree {
+    color: rgba(128, 128, 128, 1);
+    font-family: Source Sans Pro;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.otp-terms {
+    color: #00739B;
+    font-weight: 400;
+    font-family: Source Sans Pro;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.otp-privacy {
+    color: #00739B;
+    font-weight: 400;
+    font-family: Source Sans Pro;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.cuotp_login_lastname {
+    width: 93% !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    border-bottom: 2px solid #03C777 !important;
+    background: none !important;
+    padding: 0 !important;
+    font-size: 16px !important;
+    font-family: Source Sans Pro !important;
+}
+
+.cuotp_login_email {
+    width: 98% !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    border-bottom: 2px solid #03C777 !important;
+    background: none !important;
+    padding: 0 !important;
+    font-size: 16px !important;
+    font-family: Source Sans Pro !important;
+}
+
+.cuotp_login_firstname {
+    width: 90% !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    border-bottom: 2px solid #03C777 !important;
+    background: none !important;
+    padding: 0 !important;
+    font-size: 16px !important;
+    font-family: Source Sans Pro !important;
+}
+
+.label-otp {
+    color: #313739;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+#customer-popup-login-form {
+    margin-top: -25px !important;
+}
+
+.email-welcome-title {
+    color: #063851;
+    font-family: Source Sans Pro;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    margin-bottom: 5px !important;
+}
+
+.email-welcome-description {
+    color: #063851;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+#form-otpsend {
+    padding: 20px 0;
+}
+
+.customer-popup .modal-inner-wrap {
+    width: 61% !important;
+    background: #E5F5FD !important;
+}
+
+.customer-popup-login {
+    font-family: Source Sans Pro !important;
+}
+
+.verify-otp-title {
+    font-family: Source Sans Pro;
+    font-weight: 400;
+    font-size: 28px;
+}
+
+#response-return-otp {
+    display: none;
+    color: #EB2828;
+    font-size: 12px;
+    font-family: Source Sans Pro;
+    margin-left: 15px;
+}
+
+#otp-create-account:hover {
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+}
+
+
+.customer-popup .modal-inner-wrap {
+    width: 61% !important;
+    background: #E5F5FD !important;
+}
+
+.customer-popup .modal-slide .modal-inner-wrap, .modal-popup .modal-inner-wrap{
+    width: 61% !important;
+    background: #E5F5FD !important;
+}
+
+.otp-submit {
+    padding: 10px 0;
+}
+
+#phone {
+    font-family: Source Sans Pro;
+    padding-left: 0px !important;
+    width:77%;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    background: none;
+    font-size: 18px;
+    border-bottom: 3px solid #03C777;
+}
+#customer-email-otp {
+    font-family: Source Sans Pro;
+    padding-left: 0px !important;
+    width:77%;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    background: none;
+    font-size: 18px;
+    border-bottom: 3px solid #03C777;
+}
+
+.otp-log-image {
+    width: 415px;
+    height: 350px;
+    padding: 0 0 0 80px;
+}
+
+.otp-information {
+    color: #00739B;
+    font-family: Source Sans Pro;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.policy-otp {
+    padding: 8px 0;
+}
+
+#provide-number {
+    color: #313739;
+    font-family: Source Sans Pro;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+#customer-popup-form-register {
+    padding: 20px 0;
+}
+
+.time-left-otp {
+    color: #063851;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 15px;
+    padding: 15px 0 0 0;
+}
+
+#timer {
+    color: #063851;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.email_field {
+    margin-top: -16px;
+}
+
+.resendotp {
+    display: none;
+    color: #00739B;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 5px;
+}
+
+.resendotp-container {
+    font-size: 12px;
+    margin-left: 15px !important;
+    padding: 5px 0 0 0;
+}
+
+.sendotpsubmit {
+padding: 12px 93px !important;
+    margin-top: 10px;
+    margin-left: 15px !important;
+    font-size: 16px;
+    color: #fff;
+    font-family: Source Sans Pro;
+    border-radius: 8px;
+    border: #03C777 !important;
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+}
+
+.sendotpsubmit:hover {
+    margin-top: 10px;
+    margin-left: 15px !important;
+    font-size: 16px;
+    color: #fff;
+    font-family: Source Sans Pro;
+    border-radius: 8px;
+    border: #03C777 !important;
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+}
+
+.sendotpsubmit:hover {
+    background: linear-gradient(94deg, #03c777 56.99%, #01a462 99.73%);
+
+}
+
+#otp {
+    font-family: Source Sans Pro;
+    padding-left: 0px !important;
+    width: 74%;
+    margin: 0 0 0 16px;
+    box-sizing: border-box;
+    border: none;
+    background: none;
+    font-size: 18px;
+    border-bottom: 3px solid #03C777;
+}
+
+.block-customer-login .block-content {
+    margin-left: 90px;
+}
+
+.block-customer-login {
+    margin-left: 15px !important;
+}
+
+.edit-number-otp {
+    color: #00739B;
+    font-family: "Source Sans Pro";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+}
+
+#email_err {
+    font-size: 12px !important;
+}
+
+#lastname_err {
+    font-size: 12px !important;
+}
+
+#firstname_err {
+    font-size: 12px !important;
+}
+
+@media (min-width: 768px) {
+    .otp_image {
+        display: block !important;
+    }
+
+    .otp_popup {
+        width: 49% !important;
+        float: left;
+        position: relative;
+        padding: 3px;
+    }
+}
+
+@media (max-width: 769px) {
+    .otp_popup {
+        width: 100% !important;
+    }
+
+    .otp-log-image {
+        display: block !important;
+    }
+}
+
+/* Mobile Number Page Start */
+@media only screen and (min-width: 992px) and (max-width: 1280px) {
+    .otp-log-image {
+        padding: 0 40px 0 40px !important;
+    }
+    .otp-register-title {
+        font-size: 24px !important;
+    }
+    #phone {
+        width: 86% !important;
+        font-size: 17px !important;
+        padding-left: 0px !important;
+    }
+    #otp-create-account {
+        padding: 12px 50px !important;
+        font-size: 15px !important;
+        width: 88% !important;
+    }
+    .otp-agree {
+        padding-right: 32px !important;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 991px) {
+    .otp-log-image {
+        padding: 0 10px 0 10px !important;
+    }
+    .otp-register-title {
+        font-size: 18px !important;
+    }
+    #phone {
+        width: 135px !important;
+        font-size: 14px !important;
+    }
+    .otp-information {
+        font-size: 11px !important;
+    }
+    #otp-create-account {
+        padding: 9px 40px !important;
+        font-size: 14px !important;
+        width: 140px !important;
+    }
+    .otp-agree {
+        padding-right: 0px !important;
+        font-size: 11px !important;
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+    .otp-log-image {
+        padding: 0 0px 0 140px !important;
+        width: 450px !important;
+        height: 250px !important;
+    }
+    .otp-register-title {
+        font-size: 24px !important;
+    }
+    #phone {
+        width: 86% !important;
+        font-size: 17px !important;
+        padding-left: 0px !important;
+    }
+    #otp-create-account {
+        padding: 12px 50px !important;
+        font-size: 15px !important;
+        width: 88% !important;
+    }
+    .otp-agree {
+        padding-right: 32px !important;
+        font-size: 14px !important;
+    }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 575px) {
+    .otp-log-image {
+        padding:0 65px 0 30px !important;
+        width: 350px !important;
+        height: 250px !important;
+    }
+    .otp-register-title {
+        font-size: 24px !important;
+    }
+    #phone {
+        width: 86% !important;
+        font-size: 17px !important;
+        padding-left: 0px !important;
+    }
+    #otp-create-account {
+        padding: 12px 50px !important;
+        font-size: 15px !important;
+        width: 88% !important;
+    }
+    .otp-agree {
+        padding-right: 32px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Mobile Number Page end  */
+@media only screen and (max-width: 768px) {
+    .customer-popup .modal-inner-wrap {
+        width: 100% !important;
+    }
+}
+/* Otp Number Page Start  */
+@media only screen and (min-width: 992px) and (max-width: 1280px) {
+    .verify-otp-title {
+        font-size: 24px !important;
+    }
+    .edit-number-otp {
+        font-size: 14px !important;
+    }
+    #otp {
+        width: 86% !important;
+        font-size: 17px !important;
+        padding-left: 0px !important;
+    }
+    .sendotpsubmit {
+        padding: 12px 50px !important;
+        font-size: 15px !important;
+        width: 88% !important;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 991px) {
+    .verify-otp-title {
+        font-size: 20px !important;
+    }
+    #provide-number {
+        font-size: 14px !important;
+    }
+    .edit-number-otp {
+        font-size: 13px !important;
+    }
+    #otp {
+        width: 135px !important;
+        font-size: 14px !important;
+    }
+    .sendotpsubmit {
+        padding: 9px 40px !important;
+        font-size: 14px !important;
+        width: 140px !important;
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+    .verify-otp-title {
+        font-size: 24px !important;
+    }
+    .edit-number-otp {
+        font-size: 14px !important;
+    }
+
+    .edit-number-otp svg {
+        margin-bottom: 4px !important;
+        margin-left: 1px !important;
+        width: 11px !important;
+        margin-right: 0px !important;
+    }
+    #provide-number {
+        font-size: 14px !important;
+    }
+    #otp {
+        width: 86% !important;
+        font-size: 17px !important;
+        padding-left: 0px !important;
+    }
+    .sendotpsubmit {
+        padding: 12px 50px !important;
+        font-size: 15px !important;
+        width: 88% !important;
+    }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 575px) {
+    .verify-otp-title {
+        font-size: 24px !important;
+    }
+    .edit-number-otp {
+        font-size: 14px !important;
+    }
+    #provide-number {
+        font-size: 14px !important;
+    }
+    #otp {
+        width: 86% !important;
+        font-size: 17px !important;
+        padding-left: 0px !important;
+    }
+    .sendotpsubmit {
+        padding: 12px 50px !important;
+        font-size: 15px !important;
+        width: 88% !important;
+    }
+}
+/* Otp Number Page end  */
+
+/* Usr Reg Page Start  */
+@media only screen and (min-width: 992px) and (max-width: 1280px) {
+    .email-welcome-title {
+        font-size: 26px !important;
+    }
+    .block-customer-login .block-content {
+        margin-left: 50px !important;
+    }
+    .email-welcome-description {
+        font-size: 14px !important;
+    }
+    .label-otp {
+        font-size: 14px !important;
+    }
+    #otp-email-account {
+        padding: 12px 50px !important;
+        font-size: 15px !important;
+        width: 74% !important;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .email-welcome-title {
+        font-size: 20px !important;
+    }
+    .block-customer-login .block-content {
+        margin-left: 5px !important;
+    }
+    .email-welcome-description {
+        font-size: 12px !important;
+    }
+    .label-otp {
+        font-size: 12px !important;
+    }
+    #otp-email-account {
+        padding: 9px 40px !important;
+        font-size: 14px !important;
+        width: 74% !important;
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    .email-welcome-title {
+        font-size: 24px !important;
+    }
+    .email-welcome-description {
+        font-size: 14px !important;
+    }
+    .block-customer-login .block-content {
+        margin-left: 40px !important;
+        margin-top: 20px !important;
+    }
+    #customer-popup-login-form .cuotp_login_firstname {
+        width: 86% !important;
+    }
+    #customer-popup-login-form .cuotp_login_lastname {
+        width: 272% !important;
+    }
+    #customer-popup-login-form .cuotp_login_email {
+        width: 86% !important;
+    }
+    .label-otp {
+        font-size: 14px !important;
+    }
+    #otp-email-account {
+        padding: 12px 50px !important;
+        font-size: 15px !important;
+        width: 88% !important;
+    }
+    #customer-popup-login-form .col-md-4{
+        margin-top: 20px !important;
+    }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 575px) {
+    .email-welcome-title {
+        font-size: 24px !important;
+    }
+    .email-welcome-description {
+        font-size: 14px !important;
+    }
+    #customer-popup-login-form .cuotp_login_firstname {
+        width: 86% !important;
+    }
+    #customer-popup-login-form .cuotp_login_lastname {
+        width: 285% !important;
+    }
+    #customer-popup-login-form .cuotp_login_email {
+        width: 86% !important;
+    }
+    .block-customer-login .block-content {
+        margin-left: 20px !important;
+        margin-top: 20px !important;
+    }
+    .label-otp {
+        font-size: 14px !important;
+    }
+    #otp-email-account {
+        padding: 12px 50px !important;
+        font-size: 15px !important;
+        width: 88% !important;
+    }
+    #customer-popup-login-form .col-md-4{
+        margin-top: 20px !important;
+    }
+}
+/* Usr Reg Page end  */
+
+.customer-address-index .add {
+    display:none !important;
+}
+
+.additional-addresses .country {
+    display: none !important;
+}
+
+.additional-addresses .zip {
+    text-align: center !important;
+}
+
+.customer-popup .row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+
+@media (min-width: 768px) {
+    .customer-popup .col-md-7 {
+        flex: 0 0 auto;
+        width: 58.33333333%;
+    }
+
+    .customer-popup .col-md-5 {
+        flex: 0 0 auto;
+        width: 41.66666667%;
+    }
+
+    .customer-popup .col-md-12 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .customer-popup .row>* {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+.customer-popup .row>* {
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+}
+
+.customer-popup *,
+.customer-popup ::after,
+.customer-popup ::before {
+    box-sizing: border-box;
+}
+
+
+.customer-popup svg {
+    vertical-align: middle;
+}
+
+.customer-popup .modal-content {
+    background: #E5F5FD !important;
+    border: none !important;
+}
+
+.customer-popup .modal-header {
+    border-bottom: none !important;
+}

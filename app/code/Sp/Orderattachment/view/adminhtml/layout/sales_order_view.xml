@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Sp_Orderattachment::css/orderattachment.css"/>
+    </head>
+    <body>
+        <referenceBlock name="sales_order_tabs">
+            <!-- First, remove the existing tab -->
+            <action method="removeTab">
+                <argument name="name" xsi:type="string">sp_attachments</argument>
+            </action>
+            
+            <!-- Define the block -->
+            <block class="Sp\Orderattachment\Block\Adminhtml\Order\View\Tab\Attachments"
+                   name="sales.order.view.tab.attachment"
+                   template="Sp_Orderattachment::order/view/tab/attachments.phtml">
+                <arguments>
+                    <argument name="sort_order" xsi:type="string">2</argument>
+                </arguments>
+            </block>
+            
+            <!-- Add the tab back with the new sort order -->
+            <action method="addTabAfter">
+                <argument name="name" xsi:type="string">sp_attachments</argument>
+                <argument name="block" xsi:type="string">sales.order.view.tab.attachment</argument>
+                <argument name="after" xsi:type="string">order_info</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

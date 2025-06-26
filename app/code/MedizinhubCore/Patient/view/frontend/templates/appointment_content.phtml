@@ -1,0 +1,219 @@
+<?php
+$appointmentsData = $block->getAllPatientsAppointments();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$connection = $resource->getConnection();
+$timeSlotsQuery = "SELECT id, slot_time FROM time_slots WHERE status = 1";
+$timeSlots = $connection->fetchPairs($timeSlotsQuery);
+$hospitalsQuery = "SELECT id, name FROM hospitals WHERE status = 1";
+$hospitals = $connection->fetchPairs($hospitalsQuery);
+$practitionersQuery = "SELECT id, name, special_price FROM practitioners WHERE status = 1";
+$practitionersData = $connection->fetchAll($practitionersQuery);
+
+$practitioners = [];
+foreach ($practitionersData as $practitioner) {
+    $practitioners[$practitioner['id']] = [
+        'name' => $practitioner['name'],
+        'special_price' => $practitioner['special_price']
+    ];
+}
+
+function getTimeSlotById($timeSlotId, $timeSlots) {
+    return $timeSlots[$timeSlotId] ?? 'Unknown Time Slot';
+}
+function getHospitalNameById($hospitalId, $hospitals) {
+    return $hospitals[$hospitalId] ?? 'Unknown Hospital';
+}
+function getPractitionerNameById($practitionerId, $practitioners) {
+    return $practitioners[$practitionerId]['name'] ?? 'Unknown Specialist';
+}
+function getPractitionerPriceById($practitionerId, $practitioners) {
+    return $practitioners[$practitionerId]['special_price'] ?? '0';
+}
+?>
+
+<style>
+.appointment-filters {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.appointment-filters button {
+    padding: 10px 16px;
+    background: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px !important;
+}
+.appointment-filters button.active {
+    background: #03C777;
+    color: white;
+}
+.appointment-card {
+    display: block;
+}
+.appointment-card.hidden {
+    display: none;
+}
+</style>
+
+<div class="appointment-header">
+    <h2 class="appointment-title">My Consultation Appointments</h2>
+</div>
+
+<div class="appointment-filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+    <button class="filter-btn" data-filter="completed">Completed</button>
+    <button class="filter-btn" data-filter="pending">Payment Pending</button>
+    <button class="filter-btn" data-filter="cancelled">Cancelled</button>
+</div>
+
+<div class="appointment-container">
+    <p id="no-appointments-message" style="display:none; font-weight:500; padding: 20px;">No appointments available.</p>
+    <?php if (!empty($appointmentsData)): ?>
+        <?php foreach ($appointmentsData as $index => $patientData): ?>
+            <?php
+            $appointment = $patientData['appointment'];
+            $appointmentId = $appointment['appointment_id'];
+            $paymentStatus = $appointment['payment_status'] ?? 'pending';
+            $appointmentStatus = $appointment['appointment_status'] ?? 0;
+            $isRescheduled = $appointment['is_rescheduled'] ?? 0;
+            $appointmentDate = $appointment['date'];
+            $timeSlotId = $appointment['time_slot'];
+            $timeSlotText = getTimeSlotById($timeSlotId, $timeSlots);
+            $timeSlotParts = explode('-', $timeSlotText);
+            $startTime = isset($timeSlotParts[0]) ? trim($timeSlotParts[0]) : '00:00 AM';
+            $startTime24 = date("H:i:s", strtotime($startTime));
+            $appointmentDateTime = date('Y-m-d H:i:s', strtotime("$appointmentDate $startTime24"));
+            $currentDateTime = date('Y-m-d H:i:s');
+
+            $filterClass = '';
+            if ($appointmentStatus == 3) {
+                $filterClass = 'completed';
+            } elseif ($appointmentStatus == 4) {
+                $filterClass = 'cancelled';
+            } elseif (in_array($paymentStatus, ['pending', 'failed'])) {
+                $filterClass = 'pending';
+            } elseif (strtotime($currentDateTime) < strtotime($appointmentDateTime)) {
+                $filterClass = 'upcoming';
+            } else {
+                $filterClass = 'missed';
+            }
+            ?>
+            <div class="appointment-card filter-item <?php echo $filterClass; ?>" data-filter="<?php echo $filterClass; ?>">
+                <div class="patient-details">
+                    <h3 class="patient-detail-label">
+                        Patient Name: <span class="patient-vaules"><?php echo $block->escapeHtml(ucfirst($patientData['patient']['name'])); ?>
+                            <?php if ($appointmentStatus == 3): ?>
+                                <a href="#" class="view-comments" data-index="<?php echo $index; ?>" data-appointment-id="<?php echo $appointmentId; ?>">View Doctor Comments</a>
+                            <?php endif; ?>
+                        </span>
+                    </h3>
+                </div>
+                <?php if (!empty($appointment)): ?>
+                    <div class="appointment-details">
+                        <p class="patient-detail-label">Selected Doctor / Specialist:
+                            <span class="patient-vaules"><?php echo $block->escapeHtml(getPractitionerNameById($appointment['practitioner_id'], $practitioners)); ?></span>
+                        </p>
+                        <p class="patient-detail-label">Selected Hospital:
+                            <span class="patient-vaules"><?php echo $block->escapeHtml(getHospitalNameById($appointment['hospital_id'], $hospitals)); ?></span>
+                        </p>
+                        <p class="patient-detail-label">Selected Date:
+                            <span class="patient-vaules"><?php echo $block->escapeHtml($appointment['date']); ?></span>
+                        </p>
+                        <p class="patient-detail-label">Selected Time Slot:
+                            <span class="patient-vaules"><?php echo $block->escapeHtml(getTimeSlotById($appointment['time_slot'], $timeSlots)); ?></span>
+                        </p>
+                        <p class="patient-detail-label">Uploaded Report:
+                            <span class="patient-vaules"><?php echo date('j M Y, g:i A', strtotime($appointment['created_at'])); ?></span>
+                        </p>
+
+                        <?php if ($appointmentStatus == 4): ?>
+                            <div class="appointment-actions">
+                                <button class="btn btn-danger cancelled-appointment">Appointment Cancelled</button>
+                            </div>
+                        <?php elseif (in_array($paymentStatus, ['pending', 'failed'])): ?>
+                            <div class="appointment-actions">
+                                <button class="btn btn-success retry-payment" data-appointment-id="<?php echo $appointmentId; ?>">Retry Payment</button>
+                            </div>
+                        <?php elseif (strtotime($currentDateTime) < strtotime($appointmentDateTime)): ?>
+                            <div class="appointment-actions">
+                                <button class="btn btn-outline-success cancel-appointment" data-appointment-id="<?php echo $appointmentId; ?>">Cancel</button>
+                                <?php if (!$isRescheduled): ?>
+                                    <button class="btn btn-success reschedule" data-appointment-id="<?php echo $appointmentId; ?>">Reschedule</button>
+                                <?php else: ?>
+                                    <button class="btn btn-secondary rescheduled" disabled>Rescheduled</button>
+                                <?php endif; ?>
+                            </div>
+                        <?php else: ?>
+                            <div class="appointment-actions">
+                                <button class="btn btn-secondary missed-appointment" disabled>Appointment Missed</button>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>No appointments available.</p>
+    <?php endif; ?>
+</div>
+
+
+<div id="fileModal" class="modal appointment-model" data-appointment-id="">
+    <div class="modal-content appointment-model-content">
+        <span class="close">&times;</span>
+        <h2 class="patient-vaules">Uploaded Files</h2>
+        <div id="file-list"></div>
+    </div>
+</div>
+
+<div id="reschedulePopup" class="modal appointment-model" style="display: none;" data-appointment-id="">
+    <div class="modal-content appointment-model-content">
+        <span class="close">&times;</span>
+        <h2 class="appointment-title">Reschedule Appointment</h2>
+        <div class="reschedule-imagesection"><img class="reschedule-image" src="<?= $this->getViewFileUrl('MedizinhubCore_Patient::images/reschedule.png') ?>" alt="Reschedule"></div>
+        <p class="reschedule-helptext">Are you sure you want to reschedule the appointment? Rescheduling appointment is allowed only once.</p>
+
+        <label for="rescheduleDate">Select Date <span class="mandatory-field">*</span></label>
+        <input type="date" id="rescheduleDate" name="rescheduleDate" required min="<?php echo date('Y-m-d'); ?>">
+
+        <label for="rescheduleTime">Select Time Slot <span class="mandatory-field">*</span></label>
+        <select id="rescheduleTime" name="rescheduleTime" required>
+            <option value="">Select Time Slot</option>
+        </select>
+
+        <div class="reschdule-btn"><button class="btn btn-success" id="confirmReschedule">Reschedule</button></div>
+    </div>
+</div>
+
+<div id="cancelPopup" class="modal appointment-model" style="display: none;" data-appointment-id="">
+    <div class="modal-content appointment-model-content">
+        <span class="close">&times;</span>
+        <h2 class="appointment-title">Cancel Appointment</h2>
+        <div class="reschedule-imagesection">
+            <img class="reschedule-image" src="<?= $this->getViewFileUrl('MedizinhubCore_Patient::images/cancel-appointment.png') ?>" alt="Cancel">
+        </div>
+        <p class="reschedule-helptext">Are you sure you want to cancel the appointment?</p>
+        <label for="reason">Select Reason <span class="mandatory-field">*</span></label>
+        <select id="cancel-reason" name="cancelReason" required>
+            <option value="">Select Reason for Cancel?</option>
+            <option value="schedule_conflict">Schedule Conflict</option>
+            <option value="not_feeling_well">Not Feeling Well</option>
+            <option value="emergency">Emergency Situation</option>
+            <option value="found_alternative">Found an Alternative Doctor</option>
+            <option value="personal_reasons">Personal Reasons</option>
+            <option value="others">Others</option>
+        </select>
+        <textarea name="otherReason" id="other-reason"></textarea>
+        <div class="reschdule-btn">
+            <button class="btn btn-danger" id="confirmCancel">Cancel Appointment</button>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,144 @@
+
+type Query {
+
+    lofRewardPointsEarningRuleList (
+        storeId: String!
+        search: String @doc(description: "Performs a full-text search using the specified key words."),
+        filter: EarningRulesFilterInput @doc(description: "Identifies which Earning rule attributes to search for and return."),
+        pageSize: Int = 20 @doc(description: "Specifies the maximum number of results to return at once. This attribute is optional."),
+        currentPage: Int = 1 @doc(description: "Specifies which page of results to return. The default value is 1."),
+    ) : EarningRules @resolver( class: "Lof\\RewardPointsGraphQl\\Model\\Resolver\\EarningRules") @doc(description: "Query Get list earning rules.")
+
+    lofRewardPointsSpendingRuleList (
+        storeId: String!
+        search: String @doc(description: "Performs a full-text search using the specified key words."),
+        filter: SpendingRulesFilterInput @doc(description: "Identifies which Earning rule attributes to search for and return."),
+        pageSize: Int = 20 @doc(description: "Specifies the maximum number of results to return at once. This attribute is optional."),
+        currentPage: Int = 1 @doc(description: "Specifies which page of results to return. The default value is 1."),
+    ) : SpendingRules @resolver( class: "Lof\\RewardPointsGraphQl\\Model\\Resolver\\SpendingRules") @doc(description: "Query Get list earning rules.")
+
+    lofRewardPointsCustomer : RewardPointsCustomer @resolver (class: "Lof\\RewardPointsGraphQl\\Model\\Resolver\\Customer") @doc(description: "Query Get Customer reward points.")
+}
+
+type RewardPointsCustomer {
+    object_id  : Int  @doc(description: "Object id.")
+    customer_id  : Int  @doc(description: "Customer Id.")
+    hold_points  : Int  @doc(description: "Hold Points.")
+    available_points  : Int  @doc(description: "Available Points.")
+    total_points  : Int  @doc(description: "Total Points.")
+    update_point_notification  : Int  @doc(description: "Update Point Notification.")
+    expire_point_notification  : Int  @doc(description: "Expire Point Notification.")
+    params  : String  @doc(description: "Params.")
+    transactions : TransActions @doc(description: "Transactions.")
+}
+
+type EarningRule {
+    rule_id  : Int  @doc(description: "Rule id.")
+    name  : String  @doc(description: "Rule Name.")
+    description  : String  @doc(description: "Description.")
+    active_from  : String  @doc(description: "Active From.")
+    active_to  : String  @doc(description: "Active To.")
+    type  : String  @doc(description: "Type.")
+    action  : String  @doc(description: "Action.")
+    earn_points  : Int  @doc(description: "Earn Points.")
+    monetary_step  : Int  @doc(description: "Monetary Step.")
+    points_limit  : Int  @doc(description: "Points Limit.")
+    sort_order  : Int  @doc(description: "Sort Order.")
+    is_stop_processing  : Int  @doc(description: "Is Stop Processing.")
+    is_active  : Int  @doc(description: "Is Active.")
+    points_limit_month  : Int  @doc(description: "Points Limit Month.")
+    points_limit_year  : Int  @doc(description: "Points Limit Year.")
+    history_message  : String  @doc(description: "History Message.")
+    email_message  : String  @doc(description: "Email Message.")
+    referred_points  : Int  @doc(description: "Referred Points.")
+    advanced_referral_points  : String  @doc(description: "Advanced Referral Points.")
+    apply_type  : Int  @doc(description: "Apply Type.")
+    min_qty_orders  : Int  @doc(description: "Min Qty Orders.")
+    max_qty_orders  : Int  @doc(description: "Max Qty Orders.")
+    conditions_serialized  : String  @doc(description: "Conditions Serialized.")
+    actions_serialized  : String  @doc(description: "Actions Serialized.")
+    qty_step  : Int  @doc(description: "Qty Step.")
+}
+
+type SpendingRule {
+    rule_id  : Int  @doc(description: "Rule id.")
+    name  : String  @doc(description: "Rule Name.")
+    description  : String  @doc(description: "Description.")
+    is_active  : Int  @doc(description: "Is Active.")
+    active_from  : String  @doc(description: "Active From.")
+    active_to  : String  @doc(description: "Active To.")
+    type  : String  @doc(description: "Type.")
+    action  : String  @doc(description: "Action.")
+    spend_points  : Int  @doc(description: "Spend Points.")
+    monetary_step  : Int  @doc(description: "Monetary Step.")
+    sort_order  : Int  @doc(description: "Sort Order.")
+    spend_min_points  : Int  @doc(description: "Spend Min Points.")
+    spend_max_points  : Int  @doc(description: "Spend Max Points.")
+    conditions_serialized  : String  @doc(description: "Conditions Serialized.")
+    actions_serialized  : String  @doc(description: "Actions Serialized.")
+    percentage_max_points : Int  @doc(description: "Percentage Max Points.")
+    qty_step  : Int  @doc(description: "Qty Step.")
+    is_stop_processing  : Int  @doc(description: "Is Stop Processing.")
+}
+
+type EarningRules {
+    total_count: Int @doc(description: "The number of EarningRules returned")
+    items: [EarningRule] @doc(description: "An array of EarningRules that match the specified search criteria")
+}
+
+type SpendingRules {
+    total_count: Int @doc(description: "The number of SpendingRules returned")
+    items: [SpendingRule] @doc(description: "An array of SpendingRules that match the specified search criteria")
+}
+
+type TransActions {
+    total_count: Int @doc(description: "The number of TransActions returned")
+    items: [TransAction] @doc(description: "An array of TransAction")
+}
+
+type TransAction {
+    transaction_id  : Int  @doc(description: "Transaction Id.")
+    quote_id  : Int  @doc(description: "Quote Id.")
+    amount  : Int  @doc(description: "Amount.")
+    customer_id  : Int  @doc(description: "Customer Id.")
+    amount_used  : Int  @doc(description: "Amount Used.")
+    title  : String  @doc(description: "Title.")
+    code  : String  @doc(description: "Code.")
+    action  : String  @doc(description: "Action.")
+    status  : String  @doc(description: "Status.")
+    params  : String  @doc(description: "Params.")
+    is_expiration_email_sent  : Int  @doc(description: "Is Expiration Email Sent.")
+    email_message  : String  @doc(description: "Email Message.")
+    apply_at  : String  @doc(description: "Apply At.")
+    is_applied  : Int  @doc(description: "Is Applied.")
+    is_expired  : Int  @doc(description: "Is Expired.")
+    expires_at  : String  @doc(description: "Expires At.")
+    updated_at  : String  @doc(description: "Updated At.")
+    created_at  : String  @doc(description: "Created At.")
+    store_id  : Int  @doc(description: "Store Id.")
+    order_id  : Int  @doc(description: "Order Id.")
+    admin_user_id  : Int  @doc(description: "Admin User Id.")
+
+}
+
+input EarningRulesFilterInput {
+    rule_id: FilterTypeInput @doc(description: "Rule ID")
+    name: FilterTypeInput @doc(description: "Name")
+    type: FilterTypeInput @doc(description: "Type")
+    action: FilterTypeInput @doc(description: "Action")
+    is_active: FilterTypeInput @doc(description: "Is Active")
+    earn_points: FilterTypeInput @doc(description: "The Number of Points Earn")
+    or: EarningRulesFilterInput @doc(description: "The keyword required to perform a logical OR comparison")
+}
+
+input SpendingRulesFilterInput {
+    rule_id: FilterTypeInput @doc(description: "Rule ID")
+    name: FilterTypeInput @doc(description: "Name")
+    type: FilterTypeInput @doc(description: "Type")
+    action: FilterTypeInput @doc(description: "Action")
+    is_active: FilterTypeInput @doc(description: "Is Active")
+    spend_points: FilterTypeInput @doc(description: "The Number of Points Spend")
+    or: SpendingRulesFilterInput @doc(description: "The keyword required to perform a logical OR comparison")
+}
+
+

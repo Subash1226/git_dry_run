@@ -1,0 +1,145 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="shipping-address-item" css="'selected-item': isSelected(), 'not-selected-item': !isSelected()" data-bind="attr: {id: 'address-' + address().customerAddressId}">
+    <div class="ShippingAddressItem">
+        <!-- Radio button for selecting address -->
+        <div class="address-select-radio">
+            <input type="radio" class="SelectAddress" name="shipping-address-selection" 
+                   data-bind="attr: {id: 'radio-' + address().customerAddressId}, 
+                             checked: isSelected, 
+                             click: selectAddress" />
+        </div>
+        <text style="font-size: 17px;font-weight: 600;" class="Address-name" args="address().prefix"></text>
+        <span class="Address-name" text="address().firstname"></span>
+        <text class="Address-name" args="address().middlename"></text>
+        <span class="Address-name" text="address().lastname"></span>,
+        <text args="address().suffix"></text>
+        <if args="address().company">
+            <text args="address().company"></text>,
+        </if>
+        <text args="_.values(_.compact(address().street)).join(', ')"></text>,
+        <text args="address().city "></text>, <br>
+        <span text="address().region"></span>
+        <text args="address().postcode"></text>,
+        <text args="getCountryName(address().countryId)"></text>
+        <span>Ph.No: </span>
+        <span class="mob-address" if="address().telephone" onclick="return false;" text="address().telephone"></span>
+        <if args="address().vatId">
+            VAT: <text args="address().vatId"></text>
+        </if>
+        <each args="data: address().customAttributes, as: 'element'">
+            <text args="$parent.getCustomAttributeLabel(element)"></text>
+            <br>
+        </each>
+
+        <button type="button" class="action edit-address-link" data-bind="click: editAddress">
+            <span translate="'Edit'"></span>
+        </button>
+        | &nbsp;
+        <a href="#" data-bind="click: deleteAddress.bind($data, address().customerAddressId)" class="red-link">Delete</a>
+    </div>
+</div>
+<style>
+.mob-address {
+    text-decoration: none !important;
+    font-weight: 400 !important;
+    color: #000 !important;
+}
+.red-link {
+    text-decoration: none !important;
+}
+.address-select-radio {
+    float: right;
+    margin-top: 5px;
+}
+.opc-wrapper .shipping-address-item.selected-item::after {
+    background: none !important;
+    border-radius: 18px !important;
+    display: none !important;
+}
+.shipping-address-item {
+    font-size: 16px !important;
+    font-family: Source Sans Pro !important;
+    font-weight: 400;
+    border-radius: 0px !important;
+}
+.shipping-address-items {
+    border: 1px solid #cacaca;
+    border-radius: 8px !important;
+}
+.SelectAddress {
+	width: 18px !important;
+	height: 18px !important;
+	accent-color: #313739 !important;
+}
+.Address-name {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    font-size: 17px !important;
+}
+#SelectAddress.selected {
+    background-color: #227ed1;
+    color: #fff;
+}
+.opc-wrapper .shipping-address-item.selected-item {
+    border-color: #d8d8d8 !important;
+    border-radius: 1px !important;
+}
+.opc-wrapper .shipping-address-item.not-selected-item::after {
+    border-color: #d1e2db !important;
+    border-radius: 1px !important;
+}
+.checkout-index-index .ShippingAddressItem{
+    text-transform: capitalize;
+}
+@media only screen 
+    and (min-width : 320px) 
+    and (max-width : 768px) {
+    .shipping-address-item {
+        font-size: 14px !important;
+    }
+    #SelectAddress {
+        font-size: 14px;
+        padding: 6px;
+    }
+    .Address-name {
+        font-size: 14px !important;
+    }
+    .opc-wrapper .shipping-address-item.selected-item .edit-address-link {
+        position: static;
+    }
+}    
+@media only screen and (max-width: 639px) {
+    .opc-wrapper .methods-shipping {
+        border-bottom: none !important;
+        background: none !important;
+    }
+    .opc-wrapper .action-show-popup {
+        width: auto !important;
+        margin-left: -31px;
+    }
+    #shipping-method-buttons-container .continue {
+        font-size: 18px !important;
+        margin-left: -31px;
+    }
+}
+/* Tablet (min-width: 769px and max-width: 1024px) */
+@media only screen 
+    and (min-width : 769px) 
+    and (max-width : 1024px) {
+    .shipping-address-item {
+        font-size: 15px !important;
+    }
+    #SelectAddress {
+        font-size: 15px;
+        padding: 7px;
+    }
+    .Address-name {
+        font-size: 15px !important;
+    }
+}
+</style>

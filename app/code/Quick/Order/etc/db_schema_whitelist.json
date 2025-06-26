@@ -1,0 +1,21 @@
+{
+    "quick_order": {
+        "column": {
+            "id": true,
+            "order_id": true,
+            "customer_id": true,
+            "mobile_number": true,
+            "address_entity": true,
+            "status": true,
+            "image": true,
+            "created_at": true
+        },
+        "index": {
+            "QUICK_ORDER_ORDER_ID": true,
+            "QUICK_ORDER_CUSTOMER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

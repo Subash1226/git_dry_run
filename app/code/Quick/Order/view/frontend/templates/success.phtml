@@ -1,0 +1,96 @@
+<?php 
+$mediaUrl = $block->getMediaUrl();
+$successImageUrl = $block->getViewFileUrl('Quick_Order::images/success-response-image.svg');
+?>
+<div class="p-checkout-success">
+    <center><div class="p-thanks-success">
+        <div class="p-thanks-img"><img class="p-success-img" src="<?php echo $successImageUrl; ?>" alt=""></div>
+        <p class="p-order-confirmed">Your Order is Placed!</p>
+        <p class="p-shipping-order">Our team will shortly reach you for confirmation,<br> 
+For more information contact us</p>
+        <div class="primary">
+            <button class="p-button-success">
+                <a class="p-btn-success" href="<?php echo $block->getUrl(''); ?>">Continue Shopping</a>
+            </button>
+        </div>
+    </div></center>
+</div>
+<style>
+    .p-checkout-success {
+        width: 100%;
+        text-align: center;
+    }
+
+    .p-thanks-success {
+        width: 90%;
+        max-width: 618px;
+        margin: 20px auto !important;
+        text-align: center;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 1);
+        border: 1px solid #03C777;
+        padding: 20px;
+    }
+
+    /* .p-thanks-img {
+        width: 63px;
+        height: 63px;
+        margin: 0 auto 20px;
+    } */
+
+    .p-order-confirmed {
+        color: #263238;
+        font-family: Source Sans Pro;
+        font-size: 24px;
+        padding: 10px 0;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .p-shipping-order {
+        color: #263238;
+        font-family: Source Sans Pro;
+        font-size: 16px;
+        padding: 0 20px 10px;
+    }
+
+    .p-button-success {
+        width: 100%;
+        max-width: 259px;
+        height: 52px;
+        padding: 10px 18px;
+        justify-content: center;
+        border-radius: 8px;
+        background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);
+        color: #fff;
+        font-family: Source Sans Pro;
+        border: 1px solid #03C777;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .p-button-success:hover {
+        background: linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);
+        color: #fff;
+    }
+
+    .p-btn-success {
+        text-decoration: none;
+        color: #fff !important;
+    }
+
+    .cms-success .page-title {
+        display: none;
+    }
+
+    @media only screen and (min-width: 360px) and (max-width: 767px) {
+        .p-thanks-success {
+            padding: 20px 10px;
+        }
+
+        .p-button-success {
+            max-width: 100%;
+        }
+    }
+</style>

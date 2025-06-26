@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+		<css src="MedizinhubCore_Patient::css/style.css" />
+		<script src="https://checkout.razorpay.com/v1/checkout.js" src_type="url"/>
+		<script src="MedizinhubCore_Patient::js/patient.js" />
+	</head>
+	<body>
+		<referenceContainer name="content">
+			<block class="MedizinhubCore\Patient\Block\Patient" name="patient.form" template="MedizinhubCore_Patient::patientform.phtml">
+			</block>
+		</referenceContainer>
+	</body>
+</page>

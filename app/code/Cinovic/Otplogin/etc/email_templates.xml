@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="customer_update_email_template"
+              label="Customer Profile Update"
+              file="customer_update_notification.html"
+              type="html"
+              module="Cinovic_Otplogin"
+              area="frontend"/>
+<template id="otp_email_template"
+              label="OTP Email Template"
+              file="otp_email.html"
+              type="html"
+              module="Cinovic_Otplogin"
+              area="frontend"/>
+</config>

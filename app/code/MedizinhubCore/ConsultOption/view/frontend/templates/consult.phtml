@@ -1,0 +1,167 @@
+<style>
+    main{
+        display: none !important;
+    }
+    .online-consult{
+        background-image: url("<?= $block->getViewFileUrl('MedizinhubCore_ConsultOption::images/online-consultation.svg') ?>");
+        background-repeat: no-repeat;
+    }
+    .home-consult{
+        background-image: url("<?= $block->getViewFileUrl('MedizinhubCore_ConsultOption::images/home-visit.svg') ?>");
+        background-repeat: no-repeat;
+    }
+    .online-consult p{
+        color: #0A2916;
+        font-family: "Source Sans Pro";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        padding: 70px 68px 61px 62px;
+        line-height: normal;
+    }
+    .home-consult p{
+        color: #0A2916;
+        font-family: "Source Sans Pro";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        padding: 70px 68px 61px 62px;
+        line-height: normal;
+    }
+    .home-consult button{
+        color: #FFF;
+        font-family: 'Source Sans Pro';
+        font-size: 12.176px;
+        font-style: normal;
+        font-weight: 600;
+        border-radius: 4.87px;
+        background: #063851;
+        padding: 5px 16px;
+        margin-top: -96px;
+        margin-left: 60px;
+        height: 32px;
+        width: 100px;
+    }
+    .page-title-wrapper{
+        display: none;
+    }
+
+    .online-consult button{
+        color: #FFF;
+        font-family: 'Source Sans Pro';
+        font-size: 12.176px;
+        font-style: normal;
+        font-weight: 600;
+        border-radius: 4.87px;
+        background: #124F2A;
+        padding: 5px 16px;
+        margin-top: -110px;
+        margin-left: 60px;
+        height: 32px;
+        margin-top: -96px;
+        margin-left: 60px;
+        height: 32px;
+        width: 100px;
+    }
+    .consult-head{
+        padding: 0 70px;
+        color: #063851;
+        font-family: Source Sans Pro,Sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+    }
+    .consult-subhead{
+        padding: 0 70px;
+        color: #859ca8;
+        font-family: Ubuntu,Sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+    }
+    .consult-on{
+        padding-left:150px !important;
+    }
+    @media screen and (min-width: 768px) and (max-width: 992px) {
+        .consult-on{
+            padding-left:0px !important;
+        }
+        .consult-head{
+            padding: 0px;
+        }
+        .consult-subhead{
+            padding: 0px;
+        }
+    }
+    @media screen and (max-width:767px){
+        .consult-on{
+            padding-left:15px !important;
+        }
+        .consult-hm{
+            padding-left:15px !important;
+        }
+        .consult-head{
+            padding: 0px 15px;
+        }
+        .consult-subhead{
+            padding: 0px 15px;
+        }
+    }
+
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> -->
+
+<div class="consult-option">
+    <div class="container">
+    <p class="consult-head">Select option for consult</p>
+    <p class="consult-subhead">we offer a quality consult to you</p>
+        <div class="row">
+            <div class="col-md-6 consult-on">
+                <div class="online-consult">
+                    <p>Doctor Online <br>
+                    Consult</p>
+                    <a href="/online-consultation"><button id="book-online-consult">Book Now</button></a>
+                </div>
+            </div>
+            <div class="col-md-6 consult-hm">
+                <div class="home-consult">
+                    <p>Doctor Home <br>
+                    Visit</p>
+                    <a href="/confirm-order"><button id="book-home-visit">Book Now</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile_qr">
+    <a href="https://play.google.com/store/apps/details?id=com.mhb.medizin_hub" target="_blank">
+        <img src="<?= $block->getViewFileUrl('MedizinhubCore_Home::images/mobile_qr.png'); ?>" alt="MedizinHub Mobile App"  title="MedizinHub Mobile App" class="mobile_qr_img">
+    </a>
+</div>
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const bookOnlineConsultBtn = document.getElementById('book-online-consult');
+    const bookHomeVisitBtn = document.getElementById('book-home-visit');
+
+    function handleBookNowClick() {
+        PatientRedirect();
+
+        let userCheck = sessionStorage.getItem('Userlogin');
+        sessionStorage.setItem('loginlastclick', 'Patient');
+        if (userCheck !== 'true') {
+            let linkRegister = document.createElement('a');
+            linkRegister.className = 'customer-register-link';
+            document.body.appendChild(linkRegister);
+            linkRegister.click();
+        } else {
+            window.location.href = '/online-consultation';
+        }
+    }
+
+    bookOnlineConsultBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        handleBookNowClick();
+    });
+});
+
+</script>

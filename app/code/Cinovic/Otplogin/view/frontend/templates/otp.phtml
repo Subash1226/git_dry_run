@@ -1,0 +1,243 @@
+<div style="padding: 30px 0;" id="customer-popup-otp" class="customer-popup-otp row">
+    <div class="col-md-7  otp_image">
+        <img class="otp-log-image" src="<?php echo $this->getViewFileUrl('Cinovic_Otplogin::images/mobile.png'); ?>">
+    </div>
+    <div class="col-md-5">
+        <div style="display: none;" class="otpmessages"></div>
+        <form class="form" method="post" id="form-otpsend" data-mage-init='{"validation":{}}'>
+            <input type="hidden" id="login-redirect-url" name="redirect_url" value="<?php echo $this->getUrl('/'); ?>" />
+            <fieldset class="fieldset" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
+                <p class="verify-otp-title">Verify OTP</p>
+                <p class="edit-number-otp">
+                    <span id="provide-number"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-bottom: 5px;margin-left: 8px;margin-right: 1px;">
+                        <g clip-path="url(#clip0_8518_460)">
+                            <path d="M11.3917 0.173584L13.5761 2.35807L11.9108 4.0241L9.72635 1.83962L11.3917 0.173584ZM3.39062 10.3591H5.57511L10.8812 5.05299L8.69673 2.86851L3.39062 8.17461V10.3591Z" fill="#00739B"></path>
+                            <path d="M11.4006 12.5436H3.50585C3.48692 12.5436 3.46726 12.5509 3.44833 12.5509C3.4243 12.5509 3.40027 12.5444 3.37551 12.5436H1.20632V2.34939H6.19204L7.64836 0.893066H1.20632C0.40316 0.893066 -0.25 1.5455 -0.25 2.34939V12.5436C-0.25 13.3475 0.40316 14 1.20632 14H11.4006C11.7868 14 12.1572 13.8465 12.4303 13.5734C12.7035 13.3003 12.8569 12.9299 12.8569 12.5436V6.23194L11.4006 7.68826V12.5436Z" fill="#00739B"></path>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_8518_460">
+                                <rect width="14" height="14" fill="white"></rect>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    Edit
+                </p>
+                <div class="field otp required">
+                    <div class="control">
+                        <div style="margin-left: -23px;" class="row">
+                            <div class="col-md-12">
+                                <input type="text" placeholder="Enter 6 Digit OTP" maxlength="6" pattern="\d{6}" name="otp" alt="otp" id="otp" class="input-text" data-validate="{required:true}" autocomplete="one-time-code"> <br>
+                                <span id="response-return-otp"></span>
+                                <p class="time-left-otp">Timing Remaining: <span id="timer"></span></p>
+                                <p class="resendotp-container">Don’t received code?<a id="resendOtp" class="resendotp"><span>Resend OTP</span></a></p>
+                                <div class="sendotp-button-container">
+                                    <button type="button" class="submit sendotpsubmit">Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?= $block->getChildHtml('form_additional_info') ?>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    require(["jquery"], function($) {
+        function startTimer() {
+            let expiryTime = sessionStorage.getItem("Expiry_time");
+            if (!expiryTime) {
+                expiryTime = 180;
+            }
+            timer(expiryTime);
+        }
+
+        function timer(remaining) {
+            $('.resendotp-container').hide();
+            $('.resendotp').hide();
+            var m = Math.floor(remaining / 60);
+            var s = remaining % 60;
+
+            m = m < 10 ? '0' + m : m;
+            s = s < 10 ? '0' + s : s;
+            document.getElementById('timer').innerHTML = m + ':' + s;
+            remaining -= 1;
+            if (remaining >= 0) {
+                setTimeout(function() {
+                    timer(remaining);
+                }, 1000);
+                return;
+            }
+            $('.resendotp-container').css('display', 'inline-block');
+            $('.resendotp').css('display', 'inline');
+        }
+
+        $('.edit-number-otp').on('click', function() {
+            $('#customer-popup-otp').modal('closeModal');
+            var linkRegister = document.createElement('a');
+            linkRegister.className = 'customer-register-link';
+            document.body.appendChild(linkRegister);
+            linkRegister.click();
+            var customerId = sessionStorage.getItem("OtpCustomer");
+            if (customerId) {
+                var deleteurl = "/home/index/DeleteCustomer";
+                $.ajax({
+                    url: deleteurl,
+                    data: {
+                        customer_id: customerId
+                    },
+                    type: 'POST',
+                    async: false,
+                    success: function(response) {
+                        console.log('Customer deletion initiated successfully.');
+                        sessionStorage.removeItem("OtpCustomer");
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error initiating customer deletion:', error);
+                    }
+                });
+            } else {
+                console.error('Customer ID not found.');
+            }
+        });
+
+        function submitOTP(){
+            if ($('#form-otpsend').valid()) {
+                var otpValue = $('#otp').val();
+                if (otpValue.length !== 6 || !$.isNumeric(otpValue)) {
+                    $(".message").remove();
+                    $('<div class="message message-error error"><div>Invalid OTP format. Please enter a 4-digit numeric OTP.</div></div>').appendTo('.otpmessages');
+                    return;
+                }
+                $('body').loader().loader('show');
+                $.ajax({
+                    url: "<?php echo $block->getUrl('otplogin/account/otppost') ?>",
+                    data: $('#form-otpsend').serialize(),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        $('body').loader().loader('hide');
+                        $(".message").remove();
+                        if (response.errors) {
+                            $('#response-return-otp').show();
+                            $('#response-return-otp').text(response.message);
+                            $('<div class="message message-error error"><div>' + response.message + '</div></div>').appendTo('.otpmessages');
+                        } else {
+                            $('<div class="message message-success success"><div>' + response.message + '</div></div>').appendTo('.otpmessages');
+                            var CustomerOtpStatus = sessionStorage.getItem("customer_otp_status");
+                            if (CustomerOtpStatus != 1) {
+                                $('#customer-popup-otp').modal('closeModal');
+                                var linkRegister = document.createElement('a');
+                                linkRegister.className = 'customer-login-link';
+                                document.body.appendChild(linkRegister);
+                                linkRegister.click();
+                                sessionStorage.removeItem("customer_otp_status");
+                            } else {
+                                $('#customer-popup-otp').modal('closeModal');
+                                redirectToLastClick();
+                                sessionStorage.removeItem("customer_otp_status");
+                            }
+                        }
+                    },
+                    error: function() {
+                        $('body').loader().loader('hide');
+                        $(".message").remove();
+                        $('<div class="message message-error error"><div>An error occurred, please try again later.</div></div>').appendTo('.otpmessages');
+                    }
+                });
+            }
+        }
+
+        $('#otp').on('keypress', function(e) {
+            if (e.which === 13 || e.key === 'Enter') {
+                e.preventDefault();
+                submitOTP();
+            }
+        });
+
+        $('.sendotpsubmit').on('click', function(e) {
+            e.preventDefault();
+            submitOTP();
+        });
+
+        $('#form-otpsend').on('submit', function(e) {
+        e.preventDefault();
+    });
+
+        $('.resendotp').on('click', function() {
+            var customurl = "<?php echo $block->getUrl('otplogin/account/resendotp') ?>";
+            $('body').loader().loader('show');
+            $.ajax({
+                url: customurl,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.errors) {
+                        $('body').loader().loader('hide');
+                        $('#response-return-otp').show();
+                        $('#response-return-otp').text(response.message);
+                        $('<div class="message message-error error"><div>' + response.message + '</div></div>').appendTo('.otpmessages');
+                    }else {
+                        $(".message").remove();
+                        $('body').loader().loader('hide');
+                        $('<div class="message message-success success"><div>' + response.message + '</div></div>').appendTo('.otpmessages');
+                        $('#random-otp').text('OTP: ' + response.otp);
+                        startTimer();
+                        $('.resendotp-container').hide();
+                        $('.resendotp').hide();
+                    }
+                },
+                error: function() {
+                    $('body').loader().loader('hide');
+                    $(".message").remove();
+                    $('<div class="message message-error error"><div>An error occurred, please try again later.</div></div>').appendTo('.otpmessages');
+                }
+            });
+        });
+
+        function redirectToLastClick() {
+            const loginRedirect = sessionStorage.getItem('loginlastclick');
+            const baseUrl = "<?php echo $block->getBaseUrl(); ?>";
+            let url;
+
+            switch (loginRedirect) {
+                case 'Login':
+                    url = baseUrl;
+                    break;
+                case 'Book Lab':
+                    url = baseUrl + 'lab-test';
+                    break;
+                case 'Book Doctor':
+                    url = baseUrl + 'doctors';
+                    break;
+                case 'Cart':
+                    url = baseUrl + 'checkout/cart';
+                    break;
+                case 'Checkout':
+                    url = baseUrl + 'checkout';
+                    break;
+                case 'Prescription':
+                    url = baseUrl + 'quick-order';
+                    break;
+                case 'Patient':
+                    url = baseUrl + 'online-consultation';
+                    break;
+                default:
+                    url = baseUrl;
+            }
+            window.location.href = url;
+        }
+    });
+
+</script>
+<script type="text/x-magento-init">
+    {
+        "#customer-popup-otp": {
+            "Cinovic_Otplogin/js/action/customer-authentication-popup": {
+                "popupTitle": "<?php /* @escapeNotVerified */ echo __(''); ?>",
+                "innerWidth": "600"
+            }
+        }
+    }
+</script>

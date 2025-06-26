@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/medizinhub/patient/list" method="GET">
+        <service class="MedizinhubCore\Sample\Api\PatientManagement" method="getList"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/medizinhub/patient/:id" method="GET">
+        <service class="MedizinhubCore\Sample\Api\PatientManagement" method="getById"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/medizinhub/patient/create" method="POST">
+        <service class="MedizinhubCore\Sample\Api\PatientManagement" method="create"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/medizinhub/patient/update/:id" method="POST">
+        <service class="MedizinhubCore\Sample\Api\PatientManagement" method="update"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/medizinhub/patient/delete/:id" method="DELETE">
+        <service class="MedizinhubCore\Sample\Api\PatientManagement" method="delete"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+   <route url="/V1/labtest/create" method="POST">
+        <service class="MedizinhubCore\Sample\Api\LabTestManagement" method="create"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/labtest/update/:id" method="POST">
+        <service class="MedizinhubCore\Sample\Api\LabTestManagement" method="update"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/labtest/delete/:id" method="DELETE">
+        <service class="MedizinhubCore\Sample\Api\LabTestManagement" method="delete"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+     <route url="/V1/labtest" method="GET">
+        <service class="MedizinhubCore\Sample\Api\LabTestManagement" method="get"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/labtest/:id" method="GET">
+        <service class="MedizinhubCore\Sample\Api\LabTestManagement" method="getLabTest"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+     <route url="/V1/medizinhub/appointments" method="POST">
+        <service class="MedizinhubCore\Patient\Api\AppointmentManagementInterface" method="saveAppointment"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/medizinhub/appointment/:id" method="GET">
+        <service class="MedizinhubCore\Patient\Api\AppointmentManagement" method="getAppointment"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/medizinhub/appointments" method="GET">
+        <service class="MedizinhubCore\Patient\Api\AppointmentManagement" method="get"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+</routes>

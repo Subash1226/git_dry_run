@@ -1,0 +1,699 @@
+.sp-attachment-drag-area {
+    width: 50%;
+    display: inline-block;
+    padding: 20px 0px 50px 30px;
+}
+
+.opc-progress-bar-item._active::before {
+    color: #fff;
+    background: #fff;
+}
+
+.payment-option-content-block {
+    width: 39%;
+    float: right;
+    display: inline-block;
+    padding: 26px 30px 0px 0;
+}
+
+.sp-attachment-row {
+    padding: 5px;
+}
+
+.sp-checkout-orderattachment {
+    padding-bottom: 10px;
+}
+
+.sp-attachment-row .filename {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.7em;
+}
+
+.opc-progress-bar-item._active::before {
+    background: #fff;
+    border-color: #fff;
+}
+
+.order-attachment-content video,
+.order-attachment-content audio {
+    width: 100%;
+}
+
+.order-attachment-content textarea {
+    width: 80%;
+    padding: 10px;
+}
+
+.sp-attachment-row .order-attachment-preview {
+    margin: 10px;
+    width: 100%;
+    border-radius: 8px;
+    border: 2px solid #03c777;
+    text-align: center;
+}
+
+.thumbnail {
+    width: 100% !important;
+    height: 120px !important;
+    border-radius: 8px;
+    border: 2px solid #fff;
+    object-fit: cover;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.sp-width {
+    width: 20% !important;
+}
+
+.sp-attachment-row .order-attachment-preview img {
+    max-height: 150px;
+}
+
+.sp-attachment-default-preview {
+    background-image: url(../images/attachment.png);
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 15px auto;
+}
+
+.sp-attachment-row-content {
+    width: 100%;
+}
+
+.sp-attachment-row .order-attachment-content {
+    width: 20%;
+    display: table-cell;
+    vertical-align: top;
+    padding: 0 10px;
+    text-align: left;
+}
+
+.sp-attachment-loader {
+    text-align: center;
+    visibility: hidden;
+}
+
+.sp-attachment-remove,
+.sp-attachment-download {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin: 0 0 0 10px;
+    display: inline-block;
+    text-decoration: none;
+    vertical-align: top;
+}
+
+.sp-attachment-remove {
+    background-image: url(../images/attach-delete.png);
+    float: right;
+    margin: 5px 5px;
+}
+
+.account .sp-attachment-remove {
+    display: none;
+}
+
+.sp-attachment-download {
+    background-image: url(../images/attach-downloads.png);
+}
+
+.sp-attachment-error {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 10px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 2px;
+    margin: 3px auto;
+    font-size: 16px;
+}
+
+.danger {
+    border-left-color: #d9534f;
+    background-color: rgba(217, 83, 79, 0.1);
+}
+
+.danger strong {
+    color: #d9534f;
+    font-size: 16px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.sp-attachment-loader .circle {
+    display: inline-block;
+    margin-right: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #27ae60;
+    animation: animatonLoader-attachment 1s infinite ease-in;
+}
+
+.sp-attachment-loader .circle:nth-child(2) {
+    animation-delay: 0.365s;
+}
+
+.sp-attachment-loader .circle:nth-child(3) {
+    animation-delay: 0.63s;
+}
+
+.non-prescription-product::before {
+    background: #fff !important;
+    border-color: #fff !important;
+}
+
+@keyframes animatonLoader-attachment {
+    0% {
+        transform: scale(1);
+    }
+
+    33% {
+        transform: scale(1.2);
+        background: #2ecc71;
+    }
+
+    66% {
+        background: #27ae60;
+        transform: scale(1);
+    }
+}
+
+.payment-option-inner input[type="radio"] {
+    width: 20px;
+    height: 20px;
+}
+
+.prescription-consult input[type="radio"] {
+    width: 20px;
+    height: 20px;
+}
+
+#myImage {
+    height: 333px;
+    margin-left: -10px !important;
+}
+
+.prescription-refrence {
+    margin-left: 5px;
+    margin-top: -78px;
+}
+
+.prescription-refrence-div {
+    margin-left: 35px;
+}
+
+.prescription-step-checkout {
+    width: 1140px !important;
+    padding: 10px 0;
+}
+
+.prescription-title {
+    padding: 0 0 20px 0;
+}
+
+.upload_prescrition-p {
+    color: #063851;
+    font-family: Source Sans Pro;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.req_presscription-span {
+    color: #859ca8;
+    font-family: Ubuntu;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.payment-option-content {
+	background-color: rgba(231, 245, 253, 1);
+	border: 1px solid #ccc;
+	padding: 0 !important;
+	border-radius: 0px;
+	border-top: none !important;
+}
+
+.with_prescription {
+    float: right;
+}
+
+.sp-attachment-drag-area {
+    cursor: pointer;
+    width: 100% !important;
+    padding: 20px 20px 0 20px;
+}
+
+.checkout-prescription-upload {
+    color: #063851;
+    line-height: normal;
+    font-family: Source Sans Pro;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    margin-left: 2px;
+}
+
+.checkout-prescription-resctrict {
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    margin-top: -10px;
+    font-style: italic;
+    padding: 10px 0 0 0;
+}
+
+.format-jpg-span {
+    color: #049b7e;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+}
+
+.checkout-prescription-btn {
+    border-radius: 12px;
+    border: 2px dashed #7a7a7a !important;
+    background: #fff;
+    width: 245px;
+    height: 45px;
+    padding: 10px 35px;
+    margin: 15px 0;
+    color: #063851;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+}
+
+#prescription-required {
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    color: rgba(241, 59, 72, 1);
+    display: none;
+}
+
+.checkout-prescription-note {
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    color: #313739 !important;
+    font-style: italic;
+    padding: 0px 0 5px 0;
+}
+
+.sp-attachment-remove {
+    position: absolute;
+    margin-left: 65px;
+    margin-top: 4px;
+    background-repeat: no-repeat;
+}
+
+.add-more-prescription {
+    border-radius: 12px;
+    border: 1px dashed #7a7a7a !important;
+    background: #fff !important;
+    width: 245px;
+    height: 45px;
+    display: none;
+    padding: 10px 28px;
+    margin: 0 0 23px 14px;
+    color: #063851;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+}
+
+.prescription-consult {
+    background: rgba(231, 245, 253, 1);
+    padding: 15px 20px;
+    border: 1px solid #ccc;
+    margin-top: -16px;
+    border-radius: 0 0 8px 8px;
+}
+
+.donot_prescription_p {
+    color: #313739;
+    font-family: Source Sans Pro;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.without_prescription {
+    float: right;
+    margin-top: 10px;
+}
+
+.book_doctor_p {
+    color: #313739;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+}
+
+.off_span_per {
+    color: #049b7e;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+}
+
+.line-check {
+	margin-top: -50px;
+	margin-left: 55px;
+	border: 1px solid #03C777;
+	width: 1px;
+	height: 110%;
+}
+
+.sumbit-btn-prescription {
+    width: 100%;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.prescription-continue {
+    width: 327px !important;
+    font-size: 21px !important;
+    height: 52px !important;
+    padding: 10px 18px !important;
+    border-radius: 8px !important;
+    margin-top: -20px !important;
+    background: linear-gradient(94deg,
+            #03c777 56.99%,
+            #01a462 99.73%) !important;
+    border: 1px solid #03c777 !important;
+    text-transform: capitalize !important;
+    margin-top: 20px !important;
+}
+
+.book_consult_btn {
+    color: #FFF;
+    text-align: center;
+    font-family: "Source Sans Pro";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.56px;
+    padding: 15.5px 20px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #03C777 0%, #01A663 100%);
+    box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.15) !important;
+    transition: background 0.3s ease-in-out;
+}
+
+.book_consult_btn:hover,
+.book_consult_btn:visited {
+    background: linear-gradient(90deg, #03C777 0%, #01A663 100%);
+    color: #fff !important;
+}
+
+.prescription-consult a {
+    text-decoration: none !important;
+}
+
+.sp-note{
+    padding: 8px 38px 8px 16px;
+    border-radius: 8px 8px 0px 0px;
+    background: #5BFF89;
+    display: flex;
+}
+
+.sp-note-title{
+    color: var(--Black-font, #313739);
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: 0.15px;
+}
+
+.sp-note-content{
+    color: var(--Black-font, #313739);
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.15px;
+    margin-left: 5px;
+}
+
+.payment-methods .sp-note-content{
+    margin-left: -10px;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .prescription-step-checkout {
+        padding: 10px !important;
+        width: 100% !important;
+    }
+
+    .checkout-prescription-resctrict {
+        font-size: 17px !important;
+    }
+
+    .with_prescription {
+        position: relative !important;
+        right: 14px !important;
+        width: 20px !important;
+    }
+
+    .without_prescription {
+        width: 20px !important;
+    }
+
+    .upload_prescrition-p {
+        font-size: 18px !important;
+    }
+
+    .req_presscription-span {
+        font-size: 14px !important;
+    }
+
+    .sp-attachment-drag-area {
+        padding: 10px !important;
+        margin-top: -33px;
+    }
+
+    .up-prescription-res {
+        width: 232px !important;
+        font-size: 15px !important;
+    }
+
+    .add-more-prescription {
+        width: 230px !important;
+        font-size: 15px !important;
+    }
+
+    .prescription-consult {
+        padding: 10px !important;
+    }
+
+    .donot_prescription_p {
+        font-size: 18px !important;
+    }
+
+    .checkout-prescription-note {
+        font-size: 15px !important;
+    }
+
+    .line-check {
+        display: none !important;
+    }
+
+    .prescription-refrence {
+        margin-top: 20px !important;
+    }
+
+    .sumbit-btn-prescription {
+        text-align: center !important;
+    }
+
+    .prescription-continue {
+        width: 100% !important;
+        font-size: 16px !important;
+    }
+
+    .sp-attachment-drag-area {
+        width: 100% !important;
+        padding: 10px 0px 30px 15px !important;
+    }
+
+    .sp-attachment-row {
+        margin-left: 25px;
+    }
+
+    .sp-attachment-row .order-attachment-preview img {
+        max-height: 100px !important;
+    }
+
+    .payment-option-content-block {
+        width: 100% !important;
+        padding: 20px 15px 0px 0 !important;
+    }
+
+    .payment-option-content {
+        padding: 0 0 20px 0 !important;
+    }
+
+    .order-attachment-content textarea {
+        width: 100% !important;
+    }
+
+    .sp-attachment-row .order-attachment-content {
+        width: 100% !important;
+        padding: 0 5px !important;
+    }
+
+    .sp-attachment-remove,
+    .sp-attachment-download {
+        width: 20px !important;
+        height: 20px !important;
+        float: right !important;
+        margin: 4px 0 0 23px !important;
+    }
+
+    .danger strong {
+        font-size: 14px !important;
+    }
+
+    .payment-methods .sp-note-content{
+        margin-left: 10px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .prescription-step-checkout {
+        padding: 20px !important;
+    }
+
+    .checkout-prescription-resctrict {
+        font-size: 17px !important;
+    }
+
+    #myImage {
+        max-width: 130% !important;
+        height: 310px !important;
+    }
+
+    .with_prescription {
+        position: relative !important;
+        right: 12px;
+        width: 18px !important;
+    }
+
+    .without_prescription {
+        float: right;
+        width: 18px !important;
+        margin-top: 3px !important;
+        margin-right: -10px !important;
+    }
+
+    .upload_prescrition-p {
+        font-size: 20px !important;
+    }
+
+    .req_presscription-span {
+        font-size: 16px !important;
+    }
+
+    .sp-attachment-drag-area {
+        padding: 20px 20px 0px 20px !important;
+        margin-top: -41px;
+    }
+
+    .up-prescription-res {
+        width: 254px !important;
+        font-size: 16px !important;
+    }
+
+    .add-more-prescription {
+        width: 240px !important;
+        font-size: 16px !important;
+    }
+
+    .prescription-consult {
+        padding: 20px 20px 0px 20px !important;
+    }
+
+    .donot_prescription_p {
+        font-size: 16px !important;
+    }
+
+    .checkout-prescription-note {
+        font-size: 15px !important;
+    }
+
+    .line-check {
+        display: block !important;
+        margin-top: -65px !important;
+    }
+
+    .prescription-refrence {
+        margin-bottom: 8px !important;
+        margin-top: -71px;
+    }
+
+    .sumbit-btn-prescription {
+        text-align: center !important;
+    }
+
+    .prescription-continue {
+        width: 50% !important;
+        font-size: 18px !important;
+    }
+
+    .sp-note-title{
+        font-size: 13px;
+    }
+    
+    .sp-note-content{
+        font-size: 13px;
+    }
+
+    .sp-attachment-drag-area {
+        width: 75% !important;
+        padding: 15px 0px 40px 20px !important;
+    }
+
+    .sp-attachment-row {
+        margin-left: 22px;
+    }
+
+    .sp-attachment-row .order-attachment-preview img {
+        max-height: 100px !important;
+    }
+
+    .payment-option-content-block {
+        width: 50% !important;
+        padding: 24px 25px 0px 0 !important;
+    }
+
+    .payment-option-content {
+        padding: 0 0 30px 0 !important;
+    }
+
+    .order-attachment-content textarea {
+        width: 90% !important;
+    }
+
+    .sp-attachment-row .order-attachment-content {
+        width: 50% !important;
+        padding: 0 8px !important;
+    }
+
+    .sp-attachment-remove,
+    .sp-attachment-download {
+        width: 20px !important;
+        height: 20px !important;
+        float: right !important;
+        margin: 4px 0 0 23px !important;
+    }
+
+    .danger strong {
+        font-size: 15px !important;
+    }
+
+    .payment-methods .sp-note-content{
+        margin-left: 0px;
+    }
+}

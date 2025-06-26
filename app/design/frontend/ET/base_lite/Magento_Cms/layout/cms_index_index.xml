@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * cms_index_index.xml
+ *
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * This file only is displayed on the homepage of magento
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <container>
+                <block class="Magento\Cms\Block\Widget\Block" name="banner" template="MedizinhubCore_Home::banner.phtml"/>
+            </container>
+            <container>
+                 <block class="Magento\Cms\Block\Widget\Block" name="content.home" template="MedizinhubCore_Home::home.phtml"/>
+            </container>
+                <block class="Magento\Cms\Block\Widget\Block" name="footer.home" template="MedizinhubCore_Home::footer.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="lrw.fb.scripts" remove="true"/>
+    </body>
+</page>

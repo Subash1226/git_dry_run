@@ -1,0 +1,23 @@
+<?php if ($this->isOrderAttachmentEnabled()) : ?>
+
+
+<div data-bind="scope: 'Orderattachment'">
+                <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "Orderattachment": {
+                            "component": "Sp_Orderattachment/js/attachment",
+                             "dataconfig": <?= $this->getAttachmentConfig() ?>
+                        }
+                    }
+                }
+            }
+        }
+</script>
+
+<?php endif; ?>

@@ -1,0 +1,147 @@
+.package-btn,
+.package-btn:active,
+.package-btn:hover,
+.package-btn:visited{
+    background:linear-gradient(94deg,#03c777 56.99%,#01a462 99.73%);
+    color:#fff
+}
+.package-btn{
+    border-radius:8px;
+    width:340px;
+    height:52px;
+    font-family:"Source Sans Pro";
+    font-size:21px;
+    font-style:normal;
+    margin:10px 0;
+    font-weight:600;
+    line-height:20px
+}
+.package-item-discount,
+.package-item-price,
+.package-item-title,
+.package-old-price{
+    font-family:"Source Sans Pro";
+    font-style:normal;
+    line-height:normal
+}
+.package-item-price{
+    color:var(--Black-font,#313739);
+    font-size:22px;
+    font-weight:700
+}
+.package-item-info{
+    padding:18px 10px 10px 18px;
+}
+.package-old-price{
+    color:var(--Input-Text,#797979);
+    font-size:14px;
+    font-weight:400;
+    text-decoration: line-through;
+}
+.package-item-title{
+    color:var(--Black-font,#313739);
+    font-size:16px;
+    margin-bottom:10px;
+    font: weight 600px;
+}
+.package-item{
+    border-radius:8px;
+    background:#f1f9fe;
+    padding:10px 20px;
+    position:relative;
+}
+.remove-item{
+    position:absolute;
+    top:10px;
+    cursor:pointer;
+    right:10px;
+    z-index:1;
+}
+@media (max-width:768px){
+    .remove-item{
+        top:5px;
+        right:5px;
+        font-size:.8rem;
+    }
+}
+@media (max-width:576px){
+    .remove-item{
+        top:5px;
+        right:5px;
+        font-size:.75rem;
+        left:50%;
+        transform:translateX(50%);
+    }
+}
+.booklab-cart-index .page-title-wrapper{
+    display:none!important
+}
+.package-item-discount{
+    color:#049b7e;
+    font-size:19.755px;
+    font-weight:600;
+}
+.package-item-images{
+    border-radius:8px;
+    border:2px solid #03c777;
+    width:100px;
+    height:100px;
+    object-fit:contain;
+}
+.test-item-image{
+    width:100%;
+    height:72px;
+    object-fit:contain;
+    margin: 10px 0;
+}
+.pricing-details{
+    background:#e7f5fd;
+    font-family:Source Sans Pro;
+    font-size:20px;
+    font-weight:600;
+    margin-left:1px;
+    padding:20px;
+    border:none!important;
+    border-radius:8px;
+}
+.pricing-details h4{
+    padding:5px 0;
+}
+.payment-method ul{
+    list-style:none;
+}
+.pricing-line{
+    border:1px solid #01b46b;
+}
+.home-visit-fee{
+    float:right;
+}
+.discount-offer{
+    font-size:16px;
+    font-weight:700;
+    color:#03c777;
+}
+.pricing-details .total-fee{
+    font-size:20px;
+    font-weight:600;
+    color:#00739b;
+}
+.labpackage-cart{
+    color: #063851;
+    font-family: "Source Sans Pro";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.labpackage-cart-sub{
+    color: #859CA8;
+    font-family: Ubuntu;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.labtest-name{
+    text-decoration: none;
+}

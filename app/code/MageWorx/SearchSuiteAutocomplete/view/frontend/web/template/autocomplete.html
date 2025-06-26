@@ -1,0 +1,60 @@
+<div id="searchsuite-autocomplete" class="searchsuite-autocomplete" data-bind="visible: showPopup()">
+    <div data-bind="visible: anyResultCount()">
+        <!-- Product section with flexbox layout -->
+        <div class="product" data-bind="visible: result.product.data().length > 0">
+            <div class="title">
+                <!-- ko i18n: 'Products'--><!-- /ko -->
+                <a class="see-all" data-bind="attr: {href: result.product.url}">
+                    <!-- ko i18n: 'See All' --><!-- /ko -->
+                    <span data-bind="text: result.product.size"></span>
+                </a>
+            </div>
+            <ul id="product" role="listbox" data-bind="foreach: result.product.data">
+                <li>
+                    <div class="qs-option-container" style="display: flex; align-items: center; justify-content: space-between;">
+                        <!-- Left Section: Product Name and Quantity Contents -->
+                        <div class="qs-option-left" style="flex: 1; display: flex; align-items: center; max-width: 60%;">
+                            <div class="qs-option-image" data-bind="visible: image">
+                                <a style="color: #00739B; font-family: 'Source Sans Pro', sans-serif; font-size: 14px !important; font-weight: 600 !important;" data-bind="attr: { href: url, title: name }">
+                                    <img data-bind="attr: { src: image, title: name }" style="max-width: 50px; margin-right: 10px;" />
+                                </a>
+                            </div>
+                            <div class="qs-option-info" data-bind="css: {noimage: !image}">
+                                <div class="qs-option-title" data-bind="visible: name">
+                                    <a style="color: #00739B !important; font-family: 'Source Sans Pro', sans-serif; font-size: 15px !important; font-weight: 600 !important;" data-bind="attr: { href: url, title: name }, text: name"></a>
+                                </div>
+                                <div style="padding: 5px 0 0 0;" class="qs-option-quantity-contents" data-bind="visible: quantity_contents">
+                                    <span style="color: #313739; font-family: 'Source Sans Pro', sans-serif; font-size: 12px;" data-bind="text: quantity_contents"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Center Section: Price -->
+                        <div class="qs-option-center" style="flex: 0 1 120px; overflow: hidden; display: flex; flex-direction: column; align-items: center;margin-top: -12px !important;">
+                            <span style="color: #00739B; font-family: 'Source Sans Pro', sans-serif; font-size: 16px; margin-top: 7px; font-weight: 600;" data-bind="text: special_price"></span>
+                            <span style="color: #313739; font-family: 'Source Sans Pro', sans-serif; font-size: 12px; margin-top: 5px;">
+                                MRP <del style="color: #313739;" data-bind="text: old_price"></del>
+                            </span>
+                        </div>
+
+                        <!-- Right Section: Add to Cart -->
+                        <div class="qs-option-right" style="flex: 0 1 auto; text-align: right;margin-top: -12px !important;">
+                            <div class="qs-option-addtocart" data-bind="with: add_to_cart, visible: add_to_cart">
+                                <form data-role="searchsuiteautocomplete-tocart-form" method="post" data-bind="attr: { action: formUrl}">
+                                    <input type="hidden" name="product" value="<?php echo $block->getProductId() ?>" data-bind="attr: { value: productId}">
+                                    <input type="hidden" data-bind="attr: { name: paramNameUrlEncoded, value: urlEncoded}">
+                                    <input name="form_key" type="hidden" data-bind="attr: { value: formKey}">
+                                    <button style="font-size: 14px !important;margin-right: 14px; width: 112px !important; height: 41px !important;color: #fff; border: none; border-radius: 8px !important;margin-top: 6px;" id="addcart" type="button" title="Add to Cart" class="action tocart primary">
+                                        <span><!-- ko i18n: 'Add to Cart'--><!-- /ko --></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="no-result" data-bind="visible: !anyResultCount()"><!-- ko i18n: 'No Result'--><!-- /ko --></div>
+</div>

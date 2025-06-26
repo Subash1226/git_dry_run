@@ -1,0 +1,29 @@
+<?php
+/** @var \SalesOrder\UserLog\Block\Adminhtml\Order\View\ViewLog $block */
+$viewLogs = $block->getViewLogs();
+?>
+<?php if ($viewLogs->getSize() > 0): ?>
+    <div class="admin__page-section-item-title">
+        <span class="title"><?= $block->escapeHtml(__('Order Activity History')) ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <table class="data-table admin__table-secondary">
+            <thead>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Date')) ?></th>
+                    <th><?= $block->escapeHtml(__('User')) ?></th>
+                    <th><?= $block->escapeHtml(__('Activity')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($viewLogs as $log): ?>
+                    <tr>
+                        <td><?= $block->escapeHtml($block->getFormattedTime($log->getViewedAt())) ?></td>
+                        <td><?= $block->escapeHtml($log->getUsername()) ?></td>
+                        <td><?= $block->escapeHtml($block->getActivityTypeLabel($log->getActivityType())) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif; ?>

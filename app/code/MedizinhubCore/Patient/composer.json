@@ -1,0 +1,40 @@
+{
+    "name": "medizinhub-core/patient",
+    "description": "MedizinhubCore_Patient custom module for managing patient data and appointments.",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+      "proprietary"
+    ],
+    "authors": [
+      {
+        "name": "Ganapathy Vadivel",
+        "email": "ganapathy.vadivel@teanso.com",
+        "role": "Developer"
+      }
+    ],
+    "require": {
+      "php": "~7.4.0||~8.0.0||~8.1.0",
+      "magento/framework": "^103.0",
+      "magento/module-catalog": "^103.0",
+      "magento/module-customer": "^103.0",
+      "razorpay/magento": "^2.0"
+    },
+    "autoload": {
+      "files": [
+        "registration.php"
+      ],
+      "psr-4": {
+        "MedizinhubCore\\Patient\\": ""
+      }
+    },
+    "repositories": [
+      {
+        "type": "composer",
+        "url": "https://repo.magento.com/"
+      }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true
+  }
+  

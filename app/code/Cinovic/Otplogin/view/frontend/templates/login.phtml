@@ -1,0 +1,238 @@
+<?php
+
+/** @var \Cinovic\Otplogin\Block\Form\Login $block */
+?>
+<?php if (!$block->customerIsAlreadyLoggedIn()) : ?>
+    <div id="customer-popup-login" class="customer-popup-login tab-content row">
+        <div class="col-md-6 otp_image">
+            <img class="otp-log-image" src="<?php echo $this->getViewFileUrl('Cinovic_Otplogin::images/mobile.png'); ?>">
+        </div>
+        <div style="padding: 20px 0;" class="col-md-6">
+            <div class="block block-customer-login">
+                <div class="block-content" aria-labelledby="block-customer-popup-login-heading">
+                <div class="col-md-10 mb-4">
+                    <p class="email-welcome-title">Welcome!</p>
+                    <p class="email-welcome-description">You're all Set! Just a Few Details to Complete Your Registration.</p>                    
+                </div>
+                    <form class="form form-login  custom-login" id="customer-popup-login-form" data-mage-init='{"validation":{}}'>
+                        <?php echo $block->getBlockHtml('formkey'); ?>
+                        <input type="hidden" name="redirect_url" value="<?php echo $this->getUrl('otplogin/account/otp'); ?>" />
+                        <fieldset style="padding: 0 !important;" class="fieldset login" data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>">
+                            <input type="hidden" id="customerId" name="customerId">
+                            <div class="form-group">
+                                <div style="padding: 30px 0 15px 0;" class="row">
+                                    <div class="col-md-5">
+                                        <label class="label-otp" for="firstname">First Name</label><br>
+                                        <input type="text" class="cuotp_login_firstname" id="firstname" name="firstname" required>
+                                        <p style="color:red;" id="firstname_err"></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="label-otp" for="lastname">Last Name</label><br>
+                                        <input type="text" class="cuotp_login_lastname" id="lastname" name="lastname" required>
+                                        <p style="color:red;" id="lastname_err"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-9 email_field">
+                                        <label class="label-otp" for="email">Email Address</label><br>
+                                        <input type="email" class="cuotp_login_email" id="email" name="email" required>
+                                        <p style="color:red;" id="email_err"></p>
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="sendotp" type="submit" id="otp-email-account">
+                                            Continue
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        input:not([disabled]):focus,
+        textarea:not([disabled]):focus,
+        select:not([disabled]):focus {
+            box-shadow: 0 0 0px 0px #000 !important;
+        }
+    </style>
+    <script type="text/javascript">
+        require(["jquery"], function($) {
+            $('.forgot-password').on('click', function() {
+                $('.withmobile').css('border-bottom', 'none');
+                $('.withemail').css('border-bottom', 'none');
+                $('.custom-login').css('display', 'none');
+                $('.forgot-password').css('display', 'none');
+                $('.otpmessages').css('display', 'block');
+            });
+
+            $('.withemail').on('click', function() {
+                $('.forgot-password').css('display', 'block');
+                $('.withmobile').css('border-bottom', 'none');
+                $('.withemail').css('border-bottom', '2px solid lightslategray');
+                $('.otpmessages').css('display', 'none');
+                $('.custom-login').css('display', 'block');
+            });
+
+            $('.withmobile').on('click', function() {
+                $('.forgot-password').css('display', 'block');
+                $('.withemail').css('border-bottom', 'none');
+                $('.withmobile').css('border-bottom', '2px solid lightslategray');
+                $('.otpmessages').css('display', 'block');
+                $('.custom-login').css('display', 'none');
+            });
+
+            $(document).ready(function() {
+                var storedFormData = sessionStorage.getItem('otpFormData');
+                if (storedFormData) {
+                    var formData = JSON.parse(storedFormData);
+                    $('#email').val(formData.email);
+                    $('#firstname').val(formData.firstname);
+                    $('#lastname').val(formData.lastname);
+                    $('#customerId').val(formData.customer_id);
+                }
+
+                function validateForm() {
+                    var valid = true;
+                    var errorMessage = "";
+
+                    if ($('#firstname').val().trim() === "") {
+                        valid = false;
+                        $('#firstname_err').html("First Name is required.<br>");
+                    } else {
+                        $('#firstname_err').html("");
+                    }
+
+                    if ($('#lastname').val().trim() === "") {
+                        valid = false;
+                        $('#lastname_err').html("Last Name is required.<br>");
+                    } else {
+                        $('#lastname_err').html("");
+                    }
+
+                    if ($('#email').val().trim() === "") {
+                        valid = false;
+                        $('#email_err').html("Email Address is required.<br>");
+                    } else {
+                        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                        if (!emailPattern.test($('#email').val())) {
+                            valid = false;
+                            $('#email_err').html("Invalid Email Address.<br>");
+                        } else {
+                            $('#email_err').html("");
+                        }
+                    }
+
+                    if (valid) {
+                        $('#formErrors').html('');
+                    }
+
+                    return valid;
+                }
+
+                function handleFormSubmission() {
+                    if (!validateForm()) {
+                        return;
+                    }
+
+                    var customurl = "<?php echo $block->getUrl('otplogin/account/CustomerUpdate') ?>";
+                    $('body').loader().loader('show');
+                    var email = $('#email').val();
+                    var firstname = $('#firstname').val();
+                    var lastname = $('#lastname').val();
+                    var customerId = $('#customerId').val();
+                    var formData = {
+                        customer_id: customerId,
+                        email: email,
+                        firstname: firstname,
+                        lastname: lastname
+                    };
+                    sessionStorage.setItem('otpFormData', JSON.stringify(formData));
+                    $.ajax({
+                        url: customurl,
+                        type: 'POST',
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        data: JSON.stringify(formData),
+                        success: function(response) {
+                            $('#formResponse').html('<p>' + response.message + '</p>');
+                            sessionStorage.removeItem('otpFormData');
+                            if (response.success) {
+                                redirectToLastClick();
+                            } else {
+                                $('#email_err').text(response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            $('#formResponse').html('<p>An error occurred: ' + error + '</p>');
+                        },
+                        complete: function() {
+                            $('body').loader('hide');
+                            $('.sendotp').prop('disabled', false);
+                        }
+                    });
+                }
+
+                function redirectToLastClick() {
+                    const loginRedirect = sessionStorage.getItem('loginlastclick');
+                    const baseUrl = "<?php echo $block->getBaseUrl(); ?>"; 
+                    let url;
+
+                    switch (loginRedirect) {
+                        case 'Login':
+                            url = baseUrl;
+                            break;
+                        case 'Book Lab':
+                            url = baseUrl + 'lab-test';
+                            break;
+                        case 'Book Doctor':
+                            url = baseUrl + 'doctors';
+                            break;
+                        case 'Cart':
+                            url = baseUrl + 'checkout/cart';
+                            break;
+                        case 'Checkout':
+                            url = baseUrl + 'checkout';
+                            break;
+                        case 'Prescription':
+                            url = baseUrl + 'quick-order';
+                            break;
+                        case 'Patient':
+                            url = baseUrl + 'online-consultation';
+                            break;
+                        default:
+                            url = baseUrl;
+                    }
+                    window.location.href = url;
+                }
+                $('.sendotp').on('click', function(event) {
+                    event.preventDefault();
+                    handleFormSubmission();
+                });
+            });
+        });
+    </script>
+
+
+    <script type="text/x-magento-init">
+        {
+                "#customer-popup-login": {
+                    "Cinovic_Otplogin/js/action/customer-authentication-popup": {
+                        "popupTitle": "<?php /* @escapeNotVerified */ echo __('Login/Signup') ?>",
+                        "innerWidth": "400"
+                    }
+                }
+            }
+        </script>
+    </div>
+<?php endif; ?>
+<script type="application/javascript">
+    require([
+        'jquery',
+        'intlTelInput'
+    ], function($) {
+        $("#number").intlTelInput(<?php echo $block->getPhoneconfig(); ?>)
+    });
+</script>

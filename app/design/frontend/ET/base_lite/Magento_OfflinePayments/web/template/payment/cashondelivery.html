@@ -1,0 +1,53 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="payment-method cu-payment-box-cod" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <span class="payment-method-icon">
+            <svg class="payment-method-svg" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.323 2.30469H6.67699C5.82499 2.30469 5.04575 2.78618 4.66475 3.54818L2.98775 6.90219C2.831 7.21494 2.75 7.55918 2.75 7.90868C2.75 9.68693 2.75 17.6879 2.75 21.0547C2.75 21.6517 2.987 22.2239 3.40925 22.6454C3.83075 23.0677 4.403 23.3047 5 23.3047C8.39 23.3047 16.61 23.3047 20 23.3047C20.597 23.3047 21.1693 23.0677 21.5908 22.6454C22.013 22.2239 22.25 21.6517 22.25 21.0547V7.90868C22.25 7.55918 22.169 7.21495 22.0123 6.90295L20.3352 3.54818C19.9542 2.78618 19.175 2.30469 18.323 2.30469ZM20.75 8.30469H15.5V11.2709C15.5 11.8439 15.1737 12.3667 14.6592 12.6187C14.1447 12.8707 13.5313 12.8069 13.079 12.4552L12.5 12.0052L11.921 12.4552C11.4687 12.8069 10.8553 12.8707 10.3408 12.6187C9.82625 12.3667 9.5 11.8439 9.5 11.2709V8.30469H4.25V21.0547C4.25 21.2534 4.32875 21.4447 4.46975 21.5849C4.61 21.7259 4.80125 21.8047 5 21.8047H20C20.1987 21.8047 20.39 21.7259 20.5303 21.5849C20.6713 21.4447 20.75 21.2534 20.75 21.0547V8.30469ZM7.9145 18.8032C6.71225 18.7582 5.75 17.7682 5.75 16.5547C5.75 15.3127 6.758 14.3047 8 14.3047H8.75C9.164 14.3047 9.5 14.6407 9.5 15.0547C9.5 15.4687 9.164 15.8047 8.75 15.8047H8C7.586 15.8047 7.25 16.1407 7.25 16.5547C7.25 16.9687 7.586 17.3047 8 17.3047H8.666C9.08 17.3047 9.416 17.6407 9.416 18.0547C9.416 18.4559 9.101 18.7837 8.705 18.8039L7.916 18.8047L7.9145 18.8032ZM15.5 18.0547C15.5 18.4687 15.836 18.8047 16.25 18.8047H17C18.242 18.8047 19.25 17.7967 19.25 16.5547C19.25 15.3127 18.242 14.3047 17 14.3047H16.25C15.836 14.3047 15.5 14.6407 15.5 15.0547V18.0547ZM12.5 14.3047C11.258 14.3047 10.25 15.3127 10.25 16.5547C10.25 17.7967 11.258 18.8047 12.5 18.8047C13.742 18.8047 14.75 17.7967 14.75 16.5547C14.75 15.3127 13.742 14.3047 12.5 14.3047ZM17 17.3047C17.414 17.3047 17.75 16.9687 17.75 16.5547C17.75 16.1407 17.414 15.8047 17 15.8047V17.3047ZM12.5 15.8047C12.914 15.8047 13.25 16.1407 13.25 16.5547C13.25 16.9687 12.914 17.3047 12.5 17.3047C12.086 17.3047 11.75 16.9687 11.75 16.5547C11.75 16.1407 12.086 15.8047 12.5 15.8047ZM14 8.30469V11.2709C13.4675 10.8569 12.9605 10.4624 12.9605 10.4624C12.6898 10.2517 12.3103 10.2517 12.0395 10.4624L11 11.2709V8.30469H14ZM10.115 3.80469L9.61475 6.80469H4.7135L6.0065 4.21944C6.13325 3.96519 6.39274 3.80469 6.67699 3.80469H10.115ZM11.135 6.80469L11.6353 3.80469H13.3648L13.865 6.80469H11.135ZM14.885 3.80469H18.323C18.6073 3.80469 18.8667 3.96519 18.9935 4.21944L20.2865 6.80469H15.3852L14.885 3.80469Z" fill="#6BC289"/>
+            </svg>
+        </span>
+        <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()" class="cu-payment-title"></span></label>
+        <input type="radio"
+               name="payment[method]"
+               class="radio cu-radio-payment"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+    </div>
+
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <p data-bind="html: getInstructions()"></p>
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout cu-radio-payment"
+                        type="submit"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        enable: (getCode() == isChecked()),
+                        css: {disabled: !isPlaceOrderActionAllowed()}
+                        "
+                        disabled>
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

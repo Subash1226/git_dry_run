@@ -1,0 +1,31 @@
+.lab-test-row{
+    padding-top: 15px;
+}
+.showmore{
+    padding-top: 25px;
+}
+.offer-text{
+    padding-top: 15px;
+}
+.lab-offer-text {
+    color: #859ca8;
+    font-family: Ubuntu,Sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    padding-bottom: 15px;
+}
+.test-package-title {
+    color: #063851;
+    font-family: Source Sans Pro,Sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+}
+.combo-category {
+    padding-top: 40px;
+}
+.mostbook-lab {
+    padding-top: 20px;
+}
+.lab-booknow-btn {
+    border: 1px solid #03C777 !important;
+}

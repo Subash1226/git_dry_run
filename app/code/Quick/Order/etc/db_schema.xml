@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="quick_order" resource="default" engine="innodb" comment="Quick Order Table">
+		<column xsi:type="smallint" name="id" padding="6" unsigned="true" nullable="false" identity="true" comment="ID"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="id"/>
+		</constraint>
+		<column name="order_id" nullable="false" xsi:type="int" comment="Order Id"/>
+		<column name="customer_id" nullable="false" xsi:type="text" comment="Customer Id"/>
+		<column name="mobile_number" nullable="false" xsi:type="text" comment="Mobile Number"/>
+		<column name="image" nullable="true" xsi:type="text" comment="Prescription Documents"/>
+		<column name="address_entity" nullable="false" xsi:type="text" comment="Address Entity"/>
+		<column name="status"  nullable="false" xsi:type="text" comment="Customform Status"/>
+		<column name="created_at" nullable="false" xsi:type="datetime" comment="Created Date" default="CURRENT_TIMESTAMP"/>
+		<column name="updated_at" nullable="false" xsi:type="datetime" comment="Updated Date" default="CURRENT_TIMESTAMP"/>
+	</table>
+
+	<table name="quick_order_status" resource="default" engine="innodb" comment="Quick Order Table">
+		<column xsi:type="smallint" name="id" padding="6" unsigned="true" nullable="false" identity="true" comment="ID"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="id"/>
+		</constraint>
+		<column name="status_code" nullable="false" xsi:type="text" comment="Status Code"/>
+		<column name="status" nullable="false" xsi:type="text" comment="Status"/>
+		<column name="created_at" nullable="false" xsi:type="datetime" comment="Created Date" default="CURRENT_TIMESTAMP"/>
+		<column name="updated_at" nullable="false" xsi:type="datetime" comment="Updated Date" default="CURRENT_TIMESTAMP"/>
+		<index referenceId="QUICK_ORDER_STATUS_CODE" indexType="fulltext">
+	        <column name="status_code"/>
+	    </index>
+		<index referenceId="QUICK_ORDER_STATUS" indexType="fulltext">
+	        <column name="status"/>
+	    </index>
+	</table>
+
+	<table name="quick_order_review" resource="default" engine="innodb" comment="Quick Order Table">
+		<column xsi:type="smallint" name="id" padding="6" unsigned="true" nullable="false" identity="true" comment="ID"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="id"/>
+		</constraint>
+		<column name="order_id" nullable="false" xsi:type="text" comment="Order Id"/>
+		<column name="status" nullable="false" xsi:type="text" comment="Status"/>
+		<column name="user_id" nullable="false" xsi:type="text" comment="User Id"/>
+		<column name="created_at" nullable="false" xsi:type="datetime" comment="Created Date" default="CURRENT_TIMESTAMP"/>
+		<index referenceId="QUICK_ORDER_STATUS_CODE" indexType="fulltext">
+	        <column name="order_id"/>
+	    </index>
+		<index referenceId="QUICK_ORDER_STATUS" indexType="fulltext">
+	        <column name="status"/>
+	    </index>
+		<index referenceId="QUICK_ORDER_USER_ID" indexType="fulltext">
+	        <column name="user_id"/>
+	    </index>
+	</table>
+</schema>

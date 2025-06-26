@@ -1,0 +1,57 @@
+.config-nav-block .admin__page-nav-items .admin__page-nav-item.et-premium-tab .admin__page-nav-link > span::before {
+    background: url(../images/star.png) no-repeat;
+    background-size: 16px;
+    content: '';
+    display: inline-block;
+    margin-right: 12px;
+    vertical-align: bottom;
+    height: 16px;
+    width: 16px;
+}
+.batch_id{
+    width: 170px !important;
+}
+.sp-attachment-row .order-attachment-preview {
+    margin: 0px 0 0 15px !important;
+    width: 80% !important;
+    border-radius: 8px !important;
+    border: 2px solid #03c777 !important;
+    text-align: center !important;
+}
+
+.sp-attachment-row .order-attachment-preview img {
+    max-height: 100px !important;
+}
+
+.thumbnail {
+    margin-bottom: -4px !important;
+}
+
+.sp-attachment-row .filename {
+    display: none !important;
+}
+
+.sp-attachment-row {
+    display: inline-block !important;
+}
+
+.order-attachment-content textarea {
+    display: none !important;
+}
+
+.sp-attachment-row-content {
+    width: 150px !important;
+}
+.sp-attachment-remove{
+    display: none !important;
+}
+.sp-attachment-download{
+    margin: -100px 0px 0px -12px !important;
+    background-repeat: no-repeat !important;
+    position: relative;
+    z-index: 999;
+    float: right;
+}
+.admin__field[data-index="short_description"]{
+    display: none !important;
+}

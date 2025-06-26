@@ -1,0 +1,22 @@
+{
+    "name": "medizinhubcore/home",
+    "description": "Create a Home Page With Module(Extension)",
+    "type": "magento2-module",
+    "license": "",
+    "authors": [
+        {
+            "name": "Shiyam",
+            "email": "shiyam312001@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "medizinhubcore\\Home\\": ""
+        }
+    }
+}

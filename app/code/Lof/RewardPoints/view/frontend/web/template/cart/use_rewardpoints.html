@@ -1,0 +1,96 @@
+<tr class="lrw-rewardpoints" rowspan="2">
+    <th colspan="2" class="mark" scope="row">
+        <div id="block-lrwuserpoints" class="block lrwuserpoints" data-bind="mageInit: {'collapsible':{'openedState': 'active', 'active': false}}" data-collapsible="true" role="tablist">
+            <!-- ko ifnot: isPointsApplied() -->
+            <div class="lrw-rp-title" data-role="title">
+                <div class="lrw-left-title">
+                    <span>
+                        <svg class="lrw-title-svg-bag" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M8.5 12.7798V12.0358H9.044C9.35867 12.0358 9.612 11.9744 9.804 11.8518C9.996 11.7291 10.1107 11.5424 10.148 11.2918H8.5V10.8358L9.076 10.7958H10.132C10.0787 10.5931 9.95867 10.4491 9.772 10.3638C9.58533 10.2784 9.34267 10.2358 9.044 10.2358H8.5V9.49976H11.604V9.98776H10.508C10.6467 10.0731 10.764 10.1878 10.86 10.3318C10.956 10.4704 11.02 10.6251 11.052 10.7958H11.604V11.2918H11.068C11.0307 11.6544 10.916 11.9478 10.724 12.1718C10.532 12.3958 10.2867 12.5558 9.988 12.6518L11.42 14.5878H10.372L9.1 12.7798H8.5Z" fill="#888888"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.47976 3.59208C6.50226 3.09167 8.17976 2.5 10.0156 2.5C11.8131 2.5 13.4464 3.06708 14.4635 3.56083L14.521 3.58875C14.8277 3.74042 15.0752 3.88375 15.2493 4L13.7102 6.25C17.2585 9.8775 19.9993 17.4988 10.0156 17.4988C0.0318408 17.4988 2.69892 10.0158 6.27809 6.25L4.74892 4C4.86684 3.92292 5.01642 3.83333 5.19476 3.73833C5.28309 3.69083 5.37809 3.64181 5.47976 3.59208ZM12.721 6.22042L13.9531 4.41917C12.8073 4.50167 11.4439 4.77083 10.1314 5.15083C9.19392 5.42167 8.15226 5.38042 7.18767 5.2025C6.94459 5.15749 6.70319 5.10385 6.46392 5.04167L7.26392 6.21958C8.97851 6.83 11.006 6.83 12.721 6.22042ZM6.78267 6.92917C8.78892 7.70417 11.2002 7.70417 13.2064 6.92833C14.0437 7.8113 14.7442 8.81447 15.2848 9.90458C15.8481 11.0538 16.1548 12.2025 16.1048 13.1925C16.0564 14.1479 15.6806 14.9642 14.8223 15.5708C13.9277 16.2029 12.4231 16.6654 10.0152 16.6654C7.60476 16.6654 6.09309 16.2108 5.19017 15.5858C4.32559 14.9871 3.94601 14.1817 3.89226 13.2392C3.83601 12.26 4.13601 11.1171 4.69726 9.96C5.23267 8.85667 5.97976 7.79458 6.78267 6.92917ZM6.30351 4.13167C6.63684 4.23083 6.98517 4.31708 7.33851 4.3825C8.23434 4.5475 9.13267 4.57167 9.89934 4.34958C10.7927 4.08921 11.7014 3.88451 12.6202 3.73667C11.8535 3.50583 10.9568 3.33333 10.0152 3.33333C8.57976 3.33333 7.24101 3.73375 6.30351 4.13167Z" fill="#888888"/>
+                        </svg>
+                    </span>
+                    <span class="lrw-title-text lrw-title-text-na">Reward Points</span>
+                    <span class="info-icon-for-rp" data-tooltip="Reward points are a loyalty benefit you earn on every purchase. For every rupee spent, you'll receive 1 point. You can redeem up to 20% of your available points per order. New reward points are credited after successful order completion.">
+                        <svg class="lrw-title-svg-info" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <g clip-path="url(#clip0_347_163)">
+                              <path d="M8.00065 14.6659C11.6825 14.6659 14.6673 11.6811 14.6673 7.99919C14.6673 4.31729 11.6825 1.33252 8.00065 1.33252C4.31875 1.33252 1.33398 4.31729 1.33398 7.99919C1.33398 11.6811 4.31875 14.6659 8.00065 14.6659Z" stroke="#01B46B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M8.00195 10.6659V7.99919M8.00195 5.33252H8.00862" stroke="#01B46B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_347_163">
+                                <rect width="16" height="16" fill="white"/>
+                              </clipPath>
+                            </defs>
+                        </svg>
+                    </span>
+                </div>
+                <div class="down-arrow-lrw">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5.83268 8.33301L9.99935 12.4997L14.166 8.33301" stroke="#263238" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- /ko -->
+            
+            <!-- ko if: isPointsApplied() -->
+            <div class="lrw-rp-title lrw-rp-title-applied" data-role="title">
+                <div class="lrw-left-title">
+                    <span>
+                        <svg class="lrw-title-svg-bag" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M8.5 12.7798V12.0358H9.044C9.35867 12.0358 9.612 11.9744 9.804 11.8518C9.996 11.7291 10.1107 11.5424 10.148 11.2918H8.5V10.8358L9.076 10.7958H10.132C10.0787 10.5931 9.95867 10.4491 9.772 10.3638C9.58533 10.2784 9.34267 10.2358 9.044 10.2358H8.5V9.49976H11.604V9.98776H10.508C10.6467 10.0731 10.764 10.1878 10.86 10.3318C10.956 10.4704 11.02 10.6251 11.052 10.7958H11.604V11.2918H11.068C11.0307 11.6544 10.916 11.9478 10.724 12.1718C10.532 12.3958 10.2867 12.5558 9.988 12.6518L11.42 14.5878H10.372L9.1 12.7798H8.5Z" fill="#01B46B"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.47976 3.59208C6.50226 3.09167 8.17976 2.5 10.0156 2.5C11.8131 2.5 13.4464 3.06708 14.4635 3.56083L14.521 3.58875C14.8277 3.74042 15.0752 3.88375 15.2493 4L13.7102 6.25C17.2585 9.8775 19.9993 17.4988 10.0156 17.4988C0.0318408 17.4988 2.69892 10.0158 6.27809 6.25L4.74892 4C4.86684 3.92292 5.01642 3.83333 5.19476 3.73833C5.28309 3.69083 5.37809 3.64181 5.47976 3.59208ZM12.721 6.22042L13.9531 4.41917C12.8073 4.50167 11.4439 4.77083 10.1314 5.15083C9.19392 5.42167 8.15226 5.38042 7.18767 5.2025C6.94459 5.15749 6.70319 5.10385 6.46392 5.04167L7.26392 6.21958C8.97851 6.83 11.006 6.83 12.721 6.22042ZM6.78267 6.92917C8.78892 7.70417 11.2002 7.70417 13.2064 6.92833C14.0437 7.8113 14.7442 8.81447 15.2848 9.90458C15.8481 11.0538 16.1548 12.2025 16.1048 13.1925C16.0564 14.1479 15.6806 14.9642 14.8223 15.5708C13.9277 16.2029 12.4231 16.6654 10.0152 16.6654C7.60476 16.6654 6.09309 16.2108 5.19017 15.5858C4.32559 14.9871 3.94601 14.1817 3.89226 13.2392C3.83601 12.26 4.13601 11.1171 4.69726 9.96C5.23267 8.85667 5.97976 7.79458 6.78267 6.92917ZM6.30351 4.13167C6.63684 4.23083 6.98517 4.31708 7.33851 4.3825C8.23434 4.5475 9.13267 4.57167 9.89934 4.34958C10.7927 4.08921 11.7014 3.88451 12.6202 3.73667C11.8535 3.50583 10.9568 3.33333 10.0152 3.33333C8.57976 3.33333 7.24101 3.73375 6.30351 4.13167Z" fill="#01B46B"/>
+                        </svg>
+                    </span>
+                    <span class="lrw-title-text">
+                        <span class="lrw-title-text-applied" data-bind="text: appliedPoints"></span> Reward Points Applied
+                    </span>
+                    <span class="info-icon-for-rp" data-tooltip="Reward points are a loyalty benefit you earn on every purchase. For every rupee spent, you'll receive 1 point. You can redeem up to 20% of your available points per order. New reward points are credited after successful order completion.">
+                        <svg class="lrw-title-svg-info" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <g clip-path="url(#clip0_347_235)">
+                              <path d="M8.00065 14.6659C11.6825 14.6659 14.6673 11.6811 14.6673 7.99919C14.6673 4.31729 11.6825 1.33252 8.00065 1.33252C4.31875 1.33252 1.33398 4.31729 1.33398 7.99919C1.33398 11.6811 4.31875 14.6659 8.00065 14.6659Z" stroke="#01B46B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M8.00195 10.6659V7.99919M8.00195 5.33252H8.00862" stroke="#01B46B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_347_235">
+                                <rect width="16" height="16" fill="white"/>
+                              </clipPath>
+                            </defs>
+                        </svg>
+                    </span>
+                </div>
+                <div class="down-arrow-lrw">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5.83268 8.33301L9.99935 12.4997L14.166 8.33301" stroke="#263238" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- /ko -->
+            
+            <div id="block-lrwuserpoints-summary" class="content" data-role="content" aria-labelledby="block-lrwuserpoints-heading">
+                <div class="lrw-usepoints">
+                    <div class="svg-lrw-coin">
+                        <img src="/static/frontend/ET/base_lite/en_US/MedizinhubCore_Home/images/lrp_git_rp.gif" alt="Reward Points" class="lrw-rp-img">
+                    </div>
+                    <div class="lrw-points-available">
+                        <span class="lrw-points-avail-span" data-bind="text: availablePoints"></span>&nbsp;Points Available
+                    </div>
+                    
+                    <div class="input-box lrw-rp-checkbox">
+                        <span>
+                            <!-- ko if: isShowRewardpoints() -->
+                            <input type="checkbox" id="useRewardPoints" data-bind="checked: useRewardPoints, click: toggleRewardPoints" />
+                            <!-- /ko -->
+                            <!-- ko ifnot: isShowRewardpoints() -->
+                            <input type="checkbox" id="useRewardPoints" disabled="" />
+                            <!-- /ko -->
+                        </span>
+                        <span class="lrw-max-avail-text useallpoints">
+                            You can use up to <span class="lrw-max-avail-span">20% points </span> on this Order.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th>
+</tr>

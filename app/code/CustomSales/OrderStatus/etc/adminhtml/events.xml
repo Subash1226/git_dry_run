@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_save_before">
+        <observer name="custom_sales_order_status_actions" instance="CustomSales\OrderStatus\Observer\OrderStatusActions" />
+    </event>
+    <event name="sales_order_shipment_save_after">
+        <observer name="custom_shipment_status_observer" instance="CustomSales\OrderStatus\Observer\OrderStatusActions" />
+    </event>
+
+</config>

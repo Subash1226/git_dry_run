@@ -1,0 +1,32 @@
+<?php
+
+namespace FME\PopupWindowMessage\Setup;
+use Magento\Framework\Setup\UpgradeSchemaInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\DB\Ddl\Table;
+
+class UpgradeSchema implements UpgradeSchemaInterface
+{
+    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $installer = $setup;
+        $installer->startSetup();
+        if (version_compare($context->getVersion(), '1.0.9') < 0) {
+            $tableName = $setup->getTable('fme_pwm_master');
+            // Check if the table already exists
+            if ($installer->TableExists($tableName)) {
+                $setup->getConnection()->addColumn(
+                    $installer->getTable('fme_pwm_master'),
+                    'priority',
+                    [
+                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                        'nullable' => false,
+                        'comment' => 'priority',
+                    ]
+                );
+            }
+        }
+        $installer->endSetup();
+    }
+}

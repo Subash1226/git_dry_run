@@ -1,0 +1,28 @@
+{
+    "name": "landofcoder/module-rewardPoints-graphql",
+    "description": "Magento 2 RewardPoints GraphQl extension for Lof RewardPoints extension (commerce version)",
+    "type": "magento2-module",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "landofcoder",
+            "email": "info@landofcoder.com",
+            "homepage": "https://landofcoder.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "version": "1.0.0",
+    "require": {
+        "landofcoder/module-rewardpoints": "*",
+        "landofcoder/module-rewardpointsbehavior": "*",
+        "landofcoder/module-rewardpointsrule": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lof\\RewardPointsGraphQl\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

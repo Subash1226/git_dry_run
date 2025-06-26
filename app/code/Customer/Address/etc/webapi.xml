@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/customers/addresses/:addressId" method="PUT">
+        <service class="Customer\Address\Api\AddressUpdaterInterface" method="updateCustomerAddress"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/customers/:customerId/addresses" method="POST">
+        <service class="Customer\Address\Api\AddressUpdaterInterface" method="createCustomerAddress"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+</routes>

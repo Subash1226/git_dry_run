@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+ <head>
+ <css src="MedizinhubCore_Terms::css/style.css" />
+ <title>Terms and Conditions</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+                <block class="MedizinhubCore\Terms\Block\Terms" name="terms" template="MedizinhubCore_Terms::termsandconditions.phtml">
+                </block>
+        </referenceContainer>
+    </body>
+</page>

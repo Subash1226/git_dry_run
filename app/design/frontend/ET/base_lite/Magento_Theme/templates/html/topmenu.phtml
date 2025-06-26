@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * Top menu for store
+ *
+ * @var $block \Magento\Theme\Block\Html\Topmenu
+ */
+
+$columnsLimit = $block->getColumnsLimit() ?: 0;
+$_menuHtml = $block->getHtml('level-top', 'submenu', $columnsLimit);
+$baseHelper = $this->helper('ET\Base\Helper\Data');
+$baseUrl = $baseHelper->getBaseUrl();
+$ishome = $baseHelper->getIsHome();
+$showHome = $baseHelper->getConfigValue('header_section/megamenu/show_home_link');
+
+?>
+
+<nav id="navigation-menulist" class="navigation" data-action="navigation">
+    <ul class="primary-nav with-indicator navmenus top_menu_nav_ul" data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
+
+        <li class="nav-list level0 level-top item-medicine">
+            <a class="top_menu_label Nav-item is-active level-top menu-link buy-medicines"data-toggle="tooltip" data-placement="top" title="Buy Medicine!"  href="<?php echo $baseUrl; ?>">
+                <?php echo __('Buy Medicine');?>
+            </a>
+        </li>
+
+        <li class="nav-list level0 level-top item-lab">
+            <a class="top_menu_label Nav-item is-active  level-top menu-link book-lab" data-toggle="tooltip" data-placement="top" title="Book Lab Test!" href="/lab-test">
+                <?php echo __('Book Lab Test');?>
+            </a>
+        </li>
+
+        <li class="nav-list level0 level-top item-doctor">
+            <a class="top_menu_label Nav-item is-active level-top menu-link book-doctor" data-toggle="tooltip" data-placement="top" title="Book Doctor Consultant" href="/doctors">
+                <?php echo __('Book Doctor Consultant');?>
+            </a>
+        </li>
+
+        <li class="nav-list level0 level-top item-doctor">
+            <a class="top_menu_label Nav-item is-active level-top menu-link book-doctor" data-toggle="tooltip" data-placement="top" title="Home Care Services" href="/home-care">
+                <?php echo __('Home Care Services');?>
+            </a>
+        </li>
+
+        <li class="nav-list level0 level-top item-doctor">
+            <a class="top_menu_label Nav-item is-active level-top menu-link book-doctor" data-toggle="tooltip" data-placement="top" title="Home Visit Services" href="/home-visit">
+                <?php echo __('Home Visit Services');?>
+            </a>
+        </li>
+
+        <li class="nav-list level0 level-top item-doctor">
+            <a class="top_menu_label Nav-item is-active level-top menu-link book-doctor" data-toggle="tooltip" data-placement="top" title="Offers" href="/offers">
+                <?php echo __('Offers');?>
+            </a>
+        </li>
+
+        <?= /* @noEscape */ $_menuHtml ?>
+        <?= $block->getChildHtml() ?>
+    </ul>
+</nav>

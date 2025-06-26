@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module-webapi:etc/webapi.xsd">
+    <route url="/V1/lab/cart" method="POST">
+        <service class="MedizinhubCore\Lab\Api\LabCartManagementInterface" method="create"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <route url="/V1/lab/cart" method="GET">
+        <service class="MedizinhubCore\Lab\Api\LabCartManagementInterface" method="getList"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <route url="/V1/lab/cart" method="PUT">
+        <service class="MedizinhubCore\Lab\Api\LabCartManagementInterface" method="update"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/lab/cart/:entityId" method="DELETE">
+        <service class="MedizinhubCore\Lab\Api\LabCartManagementInterface" method="delete"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+</routes>

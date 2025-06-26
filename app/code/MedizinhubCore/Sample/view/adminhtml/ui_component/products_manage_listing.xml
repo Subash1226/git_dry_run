@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">products_manage_listing.products_manage_listing_data_source</item>
+            <item name="deps" xsi:type="string">products_manage_listing.products_manage_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">labtest_column</item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string">Add Entries</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">labtest/manage/add</item>
+            </item>
+        </item>
+    </argument>
+    <dataSource name="products_manage_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">MedizinhubCore\Sample\Ui\DataProvider\Manage\ListingDataProvider</argument>
+            <argument name="name" xsi:type="string">products_manage_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">test_id</argument>
+            <argument name="requestFieldName" xsi:type="string">test_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">test_id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="data" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">products_manage_listing.products_manage_listing.labtest_column.ids</item>
+                    <item name="displayArea" xsi:type="string">bottom</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                    <item name="indexField" xsi:type="string">test_id</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="labtest/manage/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete items</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to delete selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="templates" xsi:type="array">
+                        <item name="filters" xsi:type="array">
+                            <item name="select" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                                <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+
+    <columns name="labtest_column">
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">test_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="test_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Test ID</label>
+                <resizeDefaultWidth>25</resizeDefaultWidth>
+            </settings>
+        </column>
+        <column name="test_name">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Test Name</label>
+            </settings>
+        </column>
+          <column name="patient">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Patient</label>
+            </settings>
+        </column>
+        <column name="appointment_time">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Appointment Time</label>
+            </settings>
+        </column>
+         <column name="appointment_date">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Appointment Date</label>
+            </settings>
+        </column>
+        <column name="customer_id" class="MedizinhubCore\Sample\Ui\Component\Manage\Listing\Column\CustomerEntityLink">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Customer ID</label>
+            </settings>
+        </column>
+        <column name="address_id" class="MedizinhubCore\Sample\Ui\Component\Manage\Listing\Column\AddressEntityLink">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Address ID</label>
+            </settings>
+        </column>
+        <column name="address_details">
+            <settings>
+                <label translate="true">Address Details</label>
+            </settings>
+        </column>
+        <column name="test_type">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Test Type</label>
+            </settings>
+        </column>
+        <column name="mobile_number">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Mobile Number</label>
+            </settings>
+        </column>
+         <column name="total_price">
+           <settings>
+        <filter>text</filter>
+        <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+        <label translate="true">Total Price</label>
+          </settings>
+       </column>
+       <column name="payment_type">
+         <settings>
+        <filter>text</filter>
+        <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+        <label translate="true">Payment Type</label>
+      </settings>
+    </column>
+     <column name="transaction_id">
+         <settings>
+        <filter>text</filter>
+        <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+        <label translate="true">Transaction ID</label>
+      </settings>
+    </column>
+        <actionsColumn name="actions" class="MedizinhubCore\Sample\Ui\Component\Manage\Listing\Column\Actions" sortOrder="5555">
+            <settings>
+                <indexField>test_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

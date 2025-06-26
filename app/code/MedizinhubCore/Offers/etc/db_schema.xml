@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="salesrule">
+        <column xsi:type="text" name="coupon_image" nullable="true" comment="Coupon Image"/>
+        <column xsi:type="text" name="coupon_category" nullable="true" comment="Coupon Category"/>
+        <column xsi:type="text" name="coupon_titles" nullable="true" comment="Coupon Titles (JSON)"/>
+        <column xsi:type="text" name="coupon_descriptions" nullable="true" comment="Coupon Descriptions (JSON)"/>
+    </table>
+</schema>

@@ -1,0 +1,147 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$attributeRepository = $objectManager->get(\Magento\Eav\Api\AttributeRepositoryInterface::class);
+$_item = $block->getItem();
+$product = $_item->getProduct();
+$regularPrice = $product->getPrice();
+$specialPrice = $product->getData('special_price');
+$product = $product->load($_item->getProductId());
+$prescription = $product->getData('prescription_check');
+$category_check = $product->getData('category_check');
+$selectedQuantityContent = $product->getData('quantity_contents');
+try {
+    $attribute = $attributeRepository->get(\Magento\Catalog\Model\Product::ENTITY, 'quantity_contents');
+    $options = $attribute->getSource()->getAllOptions(false);
+    // var_dump($selectedQuantityContent);
+} catch (\Exception $e) {
+    echo "Error fetching category options: " . $e->getMessage();
+    $options = [];
+}
+$quantityContentLabel = '';
+foreach ($options as $option) {
+    if ($option['value'] == $selectedQuantityContent) {
+        $quantityContentLabel = $option['label'];
+        break;
+    }
+}
+// echo "quantity contents : " ;
+$baseUrl = $this->getBaseUrl();
+$prescIcon = $baseUrl . '/static/frontend/ET/base_lite/en_US/MedizinhubCore_Home/images/precription_icon.png';
+$RegularCost = '₹' . round($regularPrice);
+$specialCost = '₹' . round($specialPrice);
+$regularPriceNumeric = (float) $regularPrice;
+$specialPriceNumeric = (float) $specialPrice;
+$discountPercentage = 0;
+if ($regularPriceNumeric > 0) {
+    $discountPercentage = (($regularPriceNumeric - $specialPriceNumeric) / $regularPriceNumeric) * 100;
+}
+$discountPercentage = (int) round($discountPercentage, 2);
+if (!function_exists('formatProductName')) {
+    function formatProductName($name) {
+        if ($name === null) {
+            return null;
+        }
+        $name = strtolower($name);
+        $name = ucwords($name);
+        return $name;
+    }
+}
+$productName = $block->escapeHtml($block->getProductName());
+$productName = formatProductName($productName);
+
+?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<div class="carts-container">
+    <div class="row">
+        <div class="col-md-2 col-sm-2 col-4 cart_image_box">
+            <?php if ($block->hasProductUrl()) : ?>
+                <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>" title="<?php echo $productName; ?>" tabindex="-1" class="product-item-photo cart-product-image">
+                <?php else : ?>
+                    <span class="product-item-photo cart-product-image">
+                    <?php endif; ?>
+                    <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml() ?>
+                    <?php if ($block->hasProductUrl()) : ?>
+                </a>
+            <?php else : ?>
+                </span>
+            <?php endif; ?>
+        </div>
+        <div class="col-md-6 col-sm-6 col-8 checkoutCartProduct">
+            <div class="product-carts-item-name">
+                <strong class="product-item-name">
+                    <?php if ($block->hasProductUrl()) : ?>
+                        <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>">
+                        <?php echo $productName; ?>
+                        </a>
+                    <?php else : ?>
+                        <?php echo $productName; ?>
+                    <?php endif; ?>
+                </strong>
+            </div>
+            <?php if (($category_check == "39" || $category_check == "45") && $quantityContentLabel && !empty($quantityContentLabel)) : ?>
+            <div class="product-cart-category-name">
+                <span class="quantityContentLabel">
+                    <svg class="discountPercentage-quantity-svg" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.17383 0C6.21356 0.0161765 5.34623 0.588893 4.95386 1.47447L9.65192 2.89352C9.85843 1.6617 9.11845 0.467397 7.92758 0.104975C7.71419 0.0402691 7.49047 0.00481853 7.26675 0H7.17383ZM4.77489 2.06784C4.56494 3.3031 5.30493 4.50085 6.49923 4.86224C7.69698 5.22363 8.97389 4.63164 9.47639 3.48552L4.77489 2.06784ZM13.9129 3.59221C13.0421 3.59565 12.1163 4.01555 11.4176 5.00335L7.1222 11.0919C5.96919 12.7233 6.4717 14.4305 7.60749 15.2358C8.74673 16.0447 10.5193 15.9517 11.6723 14.3203L15.9642 8.23521C17.1172 6.60035 16.6147 4.89665 15.4789 4.08783C15.0521 3.78495 14.5393 3.60942 13.9989 3.59221H13.9129ZM13.8509 4.18764C13.8957 4.18764 13.9404 4.18764 13.9817 4.19108C14.3982 4.20829 14.7905 4.35629 15.121 4.59378C16.0055 5.22018 16.4495 6.46956 15.4548 7.87726L13.2348 11.0265C12.0027 10.6961 10.4194 9.57063 9.70011 8.51399L11.927 5.3613C12.5086 4.53871 13.2004 4.20141 13.8509 4.18764ZM2.83199 6.8103C2.50089 6.81374 2.17426 6.88258 1.87069 7.01681C0.731112 7.51587 0.138089 8.78934 0.485711 9.98708L4.98484 8.02181C4.53396 7.26117 3.71481 6.79997 2.83199 6.8103ZM5.22921 8.58627L0.730768 10.555C1.36578 11.6357 2.70292 12.0694 3.84904 11.5703C4.99172 11.0678 5.58371 9.78746 5.22921 8.58627Z" fill="#049B7E"/>
+                    </svg>&nbsp;<?php echo $quantityContentLabel; ?>
+                 </span>
+                <span class="discountPercentage-quantity">
+                    <svg class="discountPercentage-quantity-svg" xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+                        <path d="M17.4567 10.8048L18.3589 9.24561C18.4674 9.05801 18.4969 8.83503 18.4409 8.6257C18.385 8.41636 18.2482 8.23781 18.0607 8.1293L16.4998 7.2271V5.42924C16.4998 5.2125 16.4137 5.00464 16.2604 4.85139C16.1072 4.69813 15.8993 4.61203 15.6826 4.61203H13.8855L12.9842 3.05198C12.8753 2.86477 12.6971 2.72796 12.4881 2.67116C12.3845 2.64306 12.2763 2.63581 12.1698 2.64984C12.0633 2.66387 11.9607 2.69889 11.8678 2.75288L10.307 3.65508L8.74611 2.75206C8.55841 2.6437 8.33536 2.61433 8.12601 2.67042C7.91666 2.72651 7.73817 2.86347 7.6298 3.05116L6.7276 4.61203H4.93056C4.71382 4.61203 4.50596 4.69813 4.3527 4.85139C4.19945 5.00464 4.11335 5.2125 4.11335 5.42924V7.22628L2.55248 8.12848C2.45934 8.18205 2.37771 8.2535 2.31227 8.33872C2.24683 8.42394 2.19888 8.52124 2.17116 8.62505C2.14344 8.72886 2.13651 8.83712 2.15076 8.94361C2.16501 9.05011 2.20016 9.15274 2.2542 9.24561L3.1564 10.8048L2.2542 12.3641C2.14632 12.5519 2.11705 12.7747 2.17277 12.9839C2.22849 13.1932 2.36469 13.3719 2.55166 13.4812L4.11253 14.3834V16.1804C4.11253 16.3972 4.19863 16.605 4.35189 16.7583C4.50514 16.9116 4.713 16.9977 4.92974 16.9977H6.7276L7.6298 18.5585C7.70215 18.6822 7.80545 18.7849 7.92953 18.8566C8.05362 18.9282 8.19422 18.9663 8.3375 18.9671C8.4797 18.9671 8.62107 18.9295 8.74692 18.8568L10.3062 17.9546L11.867 18.8568C12.0547 18.965 12.2776 18.9944 12.4869 18.9385C12.6961 18.8825 12.8747 18.7459 12.9833 18.5585L13.8847 16.9977H15.6818C15.8985 16.9977 16.1064 16.9116 16.2596 16.7583C16.4129 16.605 16.499 16.3972 16.499 16.1804V14.3834L18.0598 13.4812C18.1528 13.4275 18.2343 13.3559 18.2996 13.2707C18.3649 13.1855 18.4128 13.0882 18.4405 12.9845C18.4682 12.8807 18.4752 12.7725 18.4611 12.6661C18.4469 12.5596 18.4119 12.457 18.3581 12.3641L17.4567 10.8048ZM8.26314 6.71062C8.58835 6.71073 8.9002 6.84003 9.13009 7.07006C9.35997 7.3001 9.48906 7.61204 9.48895 7.93725C9.48884 8.26247 9.35955 8.57432 9.12951 8.80421C8.89947 9.03409 8.58753 9.16318 8.26232 9.16307C7.93711 9.16296 7.62525 9.03367 7.39537 8.80363C7.16548 8.57359 7.0364 8.26165 7.03651 7.93644C7.03661 7.61122 7.16591 7.29937 7.39595 7.06949C7.62598 6.8396 7.93792 6.71052 8.26314 6.71062ZM8.5083 14.5558L7.20077 13.576L12.104 7.03832L13.4116 8.01816L8.5083 14.5558ZM12.3492 14.8827C12.1882 14.8827 12.0287 14.8509 11.88 14.7892C11.7312 14.7275 11.5961 14.6372 11.4822 14.5233C11.3684 14.4094 11.2781 14.2742 11.2166 14.1254C11.155 13.9766 11.1233 13.8171 11.1234 13.6561C11.1234 13.4951 11.1552 13.3356 11.2169 13.1869C11.2785 13.0381 11.3689 12.903 11.4828 12.7891C11.5967 12.6753 11.7319 12.585 11.8807 12.5235C12.0295 12.4619 12.189 12.4302 12.35 12.4303C12.6752 12.4304 12.9871 12.5597 13.217 12.7897C13.4468 13.0198 13.5759 13.3317 13.5758 13.6569C13.5757 13.9821 13.4464 14.294 13.2164 14.5239C12.9863 14.7537 12.6744 14.8828 12.3492 14.8827Z" fill="#049B7E" />
+                    </svg>&nbsp;<?php echo $discountPercentage; ?>% OFF
+                </span>
+            </div>
+            <?php else : ?>
+            <div class="product-cart-category-name">
+                <span class="discountPercentage">
+                    <svg class="discountPercentage-quantity-svg"  xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+                        <path d="M17.4567 10.8048L18.3589 9.24561C18.4674 9.05801 18.4969 8.83503 18.4409 8.6257C18.385 8.41636 18.2482 8.23781 18.0607 8.1293L16.4998 7.2271V5.42924C16.4998 5.2125 16.4137 5.00464 16.2604 4.85139C16.1072 4.69813 15.8993 4.61203 15.6826 4.61203H13.8855L12.9842 3.05198C12.8753 2.86477 12.6971 2.72796 12.4881 2.67116C12.3845 2.64306 12.2763 2.63581 12.1698 2.64984C12.0633 2.66387 11.9607 2.69889 11.8678 2.75288L10.307 3.65508L8.74611 2.75206C8.55841 2.6437 8.33536 2.61433 8.12601 2.67042C7.91666 2.72651 7.73817 2.86347 7.6298 3.05116L6.7276 4.61203H4.93056C4.71382 4.61203 4.50596 4.69813 4.3527 4.85139C4.19945 5.00464 4.11335 5.2125 4.11335 5.42924V7.22628L2.55248 8.12848C2.45934 8.18205 2.37771 8.2535 2.31227 8.33872C2.24683 8.42394 2.19888 8.52124 2.17116 8.62505C2.14344 8.72886 2.13651 8.83712 2.15076 8.94361C2.16501 9.05011 2.20016 9.15274 2.2542 9.24561L3.1564 10.8048L2.2542 12.3641C2.14632 12.5519 2.11705 12.7747 2.17277 12.9839C2.22849 13.1932 2.36469 13.3719 2.55166 13.4812L4.11253 14.3834V16.1804C4.11253 16.3972 4.19863 16.605 4.35189 16.7583C4.50514 16.9116 4.713 16.9977 4.92974 16.9977H6.7276L7.6298 18.5585C7.70215 18.6822 7.80545 18.7849 7.92953 18.8566C8.05362 18.9282 8.19422 18.9663 8.3375 18.9671C8.4797 18.9671 8.62107 18.9295 8.74692 18.8568L10.3062 17.9546L11.867 18.8568C12.0547 18.965 12.2776 18.9944 12.4869 18.9385C12.6961 18.8825 12.8747 18.7459 12.9833 18.5585L13.8847 16.9977H15.6818C15.8985 16.9977 16.1064 16.9116 16.2596 16.7583C16.4129 16.605 16.499 16.3972 16.499 16.1804V14.3834L18.0598 13.4812C18.1528 13.4275 18.2343 13.3559 18.2996 13.2707C18.3649 13.1855 18.4128 13.0882 18.4405 12.9845C18.4682 12.8807 18.4752 12.7725 18.4611 12.6661C18.4469 12.5596 18.4119 12.457 18.3581 12.3641L17.4567 10.8048ZM8.26314 6.71062C8.58835 6.71073 8.9002 6.84003 9.13009 7.07006C9.35997 7.3001 9.48906 7.61204 9.48895 7.93725C9.48884 8.26247 9.35955 8.57432 9.12951 8.80421C8.89947 9.03409 8.58753 9.16318 8.26232 9.16307C7.93711 9.16296 7.62525 9.03367 7.39537 8.80363C7.16548 8.57359 7.0364 8.26165 7.03651 7.93644C7.03661 7.61122 7.16591 7.29937 7.39595 7.06949C7.62598 6.8396 7.93792 6.71052 8.26314 6.71062ZM8.5083 14.5558L7.20077 13.576L12.104 7.03832L13.4116 8.01816L8.5083 14.5558ZM12.3492 14.8827C12.1882 14.8827 12.0287 14.8509 11.88 14.7892C11.7312 14.7275 11.5961 14.6372 11.4822 14.5233C11.3684 14.4094 11.2781 14.2742 11.2166 14.1254C11.155 13.9766 11.1233 13.8171 11.1234 13.6561C11.1234 13.4951 11.1552 13.3356 11.2169 13.1869C11.2785 13.0381 11.3689 12.903 11.4828 12.7891C11.5967 12.6753 11.7319 12.585 11.8807 12.5235C12.0295 12.4619 12.189 12.4302 12.35 12.4303C12.6752 12.4304 12.9871 12.5597 13.217 12.7897C13.4468 13.0198 13.5759 13.3317 13.5758 13.6569C13.5757 13.9821 13.4464 14.294 13.2164 14.5239C12.9863 14.7537 12.6744 14.8828 12.3492 14.8827Z" fill="#049B7E" />
+                    </svg> <?php echo $discountPercentage; ?>% OFF
+                </span>
+            </div>
+            <?php endif; ?>
+            <div class="row cart_price_box">
+                <div class="col-md-12 col-sm-12 col-12">
+                    <span class="checkoutcart-specialprice"><?= $specialCost ?></span>
+                    <span class="price_discount_cut"><?= $RegularCost ?></span>
+                    <span class="offer_ends_span">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cart_svg_box" width="20" height="21" viewBox="0 0 20 21" fill="none">
+                            <path d="M10.4711 6.04102H9.53168C9.44575 6.04102 9.37543 6.11133 9.37543 6.19727V11.5742C9.37543 11.625 9.39887 11.6719 9.43989 11.7012L12.6684 14.0586C12.7387 14.1094 12.8364 14.0957 12.8872 14.0254L13.4457 13.2637C13.4985 13.1914 13.4829 13.0938 13.4125 13.0449L10.6274 11.0313V6.19727C10.6274 6.11133 10.5571 6.04102 10.4711 6.04102ZM14.7641 7.50977L17.8266 8.25781C17.9243 8.28125 18.02 8.20703 18.02 8.10742L18.0356 4.95313C18.0356 4.82227 17.8852 4.74805 17.7836 4.83008L14.7055 7.23438C14.6822 7.25237 14.6645 7.27657 14.6544 7.30419C14.6443 7.3318 14.6422 7.36171 14.6483 7.39048C14.6544 7.41925 14.6685 7.44571 14.689 7.46681C14.7095 7.48791 14.7355 7.5028 14.7641 7.50977ZM18.0395 13.3906L16.9321 13.0098C16.8935 12.9965 16.8512 12.9989 16.8143 13.0165C16.7775 13.034 16.7489 13.0652 16.7348 13.1035C16.6977 13.2031 16.6586 13.3008 16.6176 13.3984C16.27 14.2207 15.7719 14.9609 15.1352 15.5957C14.5056 16.2273 13.7593 16.7308 12.9379 17.0781C12.087 17.4379 11.1723 17.6226 10.2485 17.6211C9.31489 17.6211 8.41059 17.4395 7.55903 17.0781C6.73762 16.7308 5.99141 16.2273 5.36176 15.5957C4.727 14.9609 4.22895 14.2207 3.87934 13.3984C3.52156 12.547 3.33825 11.6325 3.34028 10.709C3.34028 9.77539 3.52192 8.86914 3.88325 8.01758C4.2309 7.19532 4.72895 6.45508 5.36567 5.82032C5.99532 5.18871 6.74153 4.68527 7.56293 4.33789C8.41059 3.97656 9.31684 3.79492 10.2504 3.79492C11.184 3.79492 12.0883 3.97656 12.9399 4.33789C13.7613 4.68527 14.5075 5.18871 15.1372 5.82032C15.3364 6.02149 15.5239 6.23047 15.6957 6.45117L16.8637 5.53711C15.3266 3.57227 12.934 2.3086 10.2465 2.31055C5.56684 2.3125 1.80903 6.11328 1.8559 10.7949C1.90278 15.3945 5.64301 19.1074 10.2504 19.1074C13.8735 19.1074 16.9594 16.8105 18.1352 13.5938C18.1645 13.5117 18.1215 13.4199 18.0395 13.3906Z" fill="#03C777" />
+                        </svg>
+                        <span class="checkoutcart-offer">Offer ends in 2 hours</span>
+                    </span>
+                </div>
+            </div>
+            <div class="cart-price-checkout cart-price-info"></div>
+        </div>
+        <div class="col-4 cart_extra_div"></div>
+        <div class="col-md-4 col-sm-4 col-8 cart-qty-col">
+            <div class="cartItemRemove">
+                <div class="actions-toolbar actionDelete">
+                    <?php if ($prescription == '37') {
+                    ?>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Prescription Required">
+                            <svg class="cart_page_prescription" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="12" fill="#D4061B"></circle>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.8661 9.40452V6.23145H7.96229C7.88578 6.23145 7.81241 6.26184 7.75832 6.31593C7.70422 6.37003 7.67383 6.4434 7.67383 6.51991V17.4814C7.67383 17.558 7.70422 17.6313 7.75832 17.6854C7.81241 17.7395 7.88578 17.7699 7.96229 17.7699H16.0392C16.1157 17.7699 16.1891 17.7395 16.2432 17.6854C16.2973 17.6313 16.3277 17.558 16.3277 17.4814V9.69298H13.1546C13.0781 9.69298 13.0047 9.66259 12.9506 9.6085C12.8965 9.5544 12.8661 9.48103 12.8661 9.40452ZM13.4431 9.11606V6.40048L16.1586 9.11606H13.4431ZM9.98152 10.5584C9.98152 10.4819 10.0119 10.4085 10.066 10.3544C10.1201 10.3003 10.1935 10.2699 10.27 10.2699H11.7123C12.0082 10.2702 12.2927 10.3843 12.5069 10.5884C12.7212 10.7925 12.8488 11.0711 12.8634 11.3667C12.8781 11.6623 12.7786 11.9521 12.5855 12.1764C12.3925 12.4007 12.1207 12.5423 11.8262 12.5718L12.8661 13.6123L13.816 12.6624L14.2239 13.0703L13.274 14.0199L14.2239 14.9698L13.816 15.3777L12.8661 14.4278L11.9162 15.3777L11.5083 14.9698L12.4583 14.0199L11.0159 12.5776H10.5584V14.5968H9.98152V10.5584ZM11.7123 12.0007H10.5584V10.8468H11.7123C11.8653 10.8468 12.012 10.9076 12.1202 11.0158C12.2284 11.124 12.2892 11.2707 12.2892 11.4238C12.2892 11.5768 12.2284 11.7235 12.1202 11.8317C12.012 11.9399 11.8653 12.0007 11.7123 12.0007Z" fill="white"></path>
+                            </svg>
+                        </span>
+                    <?php
+                    }
+                    ?> <?= /* @noEscape */ $block->getActions($_item) ?>
+                </div>
+            </div>
+            <div class="cartQty">
+                <div class="control custom-qty qty clearfix">
+                    <span class="custom-qty-span">Qty</span>
+                    <a class="alo_qty alo_qty_dec ajax-cart-qty-minus" href="javascript:void(0)"></a>
+                    <input id="cart-<?php /* @escapeNotVerified */ echo $_item->getId() ?>-qty" name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][qty]" data-product-sku="<?php /* @escapeNotVerified */ echo $_item->getSku() ?>" data-cart-item-id="<?php /* @escapeNotVerified */ echo $_item->getSku() ?>" value="<?php /* @escapeNotVerified */ echo $block->getQty() ?>" type="number" size="4" title="<?php echo $escaper->escapeHtml(__('Qty')); ?>" class="input-text cart-qty-input qty" maxlength="12" data-validate="{required:true,'validate-greater-than-zero':true}" data-role="cart-item-qty" />
+                    <a class="alo_qty alo_qty_inc ajax-cart-qty-plus" href="javascript:void(0)"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    require(['jquery', 'AjaxCart'], function($) {});
+</script>

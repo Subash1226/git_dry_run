@@ -1,0 +1,27 @@
+<div style="margin-top: 20px;" id="delivery-date">
+    <strong><?= __('Expected Delivery Date') ?></strong> <br>
+    <span class="expected-date"><?= $block->getDeliveryDate() ?></span>
+</div>
+<div style="display: none;" id="delivery-comment">
+    <strong><?= __('Comment') ?>:</strong>
+    <br/>
+    <span class="price"><?= $block->getDeliveryComment() ?></span>
+</div>
+<script type="text/javascript">
+    require(
+        ['jquery'],
+        function($) {
+            var element = $('#delivery-date').detach();
+            $('.box-order-shipping-method').append(element);
+            var element = $('#delivery-comment').detach();
+            $('.box-order-shipping-method').append(element);
+        }
+    );
+</script>
+<style>
+    .expected-date{
+        font-size: 16px;
+        font-family: Source Sans Pro !important;
+        font-weight: 500;
+    }
+</style>

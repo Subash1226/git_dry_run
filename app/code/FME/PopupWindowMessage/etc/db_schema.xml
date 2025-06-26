@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * FME Extensions
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the fmeextensions.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.fmeextensions.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category  FME
+ * @package   FME_PopupWindowMessage
+ * @author    Dara Baig  (support@fmeextensions.com)
+ * @copyright Copyright (c) 2018 FME (http://fmeextensions.com/)
+ * @license   https://fmeextensions.com/LICENSE.txt
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="fme_pwm_master" resource="default" engine="innodb" comment="FME PWM Table Index">
+    <column xsi:type="smallint" name="pwm_id" padding="6" unsigned="false" nullable="false" identity="true" comment="PopupWindowMessage ID"/>
+    <column xsi:type="smallint" name="is_active" padding="6" unsigned="false" nullable="false" identity="false" default="1" comment="Is Popup Active"/>
+    <column xsi:type="varchar" name="pwm_name" nullable="false" length="255" comment="PopupWindowMessage Name"/>
+    <column xsi:type="varchar" name="pwm_event" nullable="false" length="255" comment="PWM Event"/>
+    <column xsi:type="varchar" name="pwm_x_equals" nullable="false" length="255" comment="PWM X"/>
+    <column xsi:type="varchar" name="cmspage_ids" nullable="false" length="255" comment="PWM Cms"/>
+    <column xsi:type="varchar" name="popup_categories" nullable="false" length="255" comment="PWM Categories"/>
+    <column xsi:type="varchar" name="customer_group_ids" nullable="false" length="255" comment="PWM Customers"/>
+    <column xsi:type="varchar" name="pwm_annimation" nullable="false" length="255" comment="PWM Annimations"/>
+    <column xsi:type="varchar" name="pwm_cookie_life_time" nullable="false" length="255" comment="PWM Annimations"/>
+    <column xsi:type="varchar" name="pwm_display_at_pages" nullable="false" length="255" comment="PWM Display Pages"/>
+    <column xsi:type="varchar" name="pwm_checkout_index" nullable="false" length="255" comment="PWM Display CheckoutIndex"/>
+    <column xsi:type="varchar" name="pwm_checkout_cart" nullable="false" length="255" comment="PWM Display CheckoutCart"/>
+    <column xsi:type="varchar" name="pwm_position" nullable="false" length="255" comment="PWM Position"/>
+    <column xsi:type="mediumtext" name="conditions_serialized" nullable="true" comment="Conditions Serialized"/>
+    <column xsi:type="mediumtext" name="pwm_content" nullable="false" comment="PWM Content"/>
+    <column xsi:type="mediumtext" name="pwm_design" nullable="false" comment="PWM Design"/>
+    <column xsi:type="text" name="priority" nullable="false" comment="priority"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="pwm_id"/>
+    </constraint>
+    <index referenceId="FME_PWM_MASTER_PWM_NAME" indexType="fulltext">
+      <column name="pwm_name"/>
+    </index>
+  </table>
+  <table name="fme_pwm_store" resource="default" engine="innodb" comment="fme_pwm_store">
+    <column xsi:type="smallint" name="id" padding="6" unsigned="false" nullable="false" identity="true" comment="ID"/>
+    <column xsi:type="smallint" name="pwm_id" padding="6" unsigned="false" nullable="false" identity="false" comment="PWM ID"/>
+    <column xsi:type="smallint" name="store_id" padding="6" unsigned="false" nullable="false" identity="false" comment="Store ID"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+      <column name="pwm_id"/>
+      <column name="store_id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="FME_PWM_STORE_PWM_ID_FME_PWM_MASTER_PWM_ID" table="fme_pwm_store" column="pwm_id" referenceTable="fme_pwm_master" referenceColumn="pwm_id" onDelete="CASCADE"/>
+  </table>
+  <table name="fme_pwm_products" resource="default" engine="innodb" comment="Popup Products Table">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Id"/>
+    <column xsi:type="int" name="pwm_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Popup Id"/>
+    <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Product Id"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+</schema>

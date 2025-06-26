@@ -1,0 +1,16 @@
+<script>
+require(['jquery', 'jquery/ui'], function($){
+        jQuery('.action-delete').click(function(e)
+    {
+        if(confirm('Do you want to remove this product?'))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    });
+ });
+</script>

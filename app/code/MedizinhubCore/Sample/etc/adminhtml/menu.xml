@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+    	<add id="MedizinhubCore_Sample::home" title="LAB" module="MedizinhubCore_Sample" sortOrder="10" resource="MedizinhubCore_Sample::home"/>
+    	<add id="MedizinhubCore_Sample::manage" title="Manage Entries" module="MedizinhubCore_Sample" sortOrder="20" parent="MedizinhubCore_Sample::home" action="labtest/manage/index" resource="MedizinhubCore_Sample::manage"/>
+    </menu>
+</config>

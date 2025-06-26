@@ -1,0 +1,56 @@
+<?php
+/**
+ * @var \Magento\Customer\Block\Account\Dashboard\Address $block
+ */
+?>
+<div class="block block-dashboard-addresses">
+    <div class="block-title">
+        <strong><?= $block->escapeHtml(__('Address Book')) ?></strong>
+        <a class="action edit" href="<?= $block->escapeUrl($block->getAddressBookUrl()) ?>">
+            <span><?= $block->escapeHtml(__('Manage Addresses')) ?></span>
+        </a>
+    </div>
+    <div class="block-content">
+        <div class="box box-billing-address">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__('Default Billing Address')) ?></span>
+            </strong>
+            <div class="box-content">
+                <address>
+                    <?php $billingAddressHtml = $block->getPrimaryBillingAddressHtml(); ?>
+                    <?php if ($billingAddressHtml): ?>
+                        <?= preg_replace('/T:/', '<i class="fa fa-phone account_ph_icon" aria-hidden="true"></i>', $billingAddressHtml) ?>
+                    <?php else: ?>
+                        <p><?= $block->escapeHtml(__('You have not set a default billing address.')) ?></p>
+                    <?php endif; ?>
+                </address>
+            </div>
+            <div class="box-actions">
+                <a class="action edit" href="<?= $block->escapeUrl($block->getPrimaryBillingAddressEditUrl()) ?>" data-ui-id="default-billing-edit-link"><span><?= $block->escapeHtml(__('Edit Address')) ?></span></a>
+            </div>
+        </div>
+        <div class="box box-shipping-address">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__('Default Shipping Address')) ?></span>
+            </strong>
+            <div class="box-content">
+                <address>
+                    <?php $shippingAddressHtml = $block->getPrimaryShippingAddressHtml(); ?>
+                    <?php if ($shippingAddressHtml): ?>
+                        <?= preg_replace('/T:/', '<i class="fa fa-phone account_ph_icon" aria-hidden="true"></i>', $shippingAddressHtml) ?>
+                    <?php else: ?>
+                        <p><?= $block->escapeHtml(__('You have not set a default shipping address.')) ?></p>
+                    <?php endif; ?>
+                </address>
+            </div>
+            <div class="box-actions">
+                <a class="action edit" href="<?= $block->escapeUrl($block->getPrimaryShippingAddressEditUrl()) ?>" data-ui-id="default-shipping-edit-link"><span><?= $block->escapeHtml(__('Edit Address')) ?></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .account_ph_icon{
+        margin-right:4px;
+    }
+</style>

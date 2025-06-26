@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Lof\RewardPointsGraphQl\Api\EarningRuleRepositoryInterface" type="Lof\RewardPointsGraphQl\Model\EarningRuleRepository"/>
+    <preference for="Lof\RewardPointsGraphQl\Api\SpendingRuleRepositoryInterface" type="Lof\RewardPointsGraphQl\Model\SpendingRuleRepository"/>
+    <preference for="Lof\RewardPointsGraphQl\Api\Data\EarningRuleSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Lof\RewardPointsGraphQl\Api\Data\SpendingRuleSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <type name="Magento\Framework\GraphQl\Query\Resolver\Argument\FieldEntityAttributesPool">
+        <arguments>
+            <argument name="attributesInstances" xsi:type="array">
+                <item name="lof_rewardpoints_earning_rule" xsi:type="object">\Lof\RewardPointsGraphQl\Model\Resolver\FilterArgumentEarningRule</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\GraphQl\Query\Resolver\Argument\FieldEntityAttributesPool">
+        <arguments>
+            <argument name="attributesInstances" xsi:type="array">
+                <item name="lof_rewardpoints_spending_rule" xsi:type="object">\Lof\RewardPointsGraphQl\Model\Resolver\FilterArgumentSpendingRule</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

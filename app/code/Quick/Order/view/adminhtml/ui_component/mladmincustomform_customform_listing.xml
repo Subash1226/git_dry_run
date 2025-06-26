@@ -1,0 +1,259 @@
+<?xml version="1.0"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array" >
+            <item name="provider" xsi:type="string">
+                mladmincustomform_customform_listing.quick_order_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>quick_order_columns</spinner>
+        <deps>
+            <dep>mladmincustomform_customform_listing.quick_order_listing_data_source</dep>
+        </deps>
+    </settings>
+
+    <dataSource name="quick_order_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">id</param>
+            </storageConfig>
+        </settings>
+        <aclResource>Quick_Order::manage</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="quick_order_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks" />
+        <columnsControls name="columns_controls" />
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">
+                        mladmincustomform_customform_listing.mladmincustomform_customform_listing.quick_order_columns.ids</item>
+                    <item name="indexField" xsi:type="string">id</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url"
+                            path="mladmincustomform/Customform/massDelete" />
+                        <item name="confirm" xsi:type="array">
+                            <item name="name" xsi:type="string" translate="true">Delete items</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you
+                                wan't to delete selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="edit">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">edit</item>
+                        <item name="label" xsi:type="string" translate="true">Edit</item>
+                        <item name="callback" xsi:type="array">
+                            <item name="provider" xsi:type="string">
+                                mladmincustomform_customform_listing.mladmincustomform_customform_listing.quick_order_columns_editor</item>
+                            <item name="target" xsi:type="string">editSelected</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="disable">
+                <settings>
+                    <url path="mladmincustomform/Customform/massDisable" />
+                    <type>disable</type>
+                    <label translate="true">Disable</label>
+                </settings>
+            </action>
+            <action name="enable">
+                <settings>
+                    <url path="mladmincustomform/Customform/massEnable" />
+                    <type>enable</type>
+                    <label translate="true">Enable</label>
+                </settings>
+            </action>
+        </massaction>
+        <filters name="listing_filters" />
+        <paging name="listing_paging" />
+    </listingToolbar>
+    <columns name="quick_order_columns">
+        <settings>
+            <editorConfig>
+                <param name="selectProvider" xsi:type="string">
+                    mladmincustomform_customform_listing.mladmincustomform_customform_listing.quick_order_columns.ids</param>
+                <param name="enabled" xsi:type="boolean">true</param>
+                <param name="indexField" xsi:type="string">id</param>
+                <param name="clientConfig" xsi:type="array">
+                    <item name="saveUrl" xsi:type="url"
+                        path="mladmincustomform/Customform/InlineEdit" />
+                    <item name="validateBeforeSave" xsi:type="boolean">false</item>
+                </param>
+            </editorConfig>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">
+                        mladmincustomform_customform_listing.mladmincustomform_customform_listing.quick_order_columns_editor</item>
+                    <item name="target" xsi:type="string">startEdit</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        <item name="1" xsi:type="boolean">true</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Order Id</label>
+            </settings>
+        </column>
+        <column name="customer_name"
+            class="Quick\Order\Ui\Component\Listing\Column\CustomerEntityLink">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Customer Name</item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Customer Id</label>
+            </settings>
+        </column>
+        <column name="mobile_number">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Mobile</label>
+            </settings>
+        </column>
+        
+        <column name="image" class="Quick\Order\Ui\Component\Listing\Column\Thumbnail">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">
+                        Quick_Order/js/grid/columns/thumbnail-multiimage</item>
+                    <item name="altField" xsi:type="string">name</item>
+                    <item name="has_preview" xsi:type="string">0</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Prescription Image</item>
+                    <item name="sortOrder" xsi:type="number">1</item>
+                </item>
+            </argument>
+        </column>
+        <column name="address_entity"
+            class="Quick\Order\Ui\Component\Listing\Column\AddressEntityLink">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Address Entity</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="status"
+            class="Quick\Order\Ui\Component\Listing\Column\CustomStatusColumn">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="sortOrder" xsi:type="number">50</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="options" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="label" xsi:type="string" translate="true">Order Cancelled</item>
+                            <item name="value" xsi:type="string">0</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="label" xsi:type="string" translate="true">Order Placed</item>
+                            <item name="value" xsi:type="string">1</item>
+                        </item>
+                        <item name="2" xsi:type="array">
+                            <item name="label" xsi:type="string" translate="true">Order Under in
+                                Review</item>
+                            <item name="value" xsi:type="string">2</item>
+                        </item>
+                        <item name="3" xsi:type="array">
+                            <item name="label" xsi:type="string" translate="true">Order Accepted</item>
+                            <item name="value" xsi:type="string">3</item>
+                        </item>
+                        <item name="4" xsi:type="array">
+                            <item name="label" xsi:type="string" translate="true">Order Rejected</item>
+                            <item name="value" xsi:type="string">4</item>
+                        </item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="editorOptions" xsi:type="array">
+                        <item name="values" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Order
+                                    Cancelled</item>
+                                <item name="value" xsi:type="string">0</item>
+                            </item>
+                            <item name="1" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Order Placed</item>
+                                <item name="value" xsi:type="string">1</item>
+                            </item>
+                            <item name="2" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Order Under in
+                                    Review</item>
+                                <item name="value" xsi:type="string">2</item>
+                            </item>
+                            <item name="3" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Order Accepted</item>
+                                <item name="value" xsi:type="string">3</item>
+                            </item>
+                            <item name="4" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Order Rejected</item>
+                                <item name="value" xsi:type="string">4</item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date"
+            component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Created Date</label>
+            </settings>
+        </column>
+        <column name="create_a_order"
+            class="Quick\Order\Ui\Component\Listing\Column\CreateOrder">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Customer Order</item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>

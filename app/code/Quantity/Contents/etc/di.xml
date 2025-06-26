@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Quantity\Contents\Plugin\ProductRepository">
+        <arguments>
+            <argument name="attributeRepository" xsi:type="object">Magento\Eav\Api\AttributeRepositoryInterface</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Api\ProductRepositoryInterface">
+        <plugin name="quantity_contents_attribute_plugin"
+                type="Quantity\Contents\Plugin\ProductRepository"
+                sortOrder="10"
+                disabled="false"/>
+    </type>
+</config>

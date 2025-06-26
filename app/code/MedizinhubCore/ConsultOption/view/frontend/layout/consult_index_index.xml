@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+ <head>
+        <css src="MedizinhubCore_ConsultOption::css/style.css" />
+        <title>Consult Option</title>
+    </head>
+    <body>
+        <referenceContainer name="page.wrapper">
+            <container>
+              <block class="MedizinhubCore\ConsultOption\Block\Consult" name="option.consult" template="MedizinhubCore_ConsultOption::consult.phtml">
+                </block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

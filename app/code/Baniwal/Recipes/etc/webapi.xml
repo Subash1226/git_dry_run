@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/health-packages" method="GET">
+        <service class="Baniwal\Recipes\Api\HealthPackagesApiInterface" method="getAllHealthPackages"/>
+        <resources>
+            <resource ref="Baniwal_Recipes::packages_view"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/health-packages/:id" method="GET">
+        <service class="Baniwal\Recipes\Api\HealthPackagesApiInterface" method="getPackageByName"/>
+        <resources>
+            <resource ref="Baniwal_Recipes::packages_view"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/health-packages/category/:category" method="GET">
+        <service class="Baniwal\Recipes\Api\HealthPackagesApiInterface" method="getPackageByCategory"/>
+        <resources>
+            <resource ref="Baniwal_Recipes::packages_view"/>
+        </resources>
+    </route>
+</routes>

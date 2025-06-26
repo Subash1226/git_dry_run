@@ -1,0 +1,197 @@
+<?php /** @var $block \ContactUs\CustomPage\Block\ContactForm */ ?>
+<!-- Add reCAPTCHA script in head -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<div class="custom-contact-container">
+    <div class="contact-info">
+        <h2><?= $block->escapeHtml(__('Contact Us')) ?></h2>
+        <p class="sub_p_contact_info"><?= $block->escapeHtml(__("Want to get in touch? We'd love to hear from you . Here's how you can reach us")) ?><p>
+        
+        <div class="address-section">
+            <p class="address-header"><?= $block->escapeHtml(__('Office Address')) ?><p>
+            <p class="address-content"># 112 A, Ground Floor, Bharath Flats, Radha Nagar Main Road,</p>
+            <p class="address-content">Chromepet, Chennai- 600 – 044.</p>
+            <p class="address-header"><?= $block->escapeHtml(__('Location')) ?><p>
+            <div class="map-container">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d711.5406578155619!2d80.15090593644416!3d12.95036163453011!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525f6e6423b873%3A0xc1f4e3c93c17f2b7!2sMedizin%20Hub!5e1!3m2!1sen!2sin!4v1731922194522!5m2!1sen!2sin"
+                    width="100%"
+                    height="300"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>         
+    </div>
+
+    <div class="contact-form">
+        <form class="form contact"
+              action="<?= $block->escapeUrl($block->getFormAction()) ?>"
+              method="post"
+              data-mage-init='{"validation":{}}'
+              id="contact-form">
+            <fieldset class="fieldset">
+                <div class="form-header">
+                    <p>Get in Touch</p>
+                </div>
+                <div class="field name required">
+                    <label class="label" for="name">
+                        <span><?= $block->escapeHtml(__('Name')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input name="name" id="name"
+                               title="<?= $block->escapeHtmlAttr(__('Name')) ?>"
+                               class="input-text contact-input"
+                               type="text"
+                               data-validate="{required:true}"/>
+                    </div>
+                </div>
+
+                <div class="field telephone required">
+                    <label class="label" for="telephone">
+                        <span><?= $block->escapeHtml(__('Mobile Number')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input name="telephone" id="telephone"
+                               title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>"
+                               class="input-text contact-input"
+                               type="tel"/>
+                    </div>
+                </div>
+
+                <div class="field email required">
+                    <label class="label" for="email">
+                        <span><?= $block->escapeHtml(__('Email')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input name="email" id="email-contact"
+                               title="<?= $block->escapeHtmlAttr(__('Email')) ?>"
+                               class="input-text contact-input"
+                               type="email"
+                               data-validate="{required:true, 'validate-email':true}"/>
+                    </div>
+                </div>
+
+                <div class="field comment">
+                    <label class="label" for="comment">
+                        <span><?= $block->escapeHtml(__('Message')) ?></span>
+                    </label>
+                    <div class="control">
+                        <textarea name="comment"
+                                  id="comment"
+                                  title="<?= $block->escapeHtmlAttr(__('Message')) ?>"
+                                  class="input-text contact-message"
+                                  cols="5"
+                                  rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- reCAPTCHA -->
+                <div class="field recaptcha required">
+                    <div class="g-recaptcha" data-sitekey="6Le5cmcqAAAAANY5Cx_j1Y7niJo-ZicmaRbq19lN"></div>
+                </div>
+
+                <?= $block->getChildHtml('form.additional.info') ?>
+            </fieldset>
+                    <button type="submit" class="message_us_contact">
+                        <span><?= $block->escapeHtml(__('Message Us')) ?></span>
+                    </button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+require(['jquery', 'mage/validation'], function($) {
+    // Custom validation rules
+    $.validator.addMethod(
+        'validate-letters-only',
+        function(value, element) {
+            return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
+        },
+        $.mage.__('Please enter a valid name using only letters and spaces.')
+    );
+
+    $.validator.addMethod(
+        'validate-mobile-number',
+        function(value, element) {
+            return this.optional(element) || 
+                   (/^[0-9]+$/.test(value) && value.length === 10);
+        },
+        $.mage.__('Please enter a valid 10-digit mobile number without spaces or special characters.')
+    );
+
+    // Form validation configuration
+    var form = $('#contact-form');
+    var validation = form.validate({
+        errorClass: 'mage-error',
+        errorElement: 'div',
+        meta: 'validate',
+        errorPlacement: function(error, element) {
+            // Create container for error message if it doesn't exist
+            var container = element.parent().find('.field-error-message');
+            if (!container.length) {
+                container = $('<div class="field-error-message"></div>');
+                element.parent().append(container);
+            }
+            error.appendTo(container);
+        },
+        highlight: function(element, errorClass) {
+            $(element).addClass(errorClass);
+            $(element).parent().addClass('has-error');
+        },
+        unhighlight: function(element, errorClass) {
+            $(element).removeClass(errorClass);
+            $(element).parent().removeClass('has-error');
+            $(element).parent().find('.field-error-message').remove();
+        },
+        // Custom messages for built-in rules
+        messages: {
+            'name': {
+                required: 'Please enter your name'
+            },
+            'email': {
+                required: 'Please enter your email address',
+                'validate-email': 'Please enter a valid email address (Example: johndoe@domain.com)'
+            },
+            'telephone': {
+                required: 'Please enter your mobile number'
+            }
+        }
+    });
+
+    // Input restrictions
+    $('#telephone').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 10) {
+            this.value = this.value.slice(0, 10);
+        }
+    });
+
+    $('#name').on('input', function() {
+        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+    });
+
+    // Form submission handler with reCAPTCHA
+    form.submit(function(e) {
+        if (form.valid()) {
+            var response = grecaptcha.getResponse();
+            if (response.length === 0) {
+                // Create custom error message for reCAPTCHA
+                var recaptchaContainer = $('.g-recaptcha').parent();
+                var errorMessage = recaptchaContainer.find('.field-error-message');
+                
+                if (!errorMessage.length) {
+                    errorMessage = $('<div class="field-error-message"></div>');
+                    recaptchaContainer.append(errorMessage);
+                }
+                
+                errorMessage.html('<div class="mage-error">Please verify that you are not a robot</div>');
+                e.preventDefault();
+                return false;
+            }
+        }
+    });
+});
+</script>

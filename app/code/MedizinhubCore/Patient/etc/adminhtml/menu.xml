@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add id="MedizinhubCore_Patient::main_menu" title="PATIENT" module="MedizinhubCore_Patient" sortOrder="10" resource="MedizinhubCore_Patient::main_menu" />
+		<add id="MedizinhubCore_Patient::manage_patients" title="Manage Patients" module="MedizinhubCore_Patient" sortOrder="10" parent="MedizinhubCore_Patient::main_menu" action="patient/manage/index" resource="MedizinhubCore_Patient::manage_patients" />
+		<add id="MedizinhubCore_Patient::manage_appointments" title="Manage Appointments" module="MedizinhubCore_Patient" sortOrder="20" parent="MedizinhubCore_Patient::main_menu" action="patient/appointments/index" resource="MedizinhubCore_Patient::manage_appointments" />
+	</menu>
+</config>

@@ -1,0 +1,68 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<!-- Configuration for the Manage Save Controller -->
+	<type name="MedizinhubCore\Patient\Controller\Adminhtml\Manage\Save">
+		<arguments>
+			<argument name="manageFactory" xsi:type="object">
+				MedizinhubCore\Patient\Model\ManageFactory
+			</argument>
+		</arguments>
+	</type>
+	<!-- Configuration for the DataProvider Collection Factory -->
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="patients_manage_listing_data_source" xsi:type="string">
+					PatientsManageCollection
+				</item>
+				<item name="patients_appointments_listing_data_source" xsi:type="string">
+					PatientsAppointmentsCollection
+				</item>
+			</argument>
+		</arguments>
+	</type>
+	<!-- Virtual Type for Patients Manage Collection -->
+	<virtualType name="PatientsManageCollection" type="MedizinhubCore\Patient\Ui\DataProvider\Manage\Collection">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">
+				patient
+			</argument>
+			<argument name="resourceModel" xsi:type="string">
+				MedizinhubCore\Patient\Model\ResourceModel\Patient
+			</argument>
+		</arguments>
+	</virtualType>
+	<!-- Virtual Type for Patients Appointments Collection -->
+	<virtualType name="PatientsAppointmentsCollection" type="MedizinhubCore\Patient\Ui\DataProvider\Appointments\Collection">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">
+				patient_appointment
+			</argument>
+			<argument name="resourceModel" xsi:type="string">
+				MedizinhubCore\Patient\Model\ResourceModel\Appointments
+			</argument>
+		</arguments>
+	</virtualType>
+	<preference for="MedizinhubCore\Patient\Api\Data\PatientDataInterface" type="MedizinhubCore\Patient\Model\PatientData" />
+	<type name="MedizinhubCore\Patient\Api\Data\PatientDataInterfaceFactory">
+		<arguments>
+			<argument name="instance" xsi:type="string">
+				MedizinhubCore\Patient\Model\PatientData
+			</argument>
+		</arguments>
+	</type>
+	<type name="MedizinhubCore\Patient\Controller\Index\GetPatients">
+		<arguments>
+			<argument name="customerSession" xsi:type="object">
+				Magento\Customer\Model\Session
+			</argument>
+		</arguments>
+	</type>
+    <preference for="MedizinhubCore\Patient\Api\AppointmentManagementInterface" type="MedizinhubCore\Patient\Model\Appointment\Management"/>
+	<type name="MedizinhubCore\Patient\Block\Appointments">
+        <arguments>
+            <argument name="timeSlotsCollection" xsi:type="object">MedizinhubCore\Patient\Model\ResourceModel\TimeSlots\CollectionFactory</argument>
+            <argument name="hospitalsCollection" xsi:type="object">MedizinhubCore\Patient\Model\ResourceModel\Hospitals\CollectionFactory</argument>
+            <argument name="practitionersCollection" xsi:type="object">MedizinhubCore\Patient\Model\ResourceModel\Practitioners\CollectionFactory</argument>
+        </arguments>
+    </type>
+</config>

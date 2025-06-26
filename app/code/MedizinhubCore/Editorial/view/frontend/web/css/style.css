@@ -1,0 +1,56 @@
+* {
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-weight: 400;
+}
+.feesandpayment-title{
+    text-align: center;
+    color: #063851;
+    font-family: "Source Sans Pro";
+    font-size: 30px;
+    font-weight: 600;
+}
+.editorial-title {
+    color: #063851;
+    font-family: "Source Sans Pro";
+    font-size: 22px;
+    font-weight: 600;
+}
+.editorial-help-text {
+    color: #063851;
+    font-family: "Source Sans Pro";
+    font-size: 20px;
+    font-weight: 600;
+}
+.editorial-description, 
+.editorial-description ol li,
+.editorial-description ul li {
+    color: #000;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0.48px;
+    margin-bottom: 32px;
+}
+.breadcrumbs ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.breadcrumbs ul li {
+    margin-right: 5px;
+}
+
+.breadcrumbs ul li + li:before {
+    content: ">";
+    margin-right: 5px;
+    color: #999; /* Optional: Set the color of the separator */
+}
+.page-title{
+    display: none;
+}
+
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="rule_information">
+        <field name="coupon_image" formElement="image" sortOrder="100">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Coupon Image</item>
+                    <item name="componentType" xsi:type="string">image</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="sales_rule/image/upload"/>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="allowed-extensions" xsi:type="array">
+                        <item name="extensions" xsi:type="string">jpg,jpeg,gif,png</item>
+                    </rule>
+                    <rule name="max-file-size" xsi:type="number">2048</rule>
+                </validation>
+            </settings>
+        </field>
+        
+        <field name="coupon_category" formElement="select" sortOrder="150">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Coupon Category</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="options" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="value" xsi:type="string">medicine_offers</item>
+                            <item name="label" xsi:type="string" translate="true">Medicine Offers</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="value" xsi:type="string">lab_test_offers</item>
+                            <item name="label" xsi:type="string" translate="true">Lab Test Offers</item>
+                        </item>
+                        <item name="2" xsi:type="array">
+                            <item name="value" xsi:type="string">doctor_consult_offers</item>
+                            <item name="label" xsi:type="string" translate="true">Doctor Consult Offers</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        
+        <field name="coupon_titles" formElement="input" sortOrder="998">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Coupon Modal Title</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="coupon_descriptions" formElement="textarea" sortOrder="999">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Coupon Modal Description</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

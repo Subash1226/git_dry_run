@@ -1,0 +1,50 @@
+#order-billing_address_prefix{
+    display:none !important;
+}
+#order-billing_address_middlename{
+    display:none !important;
+}
+#order-billing_address_suffix{
+    display:none !important;
+}
+#order-billing_address_fax{
+    display:none !important;
+}
+label[for="order-billing_address_fax"] {
+    display:none !important;
+}
+label[for="order-billing_address_suffix"] {
+    display:none !important;
+}
+label[for="order-billing_address_middlename"] {
+    display:none !important;
+}
+label[for="order-billing_address_prefix"] {
+    display:none !important;
+}
+label[for="order-shipping_address_fax"] {
+    display:none !important;
+}
+label[for="order-shipping_address_suffix"] {
+    display:none !important;
+}
+label[for="order-shipping_address_prefix"] {
+    display:none !important;
+}
+label[for="order-shipping_address_middlename"] {
+    display:none !important;
+}
+#order-shipping_address_fax{
+    display:none !important;
+}
+#order-shipping_address_prefix{
+    display:none !important;
+}
+#order-shipping_address_suffix{
+    display:none !important;
+}
+
+#order-shipping_address_middlename{
+    display:none !important;
+}
+

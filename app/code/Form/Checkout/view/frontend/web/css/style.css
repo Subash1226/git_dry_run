@@ -1,0 +1,192 @@
+.country_hidden{
+    display: none;
+}
+.street .label {
+    display: contents;
+}
+.field-tooltip .field-tooltip-action {
+    display: none !important;
+}
+.new-shipping-address-modal .modal-inner-wrap{
+    width:670px;
+    background: rgb(241, 249, 254, 1);
+}
+#shipping-new-address-form .shipping-delivery{
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: -10px !important;
+    padding: 0 0 25px 0 !important;
+}
+.shipping_form_firstname {
+    display: inline-block !important;
+    width: 44% !important;
+    margin-right: 4% !important;
+    margin-left: 4% !important;
+    box-sizing: border-box !important;
+}
+.shipping_form_lastname {
+    display: inline-block !important;
+    width: 44% !important;
+    box-sizing: border-box !important;
+}
+.shipping_form_telephone {
+    display: inline-block !important;
+    width: 50% !important;
+    margin-left: 4% !important;
+    box-sizing: border-box !important;
+}
+.shipping_form_houseno {
+    display: inline-block !important;
+    width: 44% !important;
+    margin-left: -2% !important;
+    box-sizing: border-box !important;
+}
+.shipping_form_street_area {
+    margin-left: 4% !important;
+    width: 92% !important;
+}
+.shipping_form_city {
+    display: inline-block !important;
+    width: 44% !important;
+    margin-right: 4% !important;
+    margin-left: 4% !important;
+    box-sizing: border-box !important;
+}
+.shipping_form_region {
+    display: inline-block !important;
+    width: 44% !important;
+    box-sizing: border-box !important;
+}
+.shipping_form_postcode {
+    display: inline-block !important;
+    width: 44% !important;
+    margin-right: 4% !important;
+    margin-left: 4% !important;
+    box-sizing: border-box !important;
+}
+.shipping_form_company {
+    display: inline-block !important;
+    width: 44% !important;
+    box-sizing: border-box !important;
+    padding-bottom: 12px;
+}
+.country_hidden {
+    display: none !important;
+}
+/* Mobile styles */
+@media only screen 
+    and (min-width : 426px) 
+    and (max-width : 768px) {
+    .shipping_form_firstname,
+    .shipping_form_lastname,
+    .shipping_form_houseno,
+    .shipping_form_telephone,
+    .shipping_form_street_area,
+    .shipping_form_city,
+    .shipping_form_region,
+    .shipping_form_postcode,
+    .shipping_form_company {
+        width: 100% !important;
+        margin: 0 0 20px !important;
+        padding: 0 35px 0 !important;
+    }
+    input[name="telephone"] {
+        width: 100% !important;
+    }    
+}
+@media (max-width: 426px) {
+    .shipping_form_firstname, .shipping_form_lastname, .shipping_form_houseno, .shipping_form_telephone, .shipping_form_street_area, .shipping_form_city, .shipping_form_region, .shipping_form_postcode, .shipping_form_company {
+        width: 100% !important;
+        margin: 0 0 20px !important;
+        padding: 0 15px 0 !important;
+    }    
+    input[name="telephone"] {
+        width: 100% !important;
+    }
+}
+@media only screen and (max-width: 639px) {
+    .opc-wrapper .form-login, .opc-wrapper .form-shipping-address, .opc-wrapper .methods-shipping {
+        background:none !important;
+        margin: 28px 0 0 -5px !important;
+        padding: initial !important;
+        border-bottom: none !important;
+    }
+}
+#co-shipping-form input {
+    border: 2px solid #BCE9D6 !important;
+    border-radius: 4px !important;
+    height: 38px !important;
+}
+#co-shipping-form select {
+    border: 2px solid #BCE9D6 !important;
+    border-radius: 4px !important;
+    height: 38px !important;
+}
+.checkoutAddress_show{
+    width: 1140px !important;
+    padding: 0px 146px !important;
+}
+.fieldset>.field>.label, .fieldset>.fields>.field>.label {
+    margin: 0px 0 10px !important;
+}
+#co-shipping-form span {
+    font-family: Source Sans Pro;
+    font-size: 15px;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+.field-error span {
+    color: #e02b27 !important;
+    margin-top: -5px !important;
+    position: absolute !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+.shipping-delivery{
+    font-size: 23px !important;
+    margin-top: 15px !important;
+}
+#shipping-method-buttons-container{
+    margin: 70px -35px !important;
+}
+.shippingAddress_formHeader{
+    color: #063851;
+    font-family: Source Sans Pro;
+    font-size: 24px;
+    margin-top: 15px;
+    font-weight: 600;
+}
+.shippingAddress_formBg{
+    background: rgb(241, 249, 254, 1);
+    padding: 20px;
+}
+.shippingAddress_form{
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) !important;
+}
+@media screen and (min-width: 769px), print {
+    .checkout-index-index .modal-popup .modal-footer .action-save-address {
+        margin-right: 125px !important;
+    }
+}
+
+@media screen and (min-width: 768px) and (min-width: 1024px), print {
+    .checkout-index-index .modal-popup .modal-inner-wrap {
+        width: 660px !important;
+        left: 55% !important;
+        margin-top: 15px !important;
+    }
+}
+.modal-popup._inner-scroll .modal-inner-wrap {
+    max-height: 95% !important;
+}
+#modal-content-12 {
+    width: 646px;
+    padding-right: 8px;
+    padding-bottom: -63px;
+}
+#shipping-save-in-address-book{
+    margin-left: 24px;
+}
