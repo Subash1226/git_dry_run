@@ -1,0 +1,46 @@
+<?php
+/**
+ * @package Goomento_PageBuilder
+ * @link https://github.com/Goomento/PageBuilder
+ */
+
+declare(strict_types=1);
+
+use Goomento\PageBuilder\Block\View\Element\Widget;
+
+/**
+ * @var Widget $block
+ */
+$widget = $block->getWidget();
+$settings = $block->getSettingsForDisplay();
+
+if (!empty($settings['alert_title'])):
+    if (!empty($settings['alert_type'])) {
+        $widget->addRenderAttribute('wrapper', 'class', 'gmt-alert gmt-alert-' . $settings['alert_type']);
+    }
+
+    $widget->addRenderAttribute('wrapper', 'role', 'alert');
+    $widget->addRenderAttribute('alert_title', 'class', 'gmt-alert-title');
+
+    ?>
+    <div <?= /** @noEscape */ $widget->getRenderAttributeString('wrapper'); ?>>
+        <span <?= /** @noEscape */ $widget->getRenderAttributeString('alert_title'); ?>>
+            <?php $widget->printInlineEditingContent('alert_title'); ?>
+        </span>
+        <?php
+        if (!empty($settings['alert_description'])):
+            $widget->addRenderAttribute('alert_description', 'class', 'gmt-alert-description'); ?>
+            <span <?= /** @noEscape */ $widget->getRenderAttributeString('alert_description'); ?>>
+                <?php $widget->printInlineEditingContent('alert_description'); ?>
+            </span>
+        <?php endif; ?>
+        <?php if ('show' === $settings['alert_show_dismiss']): ?>
+            <button type="button" class="gmt-alert-dismiss">
+                <span aria-hidden="true">&times;</span>
+                <span class="gmt-screen-only"><?= $block->escapeHtml(__('Dismiss alert')); ?></span>
+            </button>
+        <?php endif; ?>
+    </div>
+<?php endif;
+
+

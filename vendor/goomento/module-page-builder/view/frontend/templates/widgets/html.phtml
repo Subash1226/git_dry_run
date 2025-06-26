@@ -1,0 +1,16 @@
+<?php
+/**
+ * @package Goomento_PageBuilder
+ * @link https://github.com/Goomento/PageBuilder
+ */
+
+declare(strict_types=1);
+
+use Goomento\PageBuilder\Block\View\Element\Widget;
+
+/**
+ * @var Widget $block
+ */
+$widget = $block->getWidget();
+?>
+<?= /** @noEscape */ $widget->getSettingsForDisplay('html'); ?>

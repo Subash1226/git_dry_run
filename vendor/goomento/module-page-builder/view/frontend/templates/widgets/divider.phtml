@@ -1,0 +1,46 @@
+<?php
+/**
+ * @package Goomento_PageBuilder
+ * @link https://github.com/Goomento/PageBuilder
+ */
+
+declare(strict_types=1);
+
+use Goomento\PageBuilder\Block\View\Element\Widget;
+use Goomento\PageBuilder\Builder\Managers\Icons;
+use Goomento\PageBuilder\Builder\Widgets\Divider;
+
+/**
+ * @var Widget $block
+ */
+/** @var Divider $widget */
+$widget = $block->getWidget();
+
+$settings = $widget->getSettingsForDisplay();
+
+$svgCode = $widget->buildSvg();
+$hasIcon = 'line_icon' === $settings['divider_look'] && !empty($settings['divider_icon']);
+$hasText = 'line_text' === $settings['divider_look'] && !empty($settings['divider_text']);
+
+$widget->addRenderAttribute('wrapper', 'class', 'gmt-divider');
+
+if (!empty($svgCode)) {
+    $widget->addRenderAttribute('wrapper', 'style', '--divider-pattern-url: url("data:image/svg+xml,' . $widget->svgToDataUri($svgCode) . '");');
+} ?>
+<div <?= /** @noEscape */ $widget->getRenderAttributeString('wrapper'); ?>>
+        <span class="gmt-divider-separator">
+        <?php if ($hasIcon): ?>
+            <div class="gmt-icon gmt-divider__element">
+                <?php
+                Icons::renderIcon($settings['divider_icon'], [
+                    'aria-hidden' => 'true',
+                ]); ?>
+            </div>
+        <?php elseif ($hasText):
+            $widget->addRenderAttribute('text', [ 'class' => [ 'gmt-divider__text', 'gmt-divider__element' ] ]); ?>
+            <span <?= /** @noEscape */ $widget->getRenderAttributeString('text'); ?>>
+                <?php $widget->printInlineEditingContent('divider_text') ?>
+            </span>
+        <?php endif; ?>
+        </span>
+</div>

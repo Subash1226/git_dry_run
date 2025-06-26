@@ -1,0 +1,114 @@
+<?php
+/**
+ * @package Goomento_PageBuilder
+ * @link https://github.com/Goomento/PageBuilder
+ */
+declare(strict_types=1);
+
+use Goomento\PageBuilder\Block\View\Element\Widget;
+use Goomento\PageBuilder\Builder\Controls\Groups\ImageSizeGroup;
+
+/**
+ * @var Widget $block
+ */
+$widget = $block->getWidget();
+$settings = $widget->getSettingsForDisplay();
+
+$widget->addRenderAttribute('wrapper', 'class', 'gmt-testimonial-wrapper');
+
+if ($settings['testimonial_alignment']) {
+    $widget->addRenderAttribute('wrapper', 'class', 'gmt-testimonial-text-align-' . $settings['testimonial_alignment']);
+}
+
+$widget->addRenderAttribute('meta', 'class', 'gmt-testimonial-meta');
+
+if ($settings['testimonial_image']['url']) {
+    $widget->addRenderAttribute('meta', 'class', 'gmt-has-image');
+}
+
+if ($settings['testimonial_image_position']) {
+    $widget->addRenderAttribute('meta', 'class', 'gmt-testimonial-image-position-' . $settings['testimonial_image_position']);
+}
+
+$hasContent = !!$settings['testimonial_content'];
+$hasImage = !!$settings['testimonial_image']['url'];
+$hasName = !!$settings['testimonial_name'];
+$hasJob = !!$settings['testimonial_job'];
+
+if (! $hasContent && ! $hasImage && ! $hasName && ! $hasJob) {
+    return;
+}
+
+if (! empty($settings['testimonial_link']['url'])) {
+    $widget->addRenderAttribute('link', 'href', $settings['testimonial_link']['url']);
+
+    if ($settings['testimonial_link']['is_external']) {
+        $widget->addRenderAttribute('link', 'target', '_blank');
+    }
+
+    if (! empty($settings['testimonial_link']['nofollow'])) {
+        $widget->addRenderAttribute('link', 'rel', 'nofollow');
+    }
+} ?>
+<div <?= /** @noEscape */ $widget->getRenderAttributeString('wrapper'); ?>>
+    <?php
+    if ($hasContent):
+        $widget->addRenderAttribute('testimonial_content', 'class', 'gmt-testimonial-content'); ?>
+        <div <?= /** @noEscape */ $widget->getRenderAttributeString('testimonial_content'); ?>>
+            <?php $widget->printInlineEditingContent('testimonial_content'); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($hasImage || $hasName || $hasJob): ?>
+        <div <?= /** @noEscape */ $widget->getRenderAttributeString('meta'); ?>>
+            <div class="gmt-testimonial-meta-inner">
+                <?php if ($hasImage): ?>
+                    <div class="gmt-testimonial-image">
+                        <?php
+                        $imageHtml = ImageSizeGroup::getAttachmentImageHtml($settings, 'testimonial_image');
+                        if (! empty($settings['testimonial_link']['url'])):
+                            $imageHtml = '<a ' . $widget->getRenderAttributeString('link') . '>' . $imageHtml . '</a>';
+                        endif;
+                        echo /** @noEscape */ $imageHtml; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($hasName || $hasJob): ?>
+                    <div class="gmt-testimonial-details">
+                        <?php
+                        if ($hasName):
+                            $widget->addRenderAttribute('testimonial_name', 'class', 'gmt-testimonial-name'); ?>
+                            <div <?= /** @noEscape */ $widget->getRenderAttributeString('testimonial_name'); ?>>
+                                <?php if (!empty($settings['testimonial_link']['url'])): ?>
+                                    <a <?= /** @noEscape */ $widget->getRenderAttributeString('link') ?>>
+                                <?php endif; ?>
+                                    <?php $widget->printInlineEditingContent('testimonial_name'); ?>
+                                <?php if (!empty($settings['testimonial_link']['url'])): ?>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php
+                        if ($hasJob):
+                            $widget->addRenderAttribute('testimonial_job', 'class', 'gmt-testimonial-job');
+
+                            $testimonialJobHtml = $settings['testimonial_job'];
+                            if (! empty($settings['testimonial_link']['url'])):
+                                $testimonialJobHtml = '<a ' . $widget->getRenderAttributeString('link') . '>' . $testimonialJobHtml . '</a>';
+                            endif; ?>
+                            <div <?= /** @noEscape */ $widget->getRenderAttributeString('testimonial_job'); ?>>
+                                <?php if (!empty($settings['testimonial_link']['url'])): ?>
+                                    <a <?= /** @noEscape */ $widget->getRenderAttributeString('link') ?>>
+                                <?php endif; ?>
+                                    <?php $widget->printInlineEditingContent('testimonial_job'); ?>
+                                <?php if (!empty($settings['testimonial_link']['url'])): ?>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>

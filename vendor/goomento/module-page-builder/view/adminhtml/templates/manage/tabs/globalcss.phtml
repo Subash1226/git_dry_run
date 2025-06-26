@@ -1,0 +1,66 @@
+<?php
+/**
+ * @package Goomento_PageBuilder
+ * @link https://github.com/Goomento/PageBuilder
+ */
+
+declare(strict_types=1);
+/**
+ * @var $block GlobalCss
+ */
+
+use Goomento\PageBuilder\Block\Adminhtml\Manage\GlobalCss;
+$htmlId = uniqid('gmt_custom_css_');
+?>
+<div id="<?= /** @noEscape */ $htmlId ?>">
+    <label for="custom_css"></label>
+    <textarea style="display: none" name="custom_css" id="custom_css"><?= $block->escapeHtml($block->getCustomCss()) ?></textarea>
+    <div id="global_css_editor"><?= $block->escapeHtml(__('Loading ...')) ?></div>
+</div>
+<script>
+    require([
+        'jquery',
+        'Goomento_PageBuilder/js/view/ace-wrapper',
+        '!domReady'
+    ], function ($) {
+        let $context = $('#<?= /** @noEscape */ $htmlId ?>'),
+            $customCss = $('#custom_css', $context),
+            $editor = $('#global_css_editor', $context),
+            editor,
+            windowVariableExisted = function (name, callback) {
+                if (window[name]) {
+                    callback(window[name]);
+                } else {
+                    let check = setInterval(() => {
+                        if (window[name]) {
+                            clearInterval(check);
+                            callback(window[name]);
+                        }
+                    }, 1000);
+                }
+            },
+            loadEditor = function (ace) {
+                editor = ace.edit( 'global_css_editor' );
+
+                editor.setOptions( {
+                    mode: 'ace/mode/css',
+                    minLines: 10,
+                    maxLines: Infinity,
+                    showGutter: true,
+                    useWorker: true,
+                    enableBasicAutocompletion: true,
+                    enableLiveAutocompletion: true,
+                } );
+
+                editor.getSession().setUseWrapMode( true );
+                editor.getSession().setValue( $customCss.val() );
+
+                editor.getSession().on('change', function() {
+                    $customCss.val( editor.getSession().getValue() );
+                });
+
+                $editor.addClass('loaded');
+            };
+        windowVariableExisted('ace', loadEditor);
+    });
+</script>

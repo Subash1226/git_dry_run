@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package Goomento_PageBuilder
+ * @link https://github.com/Goomento/PageBuilder
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="pagebuilder_general"/>
+    <body>
+
+        <container name="media-content">
+            <block class="Goomento\PageBuilder\Block\Adminhtml\Editor\MediaUploader"
+                   name="pagebuilder.media"
+                   template="Goomento_PageBuilder::editor/media.phtml" />
+        </container>
+
+        <referenceContainer name="content" remove="true"/>
+        <referenceContainer name="head.calendar" remove="true"/>
+
+        <referenceContainer name="header.inner.left" remove="true"/>
+        <referenceContainer name="header.inner.right" remove="true"/>
+        <referenceContainer name="menu.wrapper" remove="true"/>
+        <referenceContainer name="main.top" remove="true"/>
+        <referenceBlock name="legal.system" remove="true"/>
+        <referenceBlock name="legal.copyright" remove="true"/>
+        <referenceBlock name="head.calendar" remove="true"/>
+        <referenceContainer name="notices.wrapper" remove="true"/>
+    </body>
+</page>

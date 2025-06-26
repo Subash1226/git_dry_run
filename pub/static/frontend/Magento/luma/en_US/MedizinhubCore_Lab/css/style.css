@@ -1,0 +1,558 @@
+.order-prescription {
+    background-color: rgba(251, 231, 208, 1);
+    padding: 20px;
+    border-radius: 8px;
+}
+.routine-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #062B37;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.women-book-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #3F0E36;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.men-book-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #6B0007;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.senior-book-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #2C1254;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.fever-book-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #054146;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.view-health-btn {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, .3);
+    color: #e76f51;
+    background-color: #fff;
+    font-size: 16px;
+    border-radius: 8px;
+}
+.preg-view-btn {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, .3);
+
+    color: #F4A261;
+    background-color: #fff;
+    font-size: 16px;
+    border-radius: 8px;
+}
+.breath-view-btn {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, .3);
+
+    color: #E5B84C;
+    background-color: #fff;
+    font-size: 16px;
+    border-radius: 8px;
+}
+.fever-view-btn {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, .3);
+    color: #2A9D8F;
+    background-color: #fff;
+    font-size: 16px;
+    border-radius: 8px;
+}
+.body-view-btn {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, .3);
+    color: #287271;
+    background-color: #fff;
+    font-size: 16px;
+    border-radius: 8px;
+}
+.bp-view-btn {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, .3);
+    color: #e76f51;
+    background-color: #fff;
+    font-size: 16px;
+    border-radius: 8px;
+}
+#link-login {
+font-size: 17px;
+font-weight: 600;
+color: #049B7E;
+font-family: "Source Sans Pro";
+margin-top: 12px;
+}
+
+    .search-btn {
+position: absolute;
+margin-top: -44px;
+margin-left: 532px;
+border-radius: 88px;
+width: 98px;
+height: 41px;
+font-size: 16px;
+background:linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);;
+color: #fff;
+font-weight: 500;
+border: 1px solid #03C777;
+}
+
+
+.diabetics-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #934606;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.thyroid-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #0A264D;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.grow {
+
+cursor: pointer;
+transition: all 0.3s ease-in-out;
+}
+
+.grow:hover {
+transform: scale(1.1);
+}
+.fullbody-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #5A5507;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+#maincontent {
+    display: none !important;
+}
+
+footer {
+    display: flex !important;
+    background: #049B7E !important;
+}
+.scroll-inner {
+    width: 100%;
+    text-align: center;
+}
+
+.order-doctor {
+    background-color: rgba(204, 255, 240, 1);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.order-prescription-content {
+    color: #003827;
+    font-family: Source Sans Pro, Sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.order-offer-prescription {
+    color: #5b95c1;
+    font-family: Source Sans Pro, Sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: -10px;
+}
+
+.book-my-btn {
+    background-color: #03c777;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    height: 44px;
+}
+
+.routine-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #062B37;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.women-book-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #3F0E36;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.men-book-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #6B0007;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.senior-book-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #2C1254;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.fever-book-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #054146;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.fullbody-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #5A5507;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.diabetics-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #934606;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+.thyroid-btn {
+    height: 40px;
+    border-radius: 4.347px;
+    background: #0A264D;
+    color: #FFF;
+    font-family: Montserrat !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    width: 107px;
+    margin-top: 15px;
+}
+    .fullbody {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Lab_Pics1.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        padding: 26px 0px 27px 20px;
+
+    }
+
+    .womens-pack {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Lab_5.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        padding: 26px 0px 27px 20px;
+
+    }
+      .search-btn {
+position: absolute;
+margin-top: -44px;
+margin-left: 532px;
+border-radius: 88px !important;
+width: 98px;
+height: 41px;
+font-size: 16px !important;
+background:linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);
+color: #fff !important;
+font-weight: 500 !important;
+border: 1px solid #03C777 !important;
+}
+#link-login {
+font-size: 17px;
+font-weight: 600;
+color: #049B7E;
+font-family: "Source Sans Pro";
+margin-top: 12px;
+}
+    .mens-pack {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Lab_6.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        padding: 26px 0px 27px 20px;
+
+    }
+
+    .Senior-pack {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Lab_3.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        padding: 26px 0px 27px 20px;
+
+    }
+    .page-title-wrapper{
+        display: none;
+    }
+
+    .fever-pack {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Lab_10.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        padding: 26px 0px 27px 20px;
+
+    }
+
+    .diabetics-pack {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Lab_2.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        padding: 26px 0px 27px 20px;
+
+    }
+
+    .thyroid-pack {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Lab_8.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        padding: 26px 0px 27px 20px;
+
+    }
+
+    .routine-pack {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Lab_4.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        padding: 26px 0px 27px 20px;
+
+    }
+
+    .diabetics-bg {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Bg_pic.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+    }
+
+    .preganacy-bg {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Bg_pic1.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+    }
+
+    .breathing-bg {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Bg_pic3.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+    }
+
+    .fever-bg {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Bg_pic4.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+    }
+
+    .body-bg {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Bg_pic5.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+    }
+
+    .bp-bg {
+        background-image: url(<?= $block->getViewFileUrl('MedizinhubCore_Home::images/Bg_pic6.png'); ?>);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+    }
+    .test-include {
+        color: #535C5F;
+        font-family: "Source Sans Pro";
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 400;
+        line-height: normal;
+        padding: 5px;
+    }
+.show-more-btn{
+    width: 360px;
+height: 42px;
+padding: 10px 18px;
+justify-content: center;
+align-items: center;
+border-radius: 8px;
+border: 1px solid #03C777;
+color: #03C777;
+font-family: "Source Sans Pro";
+font-size: 16px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+background: transparent;
+}
+.show-more-btn:hover{
+    background: #03C777;
+    color: #fff;
+}
+.book-inner {
+        border-radius: 8px 8px 8px 8px;
+        border: 1px solid #03C777;
+        padding: 20px 20px 52px 20px;
+    }
+
+    .labtest-name {
+        color: #313739;
+        font-family: Source Sans Pro;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        margin-top: -6px;
+    }
+
+    .lab-new-price {
+        color: #313739;
+        font-family: "Source Sans Pro";
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .lab-new-name {
+        color: #313739;
+        font-family: "Source Sans Pro";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    .lab-old-price {
+        color: #818D92;
+        font-family: "Source Sans Pro";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        margin-top: 5px;
+        float: right;
+        text-decoration: line-through;
+
+    }
+
+    .lab-offer-price {
+        color: #049B7E;
+        font-family: "Source Sans Pro";
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 600;
+
+    }
+
+    .lab-booknow-btn {
+        border-radius: 0px 0px 8px 8px;
+        background: linear-gradient(92deg, #03C777 11.69%, #01A462 102.33%);
+        height: 42px;
+        color: #FFF;
+        font-family: "Source Sans Pro";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        width: 100%;
+        line-height: normal;
+        margin-top: -60px;
+    }

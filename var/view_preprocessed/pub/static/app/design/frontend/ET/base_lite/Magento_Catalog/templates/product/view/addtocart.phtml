@@ -1,0 +1,40 @@
+<?php /** * Copyright © Magento, Inc. All rights reserved. * See COPYING.txt for license details. */ /** @var $block \Magento\Catalog\Block\Product\View */ ?> <?php $_product = $block->getProduct(); ?> <?php $buttonTitle = __('Add to Cart'); $baseUrl = $this->getBaseUrl(); $prescIcon = $baseUrl . '/media/wysiwyg/Precription_Icon.png'; ?> <?php if ($_product->isSaleable()) : ?> <?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance(); $product = $objectManager->get('Magento\Framework\Registry')->registry('current_product'); $categories = $product->getCategoryIds(); foreach ($categories as $category) { $cat = $objectManager->create('Magento\Catalog\Model\Category')->load($category); } ?> <?php $prescription_check = $_product->getData('prescription_check'); $category_check = $_product->getData('category_check'); $special_price = $_product->getData('special_price'); $quantity_counts = $_product->getData('quantity_contents'); ?> <p class="category-text" id="category-name">Category:&nbsp;<span id="category-role"><?php echo $cat->getName() . '<br>'; ?></span></p><?php if ($prescription_check == '37') { ?> <img class="prescription-icon" src="<?php echo $prescIcon; ?>" title="Precription_Icon.png" alt="Precription_Icon.png"><?php } ?> <?php if ($special_price = " ") { ?> <script>
+            const swatch = document.querySelector("div[data-role='swatch-options']");
+            var offer = document.getElementById("off-ends");
+            if (swatch) {
+                offer.style.display = "none";
+            }
+const productPriceElement = document.getElementById("product-price-3");
+const discount = document.getElementById("discount old-price-3");
+if (productPriceElement) {
+    const priceAmount = productPriceElement.getAttribute("data-price-amount");
+    const priceWithSymbol = "₹" + priceAmount;
+    productPriceElement.innerHTML = priceWithSymbol;
+}
+if (discount) {
+    const DiscAmount = discount.getAttribute("data-price-amount");
+    const priceWithSymbol = "₹" + DiscAmount;
+    discount.innerHTML = priceWithSymbol;
+}</script><p class="offer-ends" id="off-ends">Offers ends in 2 hours</p><?php } ?> <div class="box-tocart"><div class="fieldset"><?php if ($block->shouldRenderQuantity()) : ?> <div class="field qty"><div class="control"><?php $tablets = $cat->getName(); if ($category_check == "39") { ?> <div style="display: flex; align-items: center;"><label class="label-box" for="qty"><span id="qty-label"><?= $block->escapeHtml(__(' Qty:')) ?></span></label> <select name="qty" id="qty-strips"><option value="1">1 Strips</option><option value="2">2 Strips</option><option value="3">3 Strips</option><option value="4">4 Strips</option><option value="5">5 Strips</option><option value="6">6 Strips</option><option value="7">7 Strips</option><option value="8">8 Strips</option><option value="9">9 Strips</option><option value="10">10 Strips</option></select> <p id="cart-strip"><?php echo $quantity_counts; ?></p></div><?php } else if ($category_check == "45") { ?> <div style="display: flex; align-items: center;"><label class="label-box" for="qty"><span id="qty-label"><?= $block->escapeHtml(__(' Qty:')) ?></span></label> <select name="qty" id="qty-strips"><option value="1">1 Bottle</option><option value="2">2 Bottle</option><option value="3">3 Bottle</option><option value="4">4 Bottle</option><option value="5">5 Bottle</option><option value="6">6 Bottle</option><option value="7">7 Bottle</option><option value="8">8 Bottle</option><option value="9">9 Bottle</option><option value="10">10 Bottle</option></select> <p id="cart-strip"><?php echo $quantity_counts; ?></p></div><?php } else if ($category_check == "42") { ?> <span class="qty-section"><label class="label-qty" for="qty"><?= $block->escapeHtml(__('Select your required quantity &nbsp;:')) ?></label> <label class="label-box" for="qty"><span id="qty-label"><?= $block->escapeHtml(__(' Qty')) ?></span></label> <span class="qty-btn qty-dec"><i class="fa fa-minus" aria-hidden="true"></i></span> <input type="number" name="qty" id="qty" min="0" value="<?= $block->getProductDefaultQty() * 1 ?>" title="<?= $block->escapeHtmlAttr(__('Qty')) ?>" class="input-text qty qty-default" data-validate="<?= $block->escapeHtmlAttr(json_encode($block->getQuantityValidators())) ?>" /><span class="qty-btn qty-inc"><i class="fa fa-plus" aria-hidden="true"></i></span></span></br> <?php } else if ($category_check == "43") { ?> <script>
+                                var category = document.getElementById("category-name");
+                                category.style.display = "none";</script><?php } ?> <script type="text/javascript">
+                            require(['jquery'], function() {
+                                jQuery(document).ready(function() {
+                                    jQuery('.qty-inc').click(function() {
+                                        jQuery('.qty-default').val(Number(jQuery('.qty-default').val()) + 1);
+                                    });
+
+                                    jQuery('.qty-dec').click(function() {
+                                        var value = Number(jQuery('.qty-default').val()) - 1;
+                                        if (value > 0) {
+                                            jQuery('.qty-default').val(value);
+                                        }
+
+                                    });
+                                });
+                            });</script></div></div><?php endif; ?> <div class="actions"><button type="submit" title="<?= $block->escapeHtmlAttr($buttonTitle) ?>" class="action primary tocart" id="product-addtocart-button" disabled><span><?= $block->escapeHtml($buttonTitle) ?></span></button> <?= $block->getChildHtml('', true) ?></div></div></div><?php endif; ?> <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }</script>

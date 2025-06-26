@@ -1,0 +1,132 @@
+.test-include {
+    color: #535C5F;
+    font-family: "Source Sans Pro";
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+    padding: 5px;
+}
+.page-title-wrapper{
+    display: none;
+}
+
+.show-more-btn{
+width: 360px;
+height: 42px;
+padding: 10px 18px;
+justify-content: center;
+align-items: center;
+border-radius: 8px;
+border: 1px solid #03C777;
+color: #03C777;
+font-family: "Source Sans Pro";
+font-size: 16px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+background: transparent;
+}
+.show-more-btn:hover{
+background: #03C777;
+color: #fff;
+}
+.book-inner {
+    border-radius: 8px 8px 8px 8px;
+    border: 1px solid #03C777;
+    padding: 20px 20px 52px 20px;
+}
+
+.labtest-name {
+    color: #313739;
+    font-family: Source Sans Pro;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    margin-top: -6px;
+}
+
+.lab-new-price {
+    color: #313739;
+    font-family: "Source Sans Pro";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.lab-new-name {
+    color: #313739;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.lab-old-price {
+    color: #818D92;
+    font-family: "Source Sans Pro";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    margin-top: 5px;
+    float: right;
+    text-decoration: line-through;
+
+}
+
+.lab-offer-price {
+    color: #049B7E;
+    font-family: "Source Sans Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+
+}
+
+.lab-booknow-btn {
+    border-radius: 0px 0px 8px 8px;
+    background: linear-gradient(92deg, #03C777 11.69%, #01A462 102.33%);
+    height: 42px;
+    color: #FFF;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    width: 100%;
+    line-height: normal;
+    margin-top: -60px;
+}
+.lab-booknow-btn:hover{
+    border-radius: 0px 0px 8px 8px;
+    background: linear-gradient(92deg, #03C777 11.69%, #01A462 102.33%);
+    height: 42px;
+    color: #FFF;
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    width: 100%;
+    line-height: normal;
+    margin-top: -60px;
+}
+.search-btn {
+position: absolute;
+margin-top: -44px;
+margin-left: 532px;
+border-radius: 88px !important;
+width: 98px;
+height: 41px;
+font-size: 16px !important;
+background:linear-gradient(94deg, #03C777 56.99%, #01A462 99.73%);
+color: #fff !important;
+font-weight: 500 !important;
+border: 1px solid #03C777 !important;
+}
+#link-login {
+font-size: 17px;
+font-weight: 600;
+color: #049B7E;
+font-family: "Source Sans Pro";
+margin-top: 12px;
+}

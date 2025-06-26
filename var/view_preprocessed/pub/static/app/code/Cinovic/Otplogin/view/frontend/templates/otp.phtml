@@ -1,0 +1,77 @@
+<?php /** * Cinovic Technologies LLP. * * @category Cinovic * @package Cinovic_Otplogin * @author Cinovic Technologies LLP * @copyright Copyright (c) Cinovic Technologies LLP (https://cinovic.com) * @license https://store.cinovic.com/license.html */ ?> <style> #otp:focus{ outline: none !important; background-image: linear-gradient(#E7F5FD , #E7F5FD ), url("https://assets.codepen.io/729148/blue-rounded-rectangle.svg") !important; background-size: var(--magic-number) !important; background-position-x: right, left !important; background-repeat: no-repeat, repeat-x !important; box-shadow: 0 0 0 0 #fff !important; background: transparent; } #otp-error{ margin-left:27px; }</style><div style="padding: 30px 0;" id="customer-popup-otp" class="customer-popup-otp"><div class="col-md-6 image"><img class="otp-log-image" src="<?php echo $this->getViewFileUrl('Cinovic_Otplogin::images/mobile.png'); ?>"></div><div class="col-md-6"><div style="display: none;" class="otpmessages"></div><form style="padding: 50px 0;" class="form" method="post" id="form-otpsend" data-mage-init='{"validation":{}}'><input type="hidden" id="login-redirect-url" name="redirect_url" value="<?php echo $this->getUrl('/'); ?>" /><fieldset class="fieldset" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>"><p style="font-family: Source Sans Pro ;font-weight:400;font-size:40px;">OTP</p><p style="color: rgba(6, 56, 81, 1);font-family: Source Sans Pro ;font-weight:400;font-size:16px;">Enter your OTP sent to your authority</p><div class="field otp required"><div class="control"><div style="margin-left: -23px;" class="row"><div class="col-md-5"><input style=" --magic-number: 45px; background-image: linear-gradient(#fff , #fff ), url('<?php echo $this->getViewFileUrl('Cinovic_Otplogin::images/Box.svg'); ?>') !important; background-size: var(--magic-number) !important; background: transparent; background-position-x: right, left; background-repeat: no-repeat, repeat-x; border: 0; height: var(--magic-number); width: calc(5 * var(--magic-number)); font-size: calc(0.6 * var(--magic-number)); font-family: Source Sans Pro !important; letter-spacing: calc(0.85 * var(--magic-number)); padding-inline-start: calc(0.3 * var(--magic-number)); box-sizing: border-box; overflow: hidden; font-family: Source Sans Pro !important; font-weight: 400; transform: translateX(calc(0.4 * var(--magic-number))); font-size: 18px; " type="text" maxlength="4" pattern="\d{4}" name="otp" alt="otp" id="otp" class="input-text" data-validate="{required:true}"></div><div class="col-md-2"><button style=" margin-left:27px; width: 95% !important; background: #03C777; border: none; height: 45px !important; width: 45px !important; border-radius: 50%; text-transform: capitalize;" type="button" class="action submit sendotpsubmit primary"><svg style="margin-left: -7px;margin-top: -6px;" width="24" height="19" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883" stroke="#ffffff" stroke-width="2"/></svg></button></div></div><div style="padding: 23px 4px;" class="resend-inner"><a style="color: rgba(45, 63, 228, 1); font-size: 16px; cursor:pointer;text-decoration:underline;" name="email" class="resendotp"><span><?= $block->escapeHtml(__('Resend OTP')) ?></span></a></div></div></div><?= $block->getChildHtml('form_additional_info') ?></fieldset><div class="actions-toolbar"><!-- <div class="primary"><button type="button" class="action submit sendotpsubmit primary"></button></div> --><!-- <div class="secondary"><a name="email" class="resendotp"></a></div> --></div></form></div></div><script type="text/javascript">
+    require(["jquery"], function($) {
+        $('.sendotpsubmit').on('click', function() {
+            if ($('#form-otpsend').valid()) {
+                $('body').loader().loader('show');
+                $.ajax({
+                    url: "<?php echo $block->getUrl('otplogin/account/otppost') ?>",
+                    data: $('#form-otpsend').serialize(),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        $('body').loader().loader('hide');
+                        if (response.errors) {
+                            $(".message").remove();
+                            $('<div class="message message-error error"><div>' + response.message + '</div></div>').appendTo('.otpmessages');
+                        } else {
+                            $(".message").remove();
+                            $('<div class="message message-success success"><div>' + response.message + '</div></div>').appendTo('.otpmessages');
+                            
+                                                       
+ let url;
+const loginRedirect = sessionStorage.getItem('loginlastclick');
+
+if (loginRedirect === 'Login') {
+    url = '/';
+} else if (loginRedirect === 'Cart') {
+    url = 'checkout/cart';
+} else if (loginRedirect === 'Checkout') {
+    url = 'checkout';
+}
+else if (loginRedirect === 'Prescription') {
+    url = 'prescription';
+}
+else {
+    url = '/';
+}
+ window.location.href = url;
+
+                        }
+                    },
+                    error: function() {
+                        $('body').loader().loader('hide');
+                        $(".message").remove();
+                        $('<div class="message message-error error"><div>An error occurred, please try again later.</div></div>').appendTo('.otpmessages');
+                    }
+                });
+            }
+        });
+
+        $('.resendotp').on('click', function() {
+            var customurl = "<?php echo $block->getUrl('otplogin/account/resendotp') ?>";
+            $('body').loader().loader('show');
+            $.ajax({
+                url: customurl,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    $(".message").remove();
+                    $('body').loader().loader('hide');
+                    $('<div class="message message-success success"><div>' + response.message + '</div></div>').appendTo('.otpmessages');
+                },
+                error: function() {
+                    $('body').loader().loader('hide');
+                    $(".message").remove();
+                    $('<div class="message message-error error"><div>An error occurred, please try again later.</div></div>').appendTo('.otpmessages');
+                }
+            });
+        });
+    });</script><script type="text/x-magento-init">
+    {
+                "#customer-popup-otp": {
+                    "Cinovic_Otplogin/js/action/customer-authentication-popup": {
+                        "popupTitle": "<?php /* @escapeNotVerified */ echo __(''); ?>",
+                        "innerWidth": "600"
+                    }
+                }
+            }</script></div>

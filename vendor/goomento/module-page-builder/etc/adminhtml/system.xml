@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package Goomento_PageBuilder
+ * @link https://github.com/Goomento/PageBuilder
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="pagebuilder" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>Goomento_PageBuilder::manage_config</resource>
+            <label>Page Builder</label>
+            <tab>goomento</tab>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <label>Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Display Builder Content on storefront.</comment>
+                </field>
+                <field id="version" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <label />
+                    <frontend_model>Goomento\PageBuilder\Model\Config\Frontend\Version</frontend_model>
+                </field>
+            </group>
+            <group id="import" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Import</label>
+                <field id="allowed_download_image" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Download image</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Image will be downloaded, otherwise keep the same link.</comment>
+                </field>
+                <field id="download_folder" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Download folder</label>
+                    <depends>
+                        <field id="pagebuilder/import/allowed_download_image">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="builder_assistance" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Builder Assistance</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Replace the default Magento Editor By Goomento.</comment>
+                </field>
+                <field id="open_in" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Open in</label>
+                    <source_model>Goomento\PageBuilder\Model\Config\Source\OpenAssistance</source_model>
+                    <comment>Open editor behavior.</comment>
+                    <depends>
+                        <field id="pagebuilder/builder_assistance/active">1</field>
+                    </depends>
+                </field>
+                <field id="all_page" type="select" translate="label" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Show in all pages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="pagebuilder/builder_assistance/active">1</field>
+                    </depends>
+                </field>
+                <field id="custom_pages" type="multiselect" translate="label" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Page's URL contains</label>
+                    <frontend_model>Goomento\PageBuilder\Block\Adminhtml\Config\Form\Field\AssistancePages</frontend_model>
+                    <backend_model>Goomento\PageBuilder\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <depends>
+                        <field id="pagebuilder/builder_assistance/all_page">0</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="integrations" translate="label" type="text" sortOrder="26" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Integrations</label>
+                <field id="google_maps_key" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google maps embed API</label>
+                    <comment><![CDATA[Get Embed API from <a href="https://developers.google.com/maps/documentation/embed/get-api-key">credentials page.</a>]]></comment>
+                </field>
+                <field id="fb_app_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Facebook App Id</label>
+                    <comment><![CDATA[Get ID from <a href="https://developers.facebook.com/apps/">facebook developer page.</a>]]></comment>
+                </field>
+            </group>
+            <group id="editor" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Editor</label>
+                <field id="debug" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                    <label>Debug Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enabled debug mode will display error in storefront.</comment>
+                </field>
+                <field id="is_rtl" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Is RTL</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="resources_globally" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Use Goomento as apart of theme</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Default JS/CSS will be added to all pages in storefront.</comment>
+                </field>
+                <group id="revisions" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Saved draft &amp; Revisions</label>
+                    <field id="number_to_keep" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                        <label>Number of revision to keep</label>
+                        <comment>Leave it blank of set to `0` will not delete the revision.</comment>
+                    </field>
+                </group>
+                <group id="media" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Media</label>
+                    <field id="url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Custom URL for user media files</label>
+                    </field>
+                </group>
+                <group id="style" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Style</label>
+                    <field id="use_inline_css" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Use inline css</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <backend_model>Goomento\PageBuilder\Model\Config\Backend\RefreshStyle</backend_model>
+                        <comment>If `Yes`, print the styling in HTML, instead of add the external CSS file.</comment>
+                    </field>
+                    <field id="local_font" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Use local font</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>If `Yes`, hide Google Fonts from storefront. Use the theme font instead.</comment>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

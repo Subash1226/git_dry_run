@@ -1,0 +1,176 @@
+<?php $baseHelper = $this->helper('ET\Base\Helper\Data'); $baseUrl = $this->getBaseUrl(); $headerStaticBlock = $baseHelper->getConfigValue('header_section/general/header_static_block'); $arrow = $baseUrl . '/media/wysiwyg/down-arrow.png'; $editLocat = $baseUrl . '/media/wysiwyg/edit.png'; ?> <?php echo $this->getChildHtml("et.top.promotion"); ?> <div id="cart-header" style="width:100%;height:100px;background:#059D7E;float:left;display:none;" class="cart-header header"><div style="padding: 20px 180px;" class="navigation-cart"><p style="font-family:Source Sans Pro;font-size:32px;font-weight:600;color:#FFF;"><a href="/"><img style="width: 28px;height:22px;" src="<?php echo $arrow; ?>" alt=""></a> My Cart</p></div></div><div id="checkout-header" style="width:100%;height:100px;background:#059D7E;float:left;display:none;" class="cart-header header"><div style="padding: 20px 180px;" class="navigation-cart"><p style="font-family:Source Sans Pro;font-size:32px;font-weight:600;color:#FFF;"><a href="/checkout/cart"><img style="width: 28px;height:22px;" src="<?php echo $arrow; ?>" alt=""></a> Checkout</p></div></div><header class="page-header type1"><div class="panel wrapper"><div class="panel header"><?php echo $this->getChildHtml("skip_to_content"); ?> <?php echo $this->getChildHtml("store_language"); ?> <?php echo $this->getChildHtml("currency"); ?> <?php echo $this->getChildHtml("header.links"); ?></div></div><div id="regular-header" class="header content"><div class="header-logo"><?php echo $this->getChildHtml("logo"); $line = $baseUrl . '/media/wysiwyg/Line.png'; $edit = $baseUrl . '/media/wysiwyg/edit.png'; ?> <img id="logo-line" src="<?php echo $line; ?>" alt=""></div><div class="header-logo delivery"><p class="location">Delivery Location</p><h1 style="cursor: pointer;" id="area"><p id="openModalBtn">Enter your location <img id="edit-locat" src="<?php echo $edit; ?>" alt=""></p></h1><div id="myModal" class="modals"><div class="modal-content"><span id="closeModalBtn" class="close-modal-button">&times;</span> <p id="model-pincode" class="model-pincode">Enter Pincode</p><!-- <i class="fa-solid fa-location-pin"></i> --><input type="text" id="myInput" placeholder="Enter Delivery Pincode" /><button class="getlocatbtn" onclick="getValue()">Get Location</button></div></div><script>
+                const modal = document.getElementById("myModal");
+                const h1Element = document.getElementById('area');
+                const inputElement = document.getElementById("myInput");
+                document.addEventListener("DOMContentLoaded", function() {
+                    modal.style.display = "none";
+                    function toggleModal() {
+                        if (modal.style.display === "none") {
+                            modal.style.display = "block";
+                        } else {
+                            modal.style.display = "none";
+                        }
+                    }
+                    const dynamicOpenModalBtn = document.getElementById("openModalBtn");
+                    const closeModalBtn = document.getElementById("closeModalBtn");
+                    dynamicOpenModalBtn.addEventListener("click", toggleModal);
+                    closeModalBtn.addEventListener("click", toggleModal);
+                    window.addEventListener("click", (event) => {
+                        if (event.target === modal) {
+                            toggleModal();
+                        }
+                    });
+                    h1Element.addEventListener("click", () => {
+                        modal.style.display = "block";
+                    });
+                    var getStorage = sessionStorage.getItem("pincode");
+                    if (getStorage && getStorage.trim() !== '') {
+                        h1Element.innerHTML = getStorage + '&nbsp;<img id="edit-locat" src="<?php echo $editLocat ?>" alt="">';
+                    } else {
+                        h1Element.innerHTML = '<p id="openModalBtn">Enter your location <img id="edit-locat" src="<?php echo $editLocat ?>" alt=""></p>';
+                    }
+                });
+                function limitString(string, limit) {
+                    if (string.length <= limit) {
+                        return string;
+                    } else {
+                        return string.slice(0, limit) + '...';
+                    }
+                }
+                function getValue() {
+                    const value = inputElement.value;
+                    const apiUrl = 'https://api.postalpincode.in/pincode/' + value;
+                    fetch(apiUrl)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            var pincode = data[0].PostOffice[1].Name;
+                            const pincodes = limitString(pincode, 15);
+                            modal.style.display = "none";
+                            sessionStorage.setItem("pincode", pincodes);
+                            var UserLocat = sessionStorage.getItem("pincode");
+                            let NotShip = 'We dont ship to this pincode';
+                            let ShipHere = limitString(NotShip, 15);
+                            if (UserLocat == 'Chromepet' || UserLocat == 'MEPZ Tambaram') {
+                                h1Element.innerHTML = UserLocat + '&nbsp;<img id="edit-locat" src="<?php echo $editLocat ?>" alt="">';
+                            } else {
+                                h1Element.innerHTML = UserLocat + '&nbsp;<img id="edit-locat" src="<?php echo $editLocat ?>" alt=""></br><p style="font-size: 12px;color:red;font-family:Source Sans Pro;padding:4px 0;">Sorry,We dont ship to this pincode</p>';
+                            }
+                            
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+                }
+                function updateClickCount(key) {
+                    var clickData = JSON.parse(sessionStorage.getItem(key)) || {
+                        count: 0,
+                        timestamp: 0
+                    };
+                    clickData.count++;
+                    clickData.timestamp = Date.now();
+                    sessionStorage.setItem(key, JSON.stringify(clickData));
+                }
+                function LoginUserLink() {
+                    updateClickCount('loginuserlink');
+                }
+                function UserLogin() {
+                    updateClickCount('checkout');
+                    var Userlogin = sessionStorage.getItem('Userlogin');
+                    if (Userlogin === 'true') {
+                        window.location.href = '<?php echo $baseUrl; ?>checkout';
+                    }
+                }
+                function UserLoginCart() {
+                    updateClickCount('checkoutCart');
+                    var Userlogin = sessionStorage.getItem('Userlogin');
+                    if (Userlogin === 'true') {
+                        window.location.href = '<?php echo $baseUrl; ?>checkout/cart';
+                    }
+                }
+                function getLastClickedFunction() {
+                    var loginuserlinkTimestamp = JSON.parse(sessionStorage.getItem('loginuserlink'))?.timestamp || 0;
+                    var checkoutTimestamp = JSON.parse(sessionStorage.getItem('checkout'))?.timestamp || 0;
+                    var checkoutCartTimestamp = JSON.parse(sessionStorage.getItem('checkoutCart'))?.timestamp || 0;
+                    var prescriptionTimestamp = JSON.parse(sessionStorage.getItem('prescription'))?.timestamp || 0;
+
+                    if (loginuserlinkTimestamp > checkoutTimestamp && loginuserlinkTimestamp > checkoutCartTimestamp && loginuserlinkTimestamp > prescriptionTimestamp) {
+                        return 'Login';
+                    } else if (checkoutTimestamp > checkoutCartTimestamp && checkoutTimestamp > prescriptionTimestamp) {
+                        return 'Checkout';
+                    } else if (checkoutCartTimestamp > prescriptionTimestamp) {
+                        return 'Cart';
+                    } else {
+                        return 'Prescription';
+                    }
+                }
+                function updateSessionStorage() {
+                    var lastClickedFunction = getLastClickedFunction();
+                    sessionStorage.setItem('loginlastclick', lastClickedFunction);
+                }
+                setInterval(updateSessionStorage, 3000);</script><script>
+                const currentUrl = window.location.href;
+                const cartHeader = document.getElementById('cart-header');
+                const CheckoutHeader = document.getElementById('checkout-header');
+                const ConstHeader = document.getElementById('regular-header');
+                if (currentUrl == '<?php echo $baseUrl; ?>checkout/cart') {
+                    cartHeader.style.display = 'flex';
+                    ConstHeader.style.display = 'none';
+                } else if (currentUrl == '<?php echo $baseUrl; ?>checkout') {
+                    CheckoutHeader.style.display = 'flex';
+                    ConstHeader.style.display = 'none';
+                } else if (currentUrl == '<?php echo $baseUrl; ?>checkout#prescription') {
+                    CheckoutHeader.style.display = 'flex';
+                    ConstHeader.style.display = 'none';
+                } else if (currentUrl == '<?php echo $baseUrl; ?>checkout#shipping') {
+                    CheckoutHeader.style.display = 'flex';
+                    ConstHeader.style.display = 'none';
+                } else if (currentUrl == '<?php echo $baseUrl; ?>checkout#payment') {
+                    CheckoutHeader.style.display = 'flex';
+                    ConstHeader.style.display = 'none';
+                }
+                document.addEventListener("DOMContentLoaded", function() {
+                    var myButtonpre = document.getElementById('upload-press');
+                    function onClick() {
+                        if (myButtonpre) {
+                            updateClickCount('prescription');
+                            var Userlogin = sessionStorage.getItem('Userlogin');
+                            if (Userlogin === 'true') {
+                                window.location.href = '<?php echo $baseUrl; ?>prescription';
+                            }
+                        }
+                    }
+                    if (myButtonpre) {
+                        myButtonpre.addEventListener('click', onClick);
+                        
+                    } else {
+                        
+                    }
+                    var bank = document.getElementById('banktransfer');
+                    if (bank) {
+                        bank.disabled = true;
+                    } else {
+                        
+                    }
+                });
+                function onClick() {
+                    updateClickCount('prescription');
+                    var Userlogin = sessionStorage.getItem('Userlogin');
+                    if (Userlogin === 'true') {
+                        window.location.href = '<?php echo $baseUrl; ?>prescription';
+                    }
+                }</script></div><?php echo $this->getChildHtml("minicart"); ?> <?php if ($headerStaticBlock != '') { echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId($headerStaticBlock)->toHtml(); } ?> <?php echo $this->getChildHtml("top.search"); ?></div><?php echo $this->getChildHtml("navigation.sections"); ?> <?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance(); $customerSession = $objectManager->create('Magento\Customer\Model\Session'); if ($customerSession->isLoggedIn()) : ?> <script>
+            var star = document.getElementById("star");
+            var login = document.getElementById("link-login");
+            login.style.display = "none";
+            sessionStorage.setItem('Userlogin', 'true');
+            star.style.display = "none";</script><?php else : ?> <script>
+            var logout = document.getElementById("link-logout");
+            var star = document.getElementById("star");
+            logout.style.display = "none";
+            star.style.display = "flex";
+            sessionStorage.setItem('Userlogin', 'false');</script><?php endif; ?></header>
